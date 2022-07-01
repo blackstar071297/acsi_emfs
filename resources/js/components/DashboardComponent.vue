@@ -100,7 +100,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="job_status">
+                                        <input type="checkbox" class="custom-control-input" id="job_status" v-model="job_status_toggler">
                                         <label class="custom-control-label" for="job_status">JOB STATUS</label>
                                     </div>
                                 </td>
@@ -108,7 +108,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="job_level">
+                                        <input type="checkbox" class="custom-control-input" id="job_level" v-model="job_level_toggler">
                                         <label class="custom-control-label" for="job_level">JOB LEVEL</label>
                                     </div>
                                 </td>
@@ -116,7 +116,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="role">
+                                        <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler">
                                         <label class="custom-control-label" for="role">ROLE ASSIGNMENT</label>
                                     </div>
                                 </td>
@@ -124,7 +124,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="department">
+                                        <input type="checkbox" class="custom-control-input" id="department" v-model="departments_toggler">
                                         <label class="custom-control-label" for="department">DEPARTMENT</label>
                                     </div>
                                 </td>
@@ -132,7 +132,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="cost_center">
+                                        <input type="checkbox" class="custom-control-input" id="cost_center" v-model="cost_toggler">
                                         <label class="custom-control-label" for="cost_center">COST CENTER</label>
                                     </div>
                                 </td>
@@ -140,7 +140,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="salary">
+                                        <input type="checkbox" class="custom-control-input" id="salary" v-model="salary_toggler">
                                         <label class="custom-control-label" for="salary">SALARY</label>
                                     </div>
                                 </td>
@@ -148,7 +148,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="allowance">
+                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler">
                                         <label class="custom-control-label" for="allowance">MONTHLY ALLOWANCE</label>
                                     </div>
                                 </td>
@@ -156,7 +156,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="immediate_superior">
+                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler">
                                         <label class="custom-control-label" for="immediate_superior">IMMEDIATE SUPERIOR</label>
                                     </div>
                                 </td>
@@ -164,7 +164,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="department_manager">
+                                        <input type="checkbox" class="custom-control-input" id="department_manager" v-model="manager_toggler">
                                         <label class="custom-control-label" for="department_manager">DEPARTMENT MANAGER</label>
                                     </div>
                                 </td>
@@ -172,7 +172,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="extion_of_contract">
+                                        <input type="checkbox" class="custom-control-input" id="extion_of_contract" v-model="extension_toggler">
                                         <label class="custom-control-label" for="extion_of_contract">EXTENSION OF CONTRACT</label>
                                     </div>
                                 </td>
@@ -180,7 +180,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold border-0">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="others">
+                                        <input type="checkbox" class="custom-control-input" id="others" v-model="other_toggler">
                                         <label class="custom-control-label" for="others">Others</label>
                                     </div>
                                 </td>
@@ -221,18 +221,19 @@
                                         <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center"></td>
                                     </tr>
                                     <tr>
-                                        <td v-if="selected_employee.length == 0">N/A</td>
+                                        <td v-if="selected_employee.length == 0 || selected_employee.info1.supervisor.length == 0">N/A</td>
                                         <td v-else>{{selected_employee.info1.supervisor.firstname}} {{selected_employee.info1.supervisor.middlename != null ? selected_employee.info1.supervisor.middlename : ''}}  {{selected_employee.info1.supervisor.lastname}}</td>
                                     </tr>
                                     <tr>
-                                        <td v-if="selected_employee.length == 0">N/A</td>
+                                        <td v-if="selected_employee.length == 0 || selected_employee.info1.manager.length == 0">N/A</td>
                                         <td v-else>{{selected_employee.info1.manager.firstname}} {{selected_employee.info1.manager.middlename != null ? selected_employee.info1.manager.middlename : ''}}  {{selected_employee.info1.manager.lastname}}</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="date" name="eoc" id="eoc" placeholder="" class="border-0 text-center"></td>
+                                        <td v-if="extension_toggler == false">N/A</td>
+                                        <td v-else><input type="date" name="eoc" id="eoc"  class="border-0 text-center" ></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="other" id="other" placeholder="" class="border-0 text-center"></td>
+                                        <td><input type="text" name="other" id="other"  class="border-0 text-center"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -244,45 +245,78 @@
                                         <td >TO</td>
                                     </tr>
                                     <tr>
-                                        <td v-if="position_toggler == false">SAME</td>
+                                        <td v-if="position_toggler == false">{{selected_position}}</td>
                                         <td v-if="position_toggler == true">
-                                            <select name="position_title" id="position_title" class="border-0 w-100" >
+                                            <select name="position_title" id="position_title" class="border-0 w-100 text-center" v-model="selected_position">
                                                 <option v-for="(position,index) in positions" :key="index" i :value="position.eposition" >{{position.eposition}}</option>
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td v-if="job_status_toggler == false">SAME</td>
+                                        <td v-if="job_status_toggler == false">{{selected_status}}</td>
                                         <td v-if="job_status_toggler == true">
-                                            <select name="job_status" id="job_status" class="border-0 w-100" >
+                                            <select name="job_status" id="job_status" class="border-0 w-100 text-center" v-model="selected_status">
                                                 <option value="Probationary">Probationary</option>
                                                 <option value="Regular">Regular</option>
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="job_level_toggler == false">{{selected_level}}</td>
+                                        <td v-if="job_level_toggler == true">
+                                            <select name="job_level" id="job_level" class="border-0 w-100 text-center" v-model="selected_level">
+                                                <option v-for="(job_level,index) in job_level" :key="index" :value="job_level.job_name">{{job_level.job_name}}</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="role_toggler == false">{{selected_role}}</td>
+                                        <td v-if="role_toggler == true">
+                                            <select name="role" id="role" class="border-0 w-100 text-center" v-model="selected_role">
+                                                <option value="">N/A</option>
+                                                <option v-for="(role,index) in roles" :key="index" :value="role.role_name">{{role.role_name}}</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="departments_toggler == false">{{selected_department}}</td>
+                                        <td v-if="departments_toggler == true">
+                                            <select name="department" id="department" class="border-0 w-100 text-center" v-model="selected_department" @change="departmentUpdate()">
+                                                <option v-for="(department,index) in departments" :key="index" :value="department.ccname">{{department.ccname}}</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="cost_toggler == false">{{selected_cost_center}}</td>
+                                        <td v-if="cost_toggler == true">
+                                            <select name="cost_center" id="cost_center" class="border-0 w-100 text-center" v-model="selected_cost_center">
+                                                <option v-for="(cost_center,index) in cost_centers" :key="index" :value="cost_center.DEPTNAME" :selected="cost_center.DEPTNAME == selected_cost_center ? true : false">{{cost_center.DEPTNAME}}</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="salary_toggler == false">SAME</td>
+                                        <input v-else type="text" name="to_salary" id="to_salary" placeholder="" class="border-0 text-center">
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="allowance_toggler == false">SAME</td>
+                                        <input v-else type="text" name="to_allowance" id="to_allowance" placeholder="" class="border-0 text-center">
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="supervisor_toggler == false">{{selected_supervisor}}</td>
+                                        <td v-if="supervisor_toggler == true">
+                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_supervisor" @change="supervisorUpdate($event)">
+                                                <option v-for="(supervisor,index) in supervisors" :key="index" :value="supervisor.empno" >{{supervisor.user.firstname}} {{supervisor.user.middlename == null ? '' :  supervisor.user.middlename}} {{supervisor.user.lastname}}</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="manager_toggler == false">{{selected_manager}}</td>
+                                        <td v-if="manager_toggler == true">
+                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_manager">
+                                                <option v-for="(manager,index) in managers" :key="index" :value="manager.empno" :selected="selected_manager == manager.empno ? true : false">{{manager.user.firstname}} {{manager.user.middlename == null ? '' :  manager.user.middlename}} {{manager.user.lastname}}</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>SAME</td>
@@ -302,7 +336,7 @@
                                 <td class="font-weight-bold " colspan="2">APPROVAL</td>
                             </tr>
                             <tr v-if="selected_employee != 0">
-                                <td style='font-weight: bold;' class="border-0">
+                                <td style='font-weight: bold;' class="border-0"  v-if="Object.keys(selected_employee.info1.supervisor).length > 0">
                                     <hr class="w-50 mx-auto mt-4">
                                     <div class="text-center">
                                         <h6 class="align-middle font-weight-bold">{{selected_employee.info1.supervisor.firstname}} {{selected_employee.info1.supervisor.middlename != null ? selected_employee.info1.supervisor.middlename : ''}}  {{selected_employee.info1.supervisor.lastname}}</h6>
@@ -341,7 +375,7 @@
                                 <td >
                                     <hr class="w-50 mx-auto mt-4">
                                     <div class="text-center">
-                                        <h6 class="align-middle font-weight-bold"> {{selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</h6>
+                                        <h6 class="align-middle font-weight-bold">{{selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.eposition }}</h6>
                                     </div>
                                 </td>
@@ -379,12 +413,36 @@ export default {
             positions:[],
             job_status_toggler: false,
             job_status: [],
+            job_level_toggler: false,
+            job_level:[{job_name:'Managerial'},{job_name:'Supervisor'},{job_name:'Technical Specialist'},{job_name:'Assistant Manager'},{job_name:'Rank & File'}],
+            role_toggler: false,
+            roles: [{role_name:'Team leader'},{role_name:'Buddy'}],
+            departments_toggler: false,
+            departments:[],
+            cost_toggler: false,
+            cost_centers: [],
+            supervisor_toggler: false,
+            supervisors:[],
+            manager_toggler: false,
+            managers:[],
+            salary_toggler: false,
+            allowance_toggler: false,
+            extension_toggler: false,
+            other_toggler:false,
+            selected_position: 'SAME',
+            selected_status: 'SAME',
+            selected_level: 'SAME',
+            selected_role: 'SAME',
+            selected_department: 'SAME',
+            selected_cost_center: 'SAME',
+            selected_supervisor: 'SAME',
+            selected_manager: 'SAME',
+
         }
     },
     methods:{
         getUsers(){
             axios.post('/acsi_emfs/api/employees').then(response => {
-                console.log(response.data)
                 this.employees = response.data
             }).catch(error => console.log(error.response.data))
         },
@@ -393,17 +451,47 @@ export default {
         },
         getUser(emp_no){
             axios.post('/acsi_emfs/api/employees/'+emp_no).then(response => {
-                console.log(response.data)
                 this.selected_employee = response.data
             }).catch(error => console.log(error.response.data))
         },
         getPositions(){
             axios.post('/acsi_emfs/api/positions').then(response => this.positions = response.data)
+        },
+        getDepartments(){
+            axios.post('/acsi_emfs/api/cost-center').then(response => {
+                this.departments = response.data
+            })
+        },
+        getCostCenter(){
+            axios.post('/acsi_emfs/api/departments').then(response => this.cost_centers = response.data)
+        },
+        getSupervisor(){
+            axios.post('/acsi_emfs/api/supervisor').then(response => {
+                console.log(response.data)
+                this.supervisors = response.data
+            }).catch(error => console.log(error.response.data))
+        },
+        getManager(){
+            axios.post('/acsi_emfs/api/manager').then(response => this.managers = response.data ).catch(error => console.log(error.response.data))
+        },
+        supervisorUpdate(e){
+            axios.post('/acsi_emfs/api/employees/'+e.target.value).then(response => {
+                console.log(response.data)
+                this.selected_manager = response.data.info1.emngr
+                this.manager_toggler = true
+
+                this.selected_cost_center = response.data.info1.ecurrdept
+                this.selected_department = response.data.info1.ecostcenter
+            }).catch(error => console.log(error.response.data))
         }
     },
     created(){
         this.getUsers()
         this.getPositions()
+        this.getDepartments()
+        this.getCostCenter()
+        this.getSupervisor()
+        this.getManager()
     }
 }
 </script>

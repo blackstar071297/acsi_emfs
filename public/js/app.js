@@ -5636,6 +5636,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5648,7 +5682,45 @@ __webpack_require__.r(__webpack_exports__);
       position_toggler: false,
       positions: [],
       job_status_toggler: false,
-      job_status: []
+      job_status: [],
+      job_level_toggler: false,
+      job_level: [{
+        job_name: 'Managerial'
+      }, {
+        job_name: 'Supervisor'
+      }, {
+        job_name: 'Technical Specialist'
+      }, {
+        job_name: 'Assistant Manager'
+      }, {
+        job_name: 'Rank & File'
+      }],
+      role_toggler: false,
+      roles: [{
+        role_name: 'Team leader'
+      }, {
+        role_name: 'Buddy'
+      }],
+      departments_toggler: false,
+      departments: [],
+      cost_toggler: false,
+      cost_centers: [],
+      supervisor_toggler: false,
+      supervisors: [],
+      manager_toggler: false,
+      managers: [],
+      salary_toggler: false,
+      allowance_toggler: false,
+      extension_toggler: false,
+      other_toggler: false,
+      selected_position: 'SAME',
+      selected_status: 'SAME',
+      selected_level: 'SAME',
+      selected_role: 'SAME',
+      selected_department: 'SAME',
+      selected_cost_center: 'SAME',
+      selected_supervisor: 'SAME',
+      selected_manager: 'SAME'
     };
   },
   methods: {
@@ -5656,7 +5728,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/acsi_emfs/api/employees').then(function (response) {
-        console.log(response.data);
         _this.employees = response.data;
       })["catch"](function (error) {
         return console.log(error.response.data);
@@ -5669,7 +5740,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.post('/acsi_emfs/api/employees/' + emp_no).then(function (response) {
-        console.log(response.data);
         _this2.selected_employee = response.data;
       })["catch"](function (error) {
         return console.log(error.response.data);
@@ -5681,11 +5751,61 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/acsi_emfs/api/positions').then(function (response) {
         return _this3.positions = response.data;
       });
+    },
+    getDepartments: function getDepartments() {
+      var _this4 = this;
+
+      axios.post('/acsi_emfs/api/cost-center').then(function (response) {
+        _this4.departments = response.data;
+      });
+    },
+    getCostCenter: function getCostCenter() {
+      var _this5 = this;
+
+      axios.post('/acsi_emfs/api/departments').then(function (response) {
+        return _this5.cost_centers = response.data;
+      });
+    },
+    getSupervisor: function getSupervisor() {
+      var _this6 = this;
+
+      axios.post('/acsi_emfs/api/supervisor').then(function (response) {
+        console.log(response.data);
+        _this6.supervisors = response.data;
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+    },
+    getManager: function getManager() {
+      var _this7 = this;
+
+      axios.post('/acsi_emfs/api/manager').then(function (response) {
+        return _this7.managers = response.data;
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+    },
+    supervisorUpdate: function supervisorUpdate(e) {
+      var _this8 = this;
+
+      axios.post('/acsi_emfs/api/employees/' + e.target.value).then(function (response) {
+        console.log(response.data);
+        _this8.selected_manager = response.data.info1.emngr;
+        _this8.manager_toggler = true;
+        _this8.selected_cost_center = response.data.info1.ecurrdept;
+        _this8.selected_department = response.data.info1.ecostcenter;
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
     }
   },
   created: function created() {
     this.getUsers();
     this.getPositions();
+    this.getDepartments();
+    this.getCostCenter();
+    this.getSupervisor();
+    this.getManager();
   }
 });
 
@@ -28753,27 +28873,675 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
-                  _vm._m(5),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.job_status_toggler,
+                                expression: "job_status_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "job_status" },
+                            domProps: {
+                              checked: Array.isArray(_vm.job_status_toggler)
+                                ? _vm._i(_vm.job_status_toggler, null) > -1
+                                : _vm.job_status_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.job_status_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.job_status_toggler = $$a.concat([
+                                        $$v,
+                                      ]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.job_status_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.job_status_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "job_status" },
+                            },
+                            [_vm._v("JOB STATUS")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(6),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.job_level_toggler,
+                                expression: "job_level_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "job_level" },
+                            domProps: {
+                              checked: Array.isArray(_vm.job_level_toggler)
+                                ? _vm._i(_vm.job_level_toggler, null) > -1
+                                : _vm.job_level_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.job_level_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.job_level_toggler = $$a.concat([
+                                        $$v,
+                                      ]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.job_level_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.job_level_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "job_level" },
+                            },
+                            [_vm._v("JOB LEVEL")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(7),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.role_toggler,
+                                expression: "role_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "role" },
+                            domProps: {
+                              checked: Array.isArray(_vm.role_toggler)
+                                ? _vm._i(_vm.role_toggler, null) > -1
+                                : _vm.role_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.role_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.role_toggler = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.role_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.role_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "role" },
+                            },
+                            [_vm._v("ROLE ASSIGNMENT")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(8),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.departments_toggler,
+                                expression: "departments_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "department" },
+                            domProps: {
+                              checked: Array.isArray(_vm.departments_toggler)
+                                ? _vm._i(_vm.departments_toggler, null) > -1
+                                : _vm.departments_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.departments_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.departments_toggler = $$a.concat([
+                                        $$v,
+                                      ]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.departments_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.departments_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "department" },
+                            },
+                            [_vm._v("DEPARTMENT")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(9),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.cost_toggler,
+                                expression: "cost_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "cost_center" },
+                            domProps: {
+                              checked: Array.isArray(_vm.cost_toggler)
+                                ? _vm._i(_vm.cost_toggler, null) > -1
+                                : _vm.cost_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.cost_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.cost_toggler = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.cost_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.cost_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "cost_center" },
+                            },
+                            [_vm._v("COST CENTER")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(10),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.salary_toggler,
+                                expression: "salary_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "salary" },
+                            domProps: {
+                              checked: Array.isArray(_vm.salary_toggler)
+                                ? _vm._i(_vm.salary_toggler, null) > -1
+                                : _vm.salary_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.salary_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.salary_toggler = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.salary_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.salary_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "salary" },
+                            },
+                            [_vm._v("SALARY")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(11),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.allowance_toggler,
+                                expression: "allowance_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "allowance" },
+                            domProps: {
+                              checked: Array.isArray(_vm.allowance_toggler)
+                                ? _vm._i(_vm.allowance_toggler, null) > -1
+                                : _vm.allowance_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.allowance_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.allowance_toggler = $$a.concat([
+                                        $$v,
+                                      ]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.allowance_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.allowance_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "allowance" },
+                            },
+                            [_vm._v("MONTHLY ALLOWANCE")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(12),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.supervisor_toggler,
+                                expression: "supervisor_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "immediate_superior",
+                            },
+                            domProps: {
+                              checked: Array.isArray(_vm.supervisor_toggler)
+                                ? _vm._i(_vm.supervisor_toggler, null) > -1
+                                : _vm.supervisor_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.supervisor_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.supervisor_toggler = $$a.concat([
+                                        $$v,
+                                      ]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.supervisor_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.supervisor_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "immediate_superior" },
+                            },
+                            [_vm._v("IMMEDIATE SUPERIOR")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(13),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.manager_toggler,
+                                expression: "manager_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "department_manager",
+                            },
+                            domProps: {
+                              checked: Array.isArray(_vm.manager_toggler)
+                                ? _vm._i(_vm.manager_toggler, null) > -1
+                                : _vm.manager_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.manager_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.manager_toggler = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.manager_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.manager_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "department_manager" },
+                            },
+                            [_vm._v("DEPARTMENT MANAGER")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(14),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.extension_toggler,
+                                expression: "extension_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "extion_of_contract",
+                            },
+                            domProps: {
+                              checked: Array.isArray(_vm.extension_toggler)
+                                ? _vm._i(_vm.extension_toggler, null) > -1
+                                : _vm.extension_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.extension_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.extension_toggler = $$a.concat([
+                                        $$v,
+                                      ]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.extension_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.extension_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "extion_of_contract" },
+                            },
+                            [_vm._v("EXTENSION OF CONTRACT")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
-                  _vm._m(15),
+                  _c("tr", { staticClass: "border-0" }, [
+                    _c("td", { staticClass: "font-weight-bold border-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.other_toggler,
+                                expression: "other_toggler",
+                              },
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox", id: "others" },
+                            domProps: {
+                              checked: Array.isArray(_vm.other_toggler)
+                                ? _vm._i(_vm.other_toggler, null) > -1
+                                : _vm.other_toggler,
+                            },
+                            on: {
+                              change: function ($event) {
+                                var $$a = _vm.other_toggler,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.other_toggler = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.other_toggler = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.other_toggler = $$c
+                                }
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-control-label",
+                              attrs: { for: "others" },
+                            },
+                            [_vm._v("Others")]
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                 ]),
               ]
             ),
@@ -28790,7 +29558,7 @@ var render = function () {
                   },
                   [
                     _c("tbody", [
-                      _vm._m(16),
+                      _vm._m(5),
                       _vm._v(" "),
                       _c("tr", [
                         _c("td", [
@@ -28864,12 +29632,13 @@ var render = function () {
                         ]),
                       ]),
                       _vm._v(" "),
-                      _vm._m(17),
+                      _vm._m(6),
                       _vm._v(" "),
-                      _vm._m(18),
+                      _vm._m(7),
                       _vm._v(" "),
                       _c("tr", [
-                        _vm.selected_employee.length == 0
+                        _vm.selected_employee.length == 0 ||
+                        _vm.selected_employee.info1.supervisor.length == 0
                           ? _c("td", [_vm._v("N/A")])
                           : _c("td", [
                               _vm._v(
@@ -28895,7 +29664,8 @@ var render = function () {
                       ]),
                       _vm._v(" "),
                       _c("tr", [
-                        _vm.selected_employee.length == 0
+                        _vm.selected_employee.length == 0 ||
+                        _vm.selected_employee.info1.manager.length == 0
                           ? _c("td", [_vm._v("N/A")])
                           : _c("td", [
                               _vm._v(
@@ -28918,9 +29688,18 @@ var render = function () {
                             ]),
                       ]),
                       _vm._v(" "),
-                      _vm._m(19),
+                      _c("tr", [
+                        _vm.extension_toggler == false
+                          ? _c("td", [_vm._v("N/A")])
+                          : _c("td", [
+                              _c("input", {
+                                staticClass: "border-0 text-center",
+                                attrs: { type: "date", name: "eoc", id: "eoc" },
+                              }),
+                            ]),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(20),
+                      _vm._m(8),
                     ]),
                   ]
                 ),
@@ -28935,11 +29714,11 @@ var render = function () {
                   },
                   [
                     _c("tbody", [
-                      _vm._m(21),
+                      _vm._m(9),
                       _vm._v(" "),
                       _c("tr", [
                         _vm.position_toggler == false
-                          ? _c("td", [_vm._v("SAME")])
+                          ? _c("td", [_vm._v(_vm._s(_vm.selected_position))])
                           : _vm._e(),
                         _vm._v(" "),
                         _vm.position_toggler == true
@@ -28947,10 +29726,38 @@ var render = function () {
                               _c(
                                 "select",
                                 {
-                                  staticClass: "border-0 w-100",
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.selected_position,
+                                      expression: "selected_position",
+                                    },
+                                  ],
+                                  staticClass: "border-0 w-100 text-center",
                                   attrs: {
                                     name: "position_title",
                                     id: "position_title",
+                                  },
+                                  on: {
+                                    change: function ($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call(
+                                          $event.target.options,
+                                          function (o) {
+                                            return o.selected
+                                          }
+                                        )
+                                        .map(function (o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.selected_position = $event.target
+                                        .multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
                                   },
                                 },
                                 _vm._l(
@@ -28975,33 +29782,521 @@ var render = function () {
                       _vm._v(" "),
                       _c("tr", [
                         _vm.job_status_toggler == false
-                          ? _c("td", [_vm._v("SAME")])
+                          ? _c("td", [_vm._v(_vm._s(_vm.selected_status))])
                           : _vm._e(),
                         _vm._v(" "),
                         _vm.job_status_toggler == true
-                          ? _c("td", [_vm._m(22)])
+                          ? _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.selected_status,
+                                      expression: "selected_status",
+                                    },
+                                  ],
+                                  staticClass: "border-0 w-100 text-center",
+                                  attrs: {
+                                    name: "job_status",
+                                    id: "job_status",
+                                  },
+                                  on: {
+                                    change: function ($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call(
+                                          $event.target.options,
+                                          function (o) {
+                                            return o.selected
+                                          }
+                                        )
+                                        .map(function (o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.selected_status = $event.target
+                                        .multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "Probationary" } },
+                                    [_vm._v("Probationary")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "Regular" } },
+                                    [_vm._v("Regular")]
+                                  ),
+                                ]
+                              ),
+                            ])
                           : _vm._e(),
                       ]),
                       _vm._v(" "),
-                      _vm._m(23),
+                      _c("tr", [
+                        _vm.job_level_toggler == false
+                          ? _c("td", [_vm._v(_vm._s(_vm.selected_level))])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.job_level_toggler == true
+                          ? _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.selected_level,
+                                      expression: "selected_level",
+                                    },
+                                  ],
+                                  staticClass: "border-0 w-100 text-center",
+                                  attrs: { name: "job_level", id: "job_level" },
+                                  on: {
+                                    change: function ($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call(
+                                          $event.target.options,
+                                          function (o) {
+                                            return o.selected
+                                          }
+                                        )
+                                        .map(function (o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.selected_level = $event.target
+                                        .multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                  },
+                                },
+                                _vm._l(
+                                  _vm.job_level,
+                                  function (job_level, index) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: index,
+                                        domProps: { value: job_level.job_name },
+                                      },
+                                      [_vm._v(_vm._s(job_level.job_name))]
+                                    )
+                                  }
+                                ),
+                                0
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(24),
+                      _c("tr", [
+                        _vm.role_toggler == false
+                          ? _c("td", [_vm._v(_vm._s(_vm.selected_role))])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.role_toggler == true
+                          ? _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.selected_role,
+                                      expression: "selected_role",
+                                    },
+                                  ],
+                                  staticClass: "border-0 w-100 text-center",
+                                  attrs: { name: "role", id: "role" },
+                                  on: {
+                                    change: function ($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call(
+                                          $event.target.options,
+                                          function (o) {
+                                            return o.selected
+                                          }
+                                        )
+                                        .map(function (o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.selected_role = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                  },
+                                },
+                                [
+                                  _c("option", { attrs: { value: "" } }, [
+                                    _vm._v("N/A"),
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.roles, function (role, index) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: index,
+                                        domProps: { value: role.role_name },
+                                      },
+                                      [_vm._v(_vm._s(role.role_name))]
+                                    )
+                                  }),
+                                ],
+                                2
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(25),
+                      _c("tr", [
+                        _vm.departments_toggler == false
+                          ? _c("td", [_vm._v(_vm._s(_vm.selected_department))])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.departments_toggler == true
+                          ? _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.selected_department,
+                                      expression: "selected_department",
+                                    },
+                                  ],
+                                  staticClass: "border-0 w-100 text-center",
+                                  attrs: {
+                                    name: "department",
+                                    id: "department",
+                                  },
+                                  on: {
+                                    change: [
+                                      function ($event) {
+                                        var $$selectedVal =
+                                          Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function (o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function (o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                        _vm.selected_department = $event.target
+                                          .multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      },
+                                      function ($event) {
+                                        return _vm.departmentUpdate()
+                                      },
+                                    ],
+                                  },
+                                },
+                                _vm._l(
+                                  _vm.departments,
+                                  function (department, index) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: index,
+                                        domProps: { value: department.ccname },
+                                      },
+                                      [_vm._v(_vm._s(department.ccname))]
+                                    )
+                                  }
+                                ),
+                                0
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(26),
+                      _c("tr", [
+                        _vm.cost_toggler == false
+                          ? _c("td", [_vm._v(_vm._s(_vm.selected_cost_center))])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.cost_toggler == true
+                          ? _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.selected_cost_center,
+                                      expression: "selected_cost_center",
+                                    },
+                                  ],
+                                  staticClass: "border-0 w-100 text-center",
+                                  attrs: {
+                                    name: "cost_center",
+                                    id: "cost_center",
+                                  },
+                                  on: {
+                                    change: function ($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call(
+                                          $event.target.options,
+                                          function (o) {
+                                            return o.selected
+                                          }
+                                        )
+                                        .map(function (o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.selected_cost_center = $event.target
+                                        .multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                  },
+                                },
+                                _vm._l(
+                                  _vm.cost_centers,
+                                  function (cost_center, index) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: index,
+                                        domProps: {
+                                          value: cost_center.DEPTNAME,
+                                          selected:
+                                            cost_center.DEPTNAME ==
+                                            _vm.selected_cost_center
+                                              ? true
+                                              : false,
+                                        },
+                                      },
+                                      [_vm._v(_vm._s(cost_center.DEPTNAME))]
+                                    )
+                                  }
+                                ),
+                                0
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(27),
+                      _c("tr", [
+                        _vm.salary_toggler == false
+                          ? _c("td", [_vm._v("SAME")])
+                          : _c("input", {
+                              staticClass: "border-0 text-center",
+                              attrs: {
+                                type: "text",
+                                name: "to_salary",
+                                id: "to_salary",
+                                placeholder: "",
+                              },
+                            }),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(28),
+                      _c("tr", [
+                        _vm.allowance_toggler == false
+                          ? _c("td", [_vm._v("SAME")])
+                          : _c("input", {
+                              staticClass: "border-0 text-center",
+                              attrs: {
+                                type: "text",
+                                name: "to_allowance",
+                                id: "to_allowance",
+                                placeholder: "",
+                              },
+                            }),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(29),
+                      _c("tr", [
+                        _vm.supervisor_toggler == false
+                          ? _c("td", [_vm._v(_vm._s(_vm.selected_supervisor))])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.supervisor_toggler == true
+                          ? _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.selected_supervisor,
+                                      expression: "selected_supervisor",
+                                    },
+                                  ],
+                                  staticClass: "border-0 w-100 text-center",
+                                  attrs: {
+                                    name: "supervisor",
+                                    id: "supervisor",
+                                  },
+                                  on: {
+                                    change: [
+                                      function ($event) {
+                                        var $$selectedVal =
+                                          Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function (o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function (o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                        _vm.selected_supervisor = $event.target
+                                          .multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      },
+                                      function ($event) {
+                                        return _vm.supervisorUpdate($event)
+                                      },
+                                    ],
+                                  },
+                                },
+                                _vm._l(
+                                  _vm.supervisors,
+                                  function (supervisor, index) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: index,
+                                        domProps: { value: supervisor.empno },
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(supervisor.user.firstname) +
+                                            " " +
+                                            _vm._s(
+                                              supervisor.user.middlename == null
+                                                ? ""
+                                                : supervisor.user.middlename
+                                            ) +
+                                            " " +
+                                            _vm._s(supervisor.user.lastname)
+                                        ),
+                                      ]
+                                    )
+                                  }
+                                ),
+                                0
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(30),
+                      _c("tr", [
+                        _vm.manager_toggler == false
+                          ? _c("td", [_vm._v(_vm._s(_vm.selected_manager))])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.manager_toggler == true
+                          ? _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.selected_manager,
+                                      expression: "selected_manager",
+                                    },
+                                  ],
+                                  staticClass: "border-0 w-100 text-center",
+                                  attrs: {
+                                    name: "supervisor",
+                                    id: "supervisor",
+                                  },
+                                  on: {
+                                    change: function ($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call(
+                                          $event.target.options,
+                                          function (o) {
+                                            return o.selected
+                                          }
+                                        )
+                                        .map(function (o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.selected_manager = $event.target
+                                        .multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                  },
+                                },
+                                _vm._l(_vm.managers, function (manager, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: {
+                                        value: manager.empno,
+                                        selected:
+                                          _vm.selected_manager == manager.empno
+                                            ? true
+                                            : false,
+                                      },
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(manager.user.firstname) +
+                                          " " +
+                                          _vm._s(
+                                            manager.user.middlename == null
+                                              ? ""
+                                              : manager.user.middlename
+                                          ) +
+                                          " " +
+                                          _vm._s(manager.user.lastname)
+                                      ),
+                                    ]
+                                  )
+                                }),
+                                0
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(31),
+                      _vm._m(10),
                       _vm._v(" "),
-                      _vm._m(32),
+                      _vm._m(11),
                     ]),
                   ]
                 ),
@@ -29012,69 +30307,78 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(33),
+                _vm._m(12),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
-                      _c(
-                        "td",
-                        {
-                          staticClass: "border-0",
-                          staticStyle: { "font-weight": "bold" },
-                        },
-                        [
-                          _c("hr", { staticClass: "w-50 mx-auto mt-4" }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-center" }, [
-                            _c(
-                              "h6",
-                              { staticClass: "align-middle font-weight-bold" },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.selected_employee.info1.supervisor
-                                      .firstname
-                                  ) +
-                                    " " +
-                                    _vm._s(
-                                      _vm.selected_employee.info1.supervisor
-                                        .middlename != null
-                                        ? _vm.selected_employee.info1.supervisor
-                                            .middlename
-                                        : ""
-                                    ) +
-                                    "  " +
-                                    _vm._s(
-                                      _vm.selected_employee.info1.supervisor
-                                        .lastname
-                                    )
+                      Object.keys(_vm.selected_employee.info1.supervisor)
+                        .length > 0
+                        ? _c(
+                            "td",
+                            {
+                              staticClass: "border-0",
+                              staticStyle: { "font-weight": "bold" },
+                            },
+                            [
+                              _c("hr", { staticClass: "w-50 mx-auto mt-4" }),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "text-center" }, [
+                                _c(
+                                  "h6",
+                                  {
+                                    staticClass:
+                                      "align-middle font-weight-bold",
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.selected_employee.info1.supervisor
+                                          .firstname
+                                      ) +
+                                        " " +
+                                        _vm._s(
+                                          _vm.selected_employee.info1.supervisor
+                                            .middlename != null
+                                            ? _vm.selected_employee.info1
+                                                .supervisor.middlename
+                                            : ""
+                                        ) +
+                                        "  " +
+                                        _vm._s(
+                                          _vm.selected_employee.info1.supervisor
+                                            .lastname
+                                        )
+                                    ),
+                                  ]
                                 ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "h6",
-                              { staticClass: "align-middle font-weight-bold" },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.selected_employee.info1.supervisor.info1
-                                      .eposition
-                                  )
+                                _vm._v(" "),
+                                _c(
+                                  "h6",
+                                  {
+                                    staticClass:
+                                      "align-middle font-weight-bold",
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.selected_employee.info1.supervisor
+                                          .info1.eposition
+                                      )
+                                    ),
+                                  ]
                                 ),
-                              ]
-                            ),
-                          ]),
-                        ]
-                      ),
+                              ]),
+                            ]
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
-                      _vm._m(34),
+                      _vm._m(13),
                     ])
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
-                      _vm._m(35),
+                      _vm._m(14),
                       _vm._v(" "),
                       _c("td", {
                         staticClass: "border-0",
@@ -29089,7 +30393,7 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(36),
+                _vm._m(15),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
@@ -29102,8 +30406,7 @@ var render = function () {
                             { staticClass: "align-middle font-weight-bold" },
                             [
                               _vm._v(
-                                " " +
-                                  _vm._s(_vm.selected_employee.firstname) +
+                                _vm._s(_vm.selected_employee.firstname) +
                                   " " +
                                   _vm._s(
                                     _vm.selected_employee.middlename != null
@@ -29155,7 +30458,7 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
-          _vm._m(37),
+          _vm._m(16),
         ]),
       ]),
     ],
@@ -29302,261 +30605,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "job_status" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "job_status" },
-            },
-            [_vm._v("JOB STATUS")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "job_level" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "job_level" },
-            },
-            [_vm._v("JOB LEVEL")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "role" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            { staticClass: "custom-control-label", attrs: { for: "role" } },
-            [_vm._v("ROLE ASSIGNMENT")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "department" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "department" },
-            },
-            [_vm._v("DEPARTMENT")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "cost_center" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "cost_center" },
-            },
-            [_vm._v("COST CENTER")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "salary" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            { staticClass: "custom-control-label", attrs: { for: "salary" } },
-            [_vm._v("SALARY")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "allowance" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "allowance" },
-            },
-            [_vm._v("MONTHLY ALLOWANCE")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "immediate_superior" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "immediate_superior" },
-            },
-            [_vm._v("IMMEDIATE SUPERIOR")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "department_manager" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "department_manager" },
-            },
-            [_vm._v("DEPARTMENT MANAGER")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "extion_of_contract" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-control-label",
-              attrs: { for: "extion_of_contract" },
-            },
-            [_vm._v("EXTENSION OF CONTRACT")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: "border-0" }, [
-      _c("td", { staticClass: "font-weight-bold border-0" }, [
-        _c("div", { staticClass: "custom-control custom-checkbox" }, [
-          _c("input", {
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox", id: "others" },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            { staticClass: "custom-control-label", attrs: { for: "others" } },
-            [_vm._v("Others")]
-          ),
-        ]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("tr", { staticStyle: { border: "2px solid black" } }, [
       _c("td", [_vm._v("FROM")]),
     ])
@@ -29605,20 +30653,7 @@ var staticRenderFns = [
       _c("td", [
         _c("input", {
           staticClass: "border-0 text-center",
-          attrs: { type: "date", name: "eoc", id: "eoc", placeholder: "" },
-        }),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("input", {
-          staticClass: "border-0 text-center",
-          attrs: { type: "text", name: "other", id: "other", placeholder: "" },
+          attrs: { type: "text", name: "other", id: "other" },
         }),
       ]),
     ])
@@ -29630,73 +30665,6 @@ var staticRenderFns = [
     return _c("tr", { staticStyle: { border: "2px solid black" } }, [
       _c("td", [_vm._v("TO")]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "select",
-      {
-        staticClass: "border-0 w-100",
-        attrs: { name: "job_status", id: "job_status" },
-      },
-      [
-        _c("option", { attrs: { value: "Probationary" } }, [
-          _vm._v("Probationary"),
-        ]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "Regular" } }, [_vm._v("Regular")]),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
   },
   function () {
     var _vm = this

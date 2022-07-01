@@ -17,6 +17,10 @@ use App\Http\Controllers\EmployeeController;
 Route::post("/employees/{id}",[EmployeeController::class,'show']);
 Route::post("/employees",[EmployeeController::class,'index']);
 Route::post("/positions",[EmployeeController::class,'getPositions']);
+Route::post("/departments",[EmployeeController::class,'getDepartments']);
+Route::post("/cost-center",[EmployeeController::class,'getCostCenter']);
+Route::post("/supervisor",[EmployeeController::class,'getSuperior']);
+Route::post("/manager",[EmployeeController::class,'getManager']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
