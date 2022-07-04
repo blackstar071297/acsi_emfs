@@ -21,6 +21,7 @@ Route::post("/departments",[EmployeeController::class,'getDepartments']);
 Route::post("/cost-center",[EmployeeController::class,'getCostCenter']);
 Route::post("/supervisor",[EmployeeController::class,'getSuperior']);
 Route::post("/manager",[EmployeeController::class,'getManager']);
+Route::post("/supervisor/{id}",[EmployeeController::class,'getSupervisor']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

@@ -15,23 +15,71 @@ class EmployeeController extends Controller
     public function getCostCenter(){
         return $positions = DB::table('costcenter')->get();
     }
+    public function getSupervisor($id){
+        $user = [];
+        $users = DB::table('emp_info')->where('empno',$id)->first();
+        $info1 = DB::table('emp_comp')->where('empid',$users->empid)->first();
+        $user_pic = DB::table('emp_pic')->where('empid',$users->empid)->first();
+        $sup_cost_center = DB::table('emp_comp')->where('esup',$users->empno)->first();
+
+        $supervisor = DB::table('emp_info')->where('empno',$info1->esup)->first();
+        
+        if(!empty($supervisor)){
+            $super_info = DB::table('emp_comp')->where('empid',$supervisor->empid)->first();
+            $supervisor = (object) array_merge((array) $supervisor, ['info1'=> (array) $super_info]) ;
+            
+        }
+        $manager = DB::table('emp_info')->where('empno',$info1->emngr)->first();
+        if(!empty($manager)){
+            $man_info = DB::table('emp_comp')->where('empid',$manager->empid)->first();
+            $manager = (object) array_merge((array) $manager, ['info1'=> (array) $man_info]) ;
+        }
+        $info1 = (object) array_merge((array) $info1, ['manager'=> (array) $manager]);
+        $info1 = (object) array_merge((array) $info1, ['supervisor'=> (array) $supervisor]) ;
+        $info1 = (object) array_merge((array) $info1, ['emp_pic'=> (array) $user_pic]) ;
+        $users = (object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
+
+        $users->info1['ecostcenter'] = $sup_cost_center->ecostcenter;
+        return $users;
+    }
     public function getSuperior(){
         $superiors = DB::table('lsup')->where('sup_enabled',1)->get();
+        
         foreach($superiors as $key=>$superior){
             $users = DB::table('emp_info')->where('empno',$superiors[$key]->empno)->first();
             $info1 = DB::table('emp_comp')->where('empid',$users->empid)->first();
             $users = (object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
+            
             $superiors[$key] = (object) array_merge((array) $superiors[$key], ['user'=> (array) $users]) ;
+            
         }
         foreach($superiors as $key=>$superior){
             if($superior->user['info1']['eactive'] != 'Active'){
                 unset($superiors[$key]);
             }
         }
+        foreach($superiors as $key=>$superior){
+            $sup_cost_center = DB::table('emp_comp')->where('esup',$superior->empno)->first();
+            // if($superior->user['info1']['eactive'] != 'Active'){
+            //     unset($superiors[$key]);
+            // }
+            if(!empty($sup_cost_center)){
+                $superior->info1['ecostcenter'] = $sup_cost_center->ecostcenter;
+            }
+        }
+        //remove VIP
+        foreach($superiors as $key=>$superior){
+            if($superior->empno == 'ACSI-170001'){
+                unset($superiors[$key]);
+            }
+        }
+        
         return $superiors;
     }
+    
     public function getManager(){
         $managers = DB::table('lmngr')->where('mngr_enabled',1)->get();
+
         foreach($managers as $key=>$manager){
             $users = DB::table('emp_info')->where('empno',$managers[$key]->empno)->first();
             $info1 = DB::table('emp_comp')->where('empid',$users->empid)->first();
@@ -41,6 +89,12 @@ class EmployeeController extends Controller
         }
         foreach($managers as $key=>$manager){
             if($manager->user['info1']['eactive'] != 'Active'){
+                unset($managers[$key]);
+            }
+        }
+        //remove VIP
+        foreach($managers as $key=>$manager){
+            if($manager->empno == 'ACSI-170001'){
                 unset($managers[$key]);
             }
         }
@@ -64,9 +118,16 @@ class EmployeeController extends Controller
                 unset($users[$key]);
             }
         };
+        //remove VIP
+        foreach($users as $key=>$user){
+            if($user->empno == 'ACSI-170001'){
+                unset($users[$key]);
+            }
+        }
         
         return $users;
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -104,9 +165,11 @@ class EmployeeController extends Controller
         $user_pic = DB::table('emp_pic')->where('empid',$users->empid)->first();
 
         $supervisor = DB::table('emp_info')->where('empno',$info1->esup)->first();
+        
         if(!empty($supervisor)){
             $super_info = DB::table('emp_comp')->where('empid',$supervisor->empid)->first();
             $supervisor = (object) array_merge((array) $supervisor, ['info1'=> (array) $super_info]) ;
+            
         }
         
         $manager = DB::table('emp_info')->where('empno',$info1->emngr)->first();

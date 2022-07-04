@@ -3,7 +3,7 @@
         <navbar></navbar>
         <div class="container mt-4 d-print-none">
             <div class="input-group ">
-                <input list="employees" placeholder="Type employee name here ..." class="form-control" @change="search($event.target.value)" id="searchbox">
+                <input placeholder="Type employee name here ..." class="form-control" @change="search($event.target.value)" id="searchbox" data-autofill="employees">
                 <datalist id="employees">
                     <option v-for="(employee,index) in employees" :key="index"  :value="employee.empno">{{employee.firstname}} {{employee.middlename != null ? employee.middlename : ''}}  {{employee.lastname}} {{employee.servarea != 'N/A' ? 'of ' + employee.servarea : ''}}</option>
                 </datalist>
@@ -37,13 +37,13 @@
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-12" v-if="Object.keys(selected_employee).length > 0">
+                <!-- <div class="col-12" v-if="Object.keys(selected_employee).length > 0">
                     <div class="row">
                         <div class="col-3">
                             <img :src="'http://tsi-acsi1.webhop.biz'+selected_employee.info1.emp_pic.picloc" alt="employee image" class="img-thumbnail">
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-12">
                     <table class="table table-bordered table-sm" style="border: 5px solid black">
                         <tbody>
@@ -56,7 +56,7 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-3">
-                            <table class="table table-bordered table-sm " >
+                            <table class="table table-bordered " >
                                 <tbody>
                                     <tr style="border: 2px solid black">
                                         <td>Name:</td>
@@ -67,8 +67,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-9">
-                            <table class="table table-bordered table-sm">
+                        <div class="col-7">
+                            <table class="table table-bordered ">
                                 <tbody>
                                     <tr style="border: 2px solid black">
                                         <td class="font-weight-bold text-center">{{selected_employee.length == 0 ?  'N/A' : selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</td>
@@ -78,6 +78,9 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="col-2" v-if="Object.keys(selected_employee).length > 0">
+                            <img :src="'http://tsi-acsi1.webhop.biz'+selected_employee.info1.emp_pic.picloc" alt="employee image" height="94px">
                         </div>
                     </div>
                 </div>
@@ -357,8 +360,8 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold">OLIVER P. ANGELES</h6>
-                                        <h6 class="align-middle font-weight-bold">Head, Cable Operations</h6>
+                                        <h6 class="align-middle font-weight-bold">{{selected_employee.info1.manager.firstname}} {{selected_employee.info1.manager.middlename != null ? selected_employee.info1.manager.middlename : ''}}  {{selected_employee.info1.manager.lastname}}</h6>
+                                        <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.manager.info1.eposition }}</h6>
                                     </div>
                                 </td>
                             </tr>
@@ -367,47 +370,38 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold">SUNSHINE N. CUNANAN</h6>
-                                        <h6 class="align-middle font-weight-bold">HR Account Officer</h6>
+                                        <h6 class="align-middle font-weight-bold" v-if="Object.keys(this.supervisor).length">{{ this.supervisor.firstname }} {{ this.supervisor.middlename != null ?  this.supervisor.middlename : ''}} {{ this.supervisor.lastname }}</h6>
+                                        <h6 class="align-middle font-weight-bold" v-if="Object.keys(this.supervisor).length">{{ this.supervisor.info1.eposition }}</h6>
                                     </div>
                                 </td>
                                 <td style='font-weight: bold;' class="border-0">
                                     <br>
                                     <br>
+                                    <div class="text-center mt-5">
+                                        <h6 class="align-middle font-weight-bold">OLIVER P. ANGELES</h6>
+                                        <h6 class="align-middle font-weight-bold">Head, Cable Operations</h6>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-12">
-                    <!-- <table class="table table-borderless table-sm" >
-                        <tbody>
-                            <tr style="border: 5px solid black">
-                                <td class="font-weight-bold ">ACKNOWLEDGED</td>
-                            </tr>
-                            <tr v-if="selected_employee != 0">
-                                <td >
-                                    <div class="text-center">
-                                        <h6 class="align-middle font-weight-bold">{{selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</h6>
-                                        <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.eposition }}</h6>
-                                    </div>
-                                </td>
-                                <td >
-                                    
-                                    <div class="text-center">
-                                        <h6 class="align-middle font-weight-bold">{{ new Date().toLocaleDateString("en-US") }}</h6>
-                                        <h6 class="align-middle font-weight-bold">DATE</h6>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> -->
                     <table class="table table-borderless table-sm" >
                         <tbody>
                             <tr style="border: 5px solid black">
                                 <td class="font-weight-bold " colspan="2">ACKNOWLEDGED</td>
                             </tr>
+                            
                             <tr v-if="selected_employee != 0" >
+                                <td style='font-weight: bold;' class="border-0 w-50">
+                                    <br>
+                                    <br>
+                                    <div class="text-center mt-5">
+                                        <h6 class="align-middle font-weight-bold">SUNSHINE N. CUNANAN</h6>
+                                        <h6 class="align-middle font-weight-bold">HR Account Officer</h6>
+                                    </div>
+                                </td>
                                 <td style='font-weight: bold;' class="border-0 w-50"  v-if="Object.keys(selected_employee.info1.supervisor).length > 0" height='75'>
                                     <!-- <hr class="w-50 mx-auto mt-5"> -->
                                     <br>
@@ -499,7 +493,7 @@ export default {
             selected_cost_center: 'SAME',
             selected_supervisor: 'SAME',
             selected_manager: 'SAME',
-
+            supervisor: []
         }
     },
     methods:{
@@ -531,6 +525,7 @@ export default {
         },
         getSupervisor(){
             axios.post('/acsi_emfs/api/supervisor').then(response => {
+                // console.log(response.data)
                 this.supervisors = response.data
             }).catch(error => console.log(error.response.data))
         },
@@ -540,14 +535,16 @@ export default {
             } ).catch(error => console.log(error.response.data))
         },
         supervisorUpdate(e){
-            axios.post('/acsi_emfs/api/employees/'+e.target.value).then(response => {
+            axios.post('/acsi_emfs/api/supervisor/'+e.target.value).then(response => {
+                console.log(response.data)
+                this.supervisor = response.data
                 this.selected_manager = response.data.info1.emngr
                 this.manager_toggler = true
                 this.cost_toggler = true
                 this.departments_toggler = true
 
-                this.selected_cost_center = response.data.info1.ecurrdept
-                this.selected_department = response.data.info1.ecostcenter
+                this.selected_cost_center = response.data.info1.ecostcenter
+                this.selected_department = response.data.info1.ecurrdept
             }).catch(error => console.log(error.response.data))
         }
     },

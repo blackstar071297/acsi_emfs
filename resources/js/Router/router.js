@@ -4,7 +4,8 @@ import VueRouter from 'vue-router'
 
 //component imports
 
-import dashboard from '../components/DashboardComponent'
+import DashboardComponent from '../components/DashboardComponent'
+import loginComponent from '../components/LoginComponent'
 Vue.use(VueRouter)
 
 const guard = (to,from,next) => {
@@ -19,7 +20,8 @@ const guard = (to,from,next) => {
 }
 
 let routes = [
-    {path:'/acsi_emfs/',component:dashboard}
+    {path:'/acsi_emfs/',component:DashboardComponent},
+    {path:'/acsi_emfs/login',component:loginComponent}
 ]
 const router = new VueRouter({
     mode: 'history',
