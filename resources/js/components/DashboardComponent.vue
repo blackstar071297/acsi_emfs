@@ -531,16 +531,16 @@ export default {
         },
         getSupervisor(){
             axios.post('/acsi_emfs/api/supervisor').then(response => {
-                // console.log(response.data)
                 this.supervisors = response.data
             }).catch(error => console.log(error.response.data))
         },
         getManager(){
-            axios.post('/acsi_emfs/api/manager').then(response => this.managers = response.data ).catch(error => console.log(error.response.data))
+            axios.post('/acsi_emfs/api/manager').then(response => {
+                this.managers = response.data
+            } ).catch(error => console.log(error.response.data))
         },
         supervisorUpdate(e){
             axios.post('/acsi_emfs/api/employees/'+e.target.value).then(response => {
-                console.log(response.data)
                 this.selected_manager = response.data.info1.emngr
                 this.manager_toggler = true
                 this.cost_toggler = true

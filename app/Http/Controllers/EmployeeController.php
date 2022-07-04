@@ -23,6 +23,11 @@ class EmployeeController extends Controller
             $users = (object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
             $superiors[$key] = (object) array_merge((array) $superiors[$key], ['user'=> (array) $users]) ;
         }
+        foreach($superiors as $key=>$superior){
+            if($superior->user['info1']['eactive'] != 'Active'){
+                unset($superiors[$key]);
+            }
+        }
         return $superiors;
     }
     public function getManager(){
@@ -33,6 +38,11 @@ class EmployeeController extends Controller
             $users =(object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
 
             $managers[$key] = (object) array_merge((array) $managers[$key], ['user'=> (array) $users]) ;
+        }
+        foreach($managers as $key=>$manager){
+            if($manager->user['info1']['eactive'] != 'Active'){
+                unset($managers[$key]);
+            }
         }
         return $managers;
     }

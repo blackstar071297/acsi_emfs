@@ -5853,7 +5853,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this6 = this;
 
       axios.post('/acsi_emfs/api/supervisor').then(function (response) {
-        // console.log(response.data)
         _this6.supervisors = response.data;
       })["catch"](function (error) {
         return console.log(error.response.data);
@@ -5863,7 +5862,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this7 = this;
 
       axios.post('/acsi_emfs/api/manager').then(function (response) {
-        return _this7.managers = response.data;
+        _this7.managers = response.data;
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
@@ -5872,7 +5871,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this8 = this;
 
       axios.post('/acsi_emfs/api/employees/' + e.target.value).then(function (response) {
-        console.log(response.data);
         _this8.selected_manager = response.data.info1.emngr;
         _this8.manager_toggler = true;
         _this8.cost_toggler = true;
