@@ -18,11 +18,9 @@ class EmployeeController extends Controller
     public function getSuperior(){
         $superiors = DB::table('lsup')->where('sup_enabled',1)->get();
         foreach($superiors as $key=>$superior){
-            
             $users = DB::table('emp_info')->where('empno',$superiors[$key]->empno)->first();
             $info1 = DB::table('emp_comp')->where('empid',$users->empid)->first();
-            $users =(object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
-
+            $users = (object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
             $superiors[$key] = (object) array_merge((array) $superiors[$key], ['user'=> (array) $users]) ;
         }
         return $superiors;
@@ -46,7 +44,18 @@ class EmployeeController extends Controller
     public function index()
     {
         //
-        return $users = DB::table('emp_info')->get();
+        $users = DB::table('emp_info')->get();
+        foreach($users as $key=>$user){
+            $info1 = DB::table('emp_comp')->where('empid',$user->empid)->first();
+            $users[$key] = (object)array_merge((array) $users[$key], ['info1'=> (array) $info1]) ;
+        };
+        foreach($users as $key=>$user){
+            if($user->info1['eactive'] != 'Active'){
+                unset($users[$key]);
+            }
+        };
+        
+        return $users;
     }
 
     /**
@@ -82,6 +91,7 @@ class EmployeeController extends Controller
         $user = [];
         $users = DB::table('emp_info')->where('empno',$id)->first();
         $info1 = DB::table('emp_comp')->where('empid',$users->empid)->first();
+        $user_pic = DB::table('emp_pic')->where('empid',$users->empid)->first();
 
         $supervisor = DB::table('emp_info')->where('empno',$info1->esup)->first();
         if(!empty($supervisor)){
@@ -96,8 +106,11 @@ class EmployeeController extends Controller
         }
         $info1 = (object) array_merge((array) $info1, ['manager'=> (array) $manager]);
         $info1 = (object) array_merge((array) $info1, ['supervisor'=> (array) $supervisor]) ;
+        $info1 = (object) array_merge((array) $info1, ['emp_pic'=> (array) $user_pic]) ;
+        $users = (object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
 
-        return (object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
+        
+        return $users;
     }
 
     /**

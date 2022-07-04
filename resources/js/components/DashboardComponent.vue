@@ -37,6 +37,13 @@
                 </div>
             </div>
             <div class="row mt-5">
+                <div class="col-12" v-if="Object.keys(selected_employee).length > 0">
+                    <div class="row">
+                        <div class="col-3">
+                            <img :src="'http://tsi-acsi1.webhop.biz'+selected_employee.info1.emp_pic.picloc" alt="employee image" class="img-thumbnail">
+                        </div>
+                    </div>
+                </div>
                 <div class="col-12">
                     <table class="table table-bordered table-sm" style="border: 5px solid black">
                         <tbody>
@@ -84,21 +91,21 @@
                     </table>
                 </div>
                 <div class="col-4">
-                    <table class="table table-borderless border-0 table-sm">
-                        <tbody class="border-0">
+                    <table class="table table-bordered table-sm table-striped">
+                        <tbody>
                             <tr style="border: 2px solid black">
                                 <td class="font-weight-bold text-center">MOVEMENT</td>
                             </tr>
-                            <tr class="border-0">
-                                <td class="font-weight-bold border-0">
+                            <tr>
+                                <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="position_title" v-model="position_toggler">
                                         <label class="custom-control-label" for="position_title">POSITION TITLE</label>
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="border-0">
-                                <td class="font-weight-bold border-0">
+                            <tr >
+                                <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="job_status" v-model="job_status_toggler">
                                         <label class="custom-control-label" for="job_status">JOB STATUS</label>
@@ -106,39 +113,39 @@
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="job_level" v-model="job_level_toggler">
                                         <label class="custom-control-label" for="job_level">JOB LEVEL</label>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler">
                                         <label class="custom-control-label" for="role">ROLE ASSIGNMENT</label>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="department" v-model="departments_toggler">
                                         <label class="custom-control-label" for="department">DEPARTMENT</label>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="cost_center" v-model="cost_toggler">
                                         <label class="custom-control-label" for="cost_center">COST CENTER</label>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
+                                <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="salary" v-model="salary_toggler">
                                         <label class="custom-control-label" for="salary">SALARY</label>
@@ -146,42 +153,42 @@
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler">
                                         <label class="custom-control-label" for="allowance">MONTHLY ALLOWANCE</label>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler">
                                         <label class="custom-control-label" for="immediate_superior">IMMEDIATE SUPERIOR</label>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="department_manager" v-model="manager_toggler">
                                         <label class="custom-control-label" for="department_manager">DEPARTMENT MANAGER</label>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="extion_of_contract" v-model="extension_toggler">
                                         <label class="custom-control-label" for="extion_of_contract">EXTENSION OF CONTRACT</label>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="border-0">
-                                <td class="font-weight-bold border-0">
-                                    <div class="custom-control custom-checkbox">
+                                <td class="font-weight-bold ">
+                                    <div class="custom-control custom-checkbox ">
                                         <input type="checkbox" class="custom-control-input" id="others" v-model="other_toggler">
-                                        <label class="custom-control-label" for="others">Others</label>
+                                        <label class="custom-control-label" for="others">OTHERS</label>
                                     </div>
                                 </td>
                             </tr>
@@ -191,7 +198,7 @@
                 <div class="col-8">
                     <div class="row">
                         <div class="col-6">
-                            <table class="table table-sm table-bordered w-100 text-center font-weight-bold">
+                            <table class="table table-sm table-bordered w-100 text-center font-weight-bold table-striped">
                                 <tbody>
                                     <tr style="border: 2px solid black">
                                         <td >FROM</td>
@@ -215,10 +222,10 @@
                                         <td>{{ selected_employee.length == 0 ?  'N/A' : selected_employee.info1.ecostcenter }}</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center"></td>
+                                        <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center h-100"></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center"></td>
+                                        <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center h-100"></td>
                                     </tr>
                                     <tr>
                                         <td v-if="selected_employee.length == 0 || selected_employee.info1.supervisor.length == 0">N/A</td>
@@ -233,19 +240,19 @@
                                         <td v-else><input type="date" name="eoc" id="eoc"  class="border-0 text-center" ></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="other" id="other"  class="border-0 text-center"></td>
+                                        <td><input type="text" name="other" id="other"  class="border-0 text-center h-100"></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="col-6">
-                            <table class="table table-sm table-bordered w-100 text-center font-weight-bold">
+                            <table class="table table-sm table-bordered w-100 text-center font-weight-bold table-striped">
                                 <tbody>
                                     <tr style="border: 2px solid black">
                                         <td >TO</td>
                                     </tr>
                                     <tr>
-                                        <td v-if="position_toggler == false">{{selected_position}}</td>
+                                        <td v-if="position_toggler == false">SAME</td>
                                         <td v-if="position_toggler == true">
                                             <select name="position_title" id="position_title" class="border-0 w-100 text-center" v-model="selected_position">
                                                 <option v-for="(position,index) in positions" :key="index" i :value="position.eposition" >{{position.eposition}}</option>
@@ -253,7 +260,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td v-if="job_status_toggler == false">{{selected_status}}</td>
+                                        <td v-if="job_status_toggler == false">SAME</td>
                                         <td v-if="job_status_toggler == true">
                                             <select name="job_status" id="job_status" class="border-0 w-100 text-center" v-model="selected_status">
                                                 <option value="Probationary">Probationary</option>
@@ -262,7 +269,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td v-if="job_level_toggler == false">{{selected_level}}</td>
+                                        <td v-if="job_level_toggler == false">SAME</td>
                                         <td v-if="job_level_toggler == true">
                                             <select name="job_level" id="job_level" class="border-0 w-100 text-center" v-model="selected_level">
                                                 <option v-for="(job_level,index) in job_level" :key="index" :value="job_level.job_name">{{job_level.job_name}}</option>
@@ -270,7 +277,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td v-if="role_toggler == false">{{selected_role}}</td>
+                                        <td v-if="role_toggler == false">SAME</td>
                                         <td v-if="role_toggler == true">
                                             <select name="role" id="role" class="border-0 w-100 text-center" v-model="selected_role">
                                                 <option value="">N/A</option>
@@ -279,19 +286,21 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td v-if="departments_toggler == false">{{selected_department}}</td>
+                                        <td v-if="departments_toggler == false">SAME</td>
                                         <td v-if="departments_toggler == true">
-                                            <select name="department" id="department" class="border-0 w-100 text-center" v-model="selected_department" @change="departmentUpdate()">
+                                            <!-- <select name="department" id="department" class="border-0 w-100 text-center" v-model="selected_department" @change="departmentUpdate()">
                                                 <option v-for="(department,index) in departments" :key="index" :value="department.ccname">{{department.ccname}}</option>
-                                            </select>
+                                            </select> -->
+                                            {{selected_department}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td v-if="cost_toggler == false">{{selected_cost_center}}</td>
+                                        <td v-if="cost_toggler == false">SAME</td>
                                         <td v-if="cost_toggler == true">
-                                            <select name="cost_center" id="cost_center" class="border-0 w-100 text-center" v-model="selected_cost_center">
+                                            <!-- <select name="cost_center" id="cost_center" class="border-0 w-100 text-center" v-model="selected_cost_center">
                                                 <option v-for="(cost_center,index) in cost_centers" :key="index" :value="cost_center.DEPTNAME" :selected="cost_center.DEPTNAME == selected_cost_center ? true : false">{{cost_center.DEPTNAME}}</option>
-                                            </select>
+                                            </select> -->
+                                            {{selected_cost_center}}
                                         </td>
                                     </tr>
                                     <tr>
@@ -303,7 +312,7 @@
                                         <input v-else type="text" name="to_allowance" id="to_allowance" placeholder="" class="border-0 text-center">
                                     </tr>
                                     <tr>
-                                        <td v-if="supervisor_toggler == false">{{selected_supervisor}}</td>
+                                        <td v-if="supervisor_toggler == false">SAME</td>
                                         <td v-if="supervisor_toggler == true">
                                             <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_supervisor" @change="supervisorUpdate($event)">
                                                 <option v-for="(supervisor,index) in supervisors" :key="index" :value="supervisor.empno" >{{supervisor.user.firstname}} {{supervisor.user.middlename == null ? '' :  supervisor.user.middlename}} {{supervisor.user.lastname}}</option>
@@ -311,7 +320,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td v-if="manager_toggler == false">{{selected_manager}}</td>
+                                        <td v-if="manager_toggler == false">SAME</td>
                                         <td v-if="manager_toggler == true">
                                             <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_manager">
                                                 <option v-for="(manager,index) in managers" :key="index" :value="manager.empno" :selected="selected_manager == manager.empno ? true : false">{{manager.user.firstname}} {{manager.user.middlename == null ? '' :  manager.user.middlename}} {{manager.user.lastname}}</option>
@@ -336,52 +345,82 @@
                                 <td class="font-weight-bold " colspan="2">APPROVAL</td>
                             </tr>
                             <tr v-if="selected_employee != 0">
-                                <td style='font-weight: bold;' class="border-0"  v-if="Object.keys(selected_employee.info1.supervisor).length > 0">
-                                    <hr class="w-50 mx-auto mt-4">
-                                    <div class="text-center">
-                                        <h6 class="align-middle font-weight-bold">{{selected_employee.info1.supervisor.firstname}} {{selected_employee.info1.supervisor.middlename != null ? selected_employee.info1.supervisor.middlename : ''}}  {{selected_employee.info1.supervisor.lastname}}</h6>
+                                <td style='font-weight: bold;' class="border-0 w-50"  v-if="Object.keys(selected_employee.info1.supervisor).length > 0">
+                                    <br>
+                                    <br>
+                                    <div class="text-center mt-5">
+                                        <h6 class="align-middle font-weight-bold text-uppercase">{{selected_employee.info1.supervisor.firstname}} {{selected_employee.info1.supervisor.middlename != null ? selected_employee.info1.supervisor.middlename : ''}}  {{selected_employee.info1.supervisor.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.supervisor.info1.eposition }}</h6>
                                     </div>
                                 </td>
-                                <td style='font-weight: bold;' class="border-0">
-                                    <hr class="w-50 mx-auto mt-4">
-                                    <div class="text-center">
+                                <td style='font-weight: bold;' class="border-0 w-50">
+                                    <br>
+                                    <br>
+                                    <div class="text-center mt-5">
                                         <h6 class="align-middle font-weight-bold">OLIVER P. ANGELES</h6>
                                         <h6 class="align-middle font-weight-bold">Head, Cable Operations</h6>
                                     </div>
                                 </td>
                             </tr>
                             <tr v-if="selected_employee != 0">
-                                <td style='font-weight: bold;' class="border-0">
-                                    <hr class="w-50 mx-auto mt-4">
-                                    <div class="text-center">
+                                <td style='font-weight: bold;' class="border-0 w-50">
+                                    <br>
+                                    <br>
+                                    <div class="text-center mt-5">
                                         <h6 class="align-middle font-weight-bold">SUNSHINE N. CUNANAN</h6>
                                         <h6 class="align-middle font-weight-bold">HR Account Officer</h6>
                                     </div>
                                 </td>
                                 <td style='font-weight: bold;' class="border-0">
+                                    <br>
+                                    <br>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-12">
-                    <table class="table table-borderless table-sm" >
+                    <!-- <table class="table table-borderless table-sm" >
                         <tbody>
                             <tr style="border: 5px solid black">
-                                <td class="font-weight-bold " colspan="2">ACKNOWLEDGED</td>
+                                <td class="font-weight-bold ">ACKNOWLEDGED</td>
                             </tr>
                             <tr v-if="selected_employee != 0">
                                 <td >
-                                    <hr class="w-50 mx-auto mt-4">
                                     <div class="text-center">
                                         <h6 class="align-middle font-weight-bold">{{selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.eposition }}</h6>
                                     </div>
                                 </td>
-                                <td>
-                                    <hr class=" mx-auto mt-4">
+                                <td >
+                                    
                                     <div class="text-center">
+                                        <h6 class="align-middle font-weight-bold">{{ new Date().toLocaleDateString("en-US") }}</h6>
+                                        <h6 class="align-middle font-weight-bold">DATE</h6>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> -->
+                    <table class="table table-borderless table-sm" >
+                        <tbody>
+                            <tr style="border: 5px solid black">
+                                <td class="font-weight-bold " colspan="2">ACKNOWLEDGED</td>
+                            </tr>
+                            <tr v-if="selected_employee != 0" >
+                                <td style='font-weight: bold;' class="border-0 w-50"  v-if="Object.keys(selected_employee.info1.supervisor).length > 0" height='75'>
+                                    <!-- <hr class="w-50 mx-auto mt-5"> -->
+                                    <br>
+                                    <br>
+                                    <div class="text-center mt-5">
+                                        <h6 class="align-middle font-weight-bold">{{selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</h6>
+                                        <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.eposition }}</h6>
+                                    </div>
+                                </td>
+                                <td style='font-weight: bold;' class="border-0 w-50">
+                                    <br>
+                                    <br>
+                                    <div class="text-center mt-5">
                                         <h6 class="align-middle font-weight-bold">{{ new Date().toLocaleDateString("en-US") }}</h6>
                                         <h6 class="align-middle font-weight-bold">DATE</h6>
                                     </div>
@@ -410,7 +449,21 @@ export default {
             employees:[],
             selected_employee: [],
             position_toggler: false,
-            positions:[],
+            positions:[
+                {eposition: 'Field Service Technician'},
+                {eposition: 'HR Account Officer'},
+                {eposition: 'HR Assistant'},
+                {eposition: 'HR Specialist'},
+                {eposition: 'Supervisor'},
+                {eposition: 'Quality Assurance'},
+                {eposition: 'Warehouse'},
+                {eposition: 'Admin Assistant'},
+                {eposition: 'Warehouse Custodian'},
+                {eposition: 'Associate Programmer'},
+                {eposition: 'Liason Assistant'},
+                {eposition: 'Jr Finance Officer'},
+                {eposition: 'General Facilities Assistant'}
+            ],
             job_status_toggler: false,
             job_status: [],
             job_level_toggler: false,
@@ -420,7 +473,16 @@ export default {
             departments_toggler: false,
             departments:[],
             cost_toggler: false,
-            cost_centers: [],
+            cost_centers: [
+                {DEPTNAME:'TSI'},
+                {DEPTNAME: 'Area 3'},
+                {DEPTNAME: 'Area 6'},
+                {DEPTNAME: 'Cable admin'},
+                {DEPTNAME: 'Cable operations'},
+                {DEPTNAME: 'Quality Assurance'},
+                {DEPTNAME: 'Area 4'},
+                {DEPTNAME: 'Tier 2'}
+            ],
             supervisor_toggler: false,
             supervisors:[],
             manager_toggler: false,
@@ -443,6 +505,7 @@ export default {
     methods:{
         getUsers(){
             axios.post('/acsi_emfs/api/employees').then(response => {
+                // console.log(response.data)
                 this.employees = response.data
             }).catch(error => console.log(error.response.data))
         },
@@ -451,6 +514,7 @@ export default {
         },
         getUser(emp_no){
             axios.post('/acsi_emfs/api/employees/'+emp_no).then(response => {
+                console.log(response.data)
                 this.selected_employee = response.data
             }).catch(error => console.log(error.response.data))
         },
@@ -467,7 +531,7 @@ export default {
         },
         getSupervisor(){
             axios.post('/acsi_emfs/api/supervisor').then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 this.supervisors = response.data
             }).catch(error => console.log(error.response.data))
         },
@@ -479,6 +543,8 @@ export default {
                 console.log(response.data)
                 this.selected_manager = response.data.info1.emngr
                 this.manager_toggler = true
+                this.cost_toggler = true
+                this.departments_toggler = true
 
                 this.selected_cost_center = response.data.info1.ecurrdept
                 this.selected_department = response.data.info1.ecostcenter
@@ -487,9 +553,9 @@ export default {
     },
     created(){
         this.getUsers()
-        this.getPositions()
+        // this.getPositions()
         this.getDepartments()
-        this.getCostCenter()
+        // this.getCostCenter()
         this.getSupervisor()
         this.getManager()
     }
@@ -497,5 +563,9 @@ export default {
 </script>
 
 <style>
-
+    @media print {
+        html {
+            zoom: 83%;
+        }
+    }
 </style>
