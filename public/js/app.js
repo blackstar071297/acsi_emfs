@@ -5703,6 +5703,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5878,6 +5889,16 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
+    },
+    searchUpdate: function searchUpdate() {
+      if ($("#searchbox").val() != '') {
+        $("#searchbox").attr("list", "employees");
+      } else {
+        $("#searchbox").attr("list", "");
+      } // if($("#searchbox").val("list","employees")){
+      // }
+      // $("#searchbox").attr("list","employees");
+
     }
   },
   created: function created() {
@@ -29307,11 +29328,14 @@ var render = function () {
             attrs: {
               placeholder: "Type employee name here ...",
               id: "searchbox",
-              "data-autofill": "employees",
+              list: "",
             },
             on: {
               change: function ($event) {
                 return _vm.search($event.target.value)
+              },
+              keyup: function ($event) {
+                return _vm.searchUpdate()
               },
             },
           }),
@@ -30177,6 +30201,8 @@ var render = function () {
                       ),
                     ]),
                   ]),
+                  _vm._v(" "),
+                  _vm._m(5),
                 ]),
               ]
             ),
@@ -30193,7 +30219,7 @@ var render = function () {
                   },
                   [
                     _c("tbody", [
-                      _vm._m(5),
+                      _vm._m(6),
                       _vm._v(" "),
                       _c("tr", [
                         _c("td", [
@@ -30267,9 +30293,9 @@ var render = function () {
                         ]),
                       ]),
                       _vm._v(" "),
-                      _vm._m(6),
-                      _vm._v(" "),
                       _vm._m(7),
+                      _vm._v(" "),
+                      _vm._m(8),
                       _vm._v(" "),
                       _c("tr", [
                         _vm.selected_employee.length == 0 ||
@@ -30334,7 +30360,9 @@ var render = function () {
                             ]),
                       ]),
                       _vm._v(" "),
-                      _vm._m(8),
+                      _vm._m(9),
+                      _vm._v(" "),
+                      _vm._m(10),
                     ]),
                   ]
                 ),
@@ -30349,7 +30377,7 @@ var render = function () {
                   },
                   [
                     _c("tbody", [
-                      _vm._m(9),
+                      _vm._m(11),
                       _vm._v(" "),
                       _c("tr", [
                         _vm.position_toggler == false
@@ -30820,9 +30848,11 @@ var render = function () {
                           : _vm._e(),
                       ]),
                       _vm._v(" "),
-                      _vm._m(10),
+                      _vm._m(12),
                       _vm._v(" "),
-                      _vm._m(11),
+                      _vm._m(13),
+                      _vm._v(" "),
+                      _vm._m(14),
                     ]),
                   ]
                 ),
@@ -30833,7 +30863,7 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(12),
+                _vm._m(15),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
@@ -31011,7 +31041,7 @@ var render = function () {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(13),
+                      _vm._m(16),
                     ])
                   : _vm._e(),
               ]),
@@ -31021,11 +31051,11 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(14),
+                _vm._m(17),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
-                      _vm._m(15),
+                      _vm._m(18),
                       _vm._v(" "),
                       Object.keys(_vm.selected_employee.info1.supervisor)
                         .length > 0
@@ -31119,7 +31149,7 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
-          _vm._m(16),
+          _vm._m(19),
         ]),
       ]),
     ],
@@ -31266,6 +31296,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "text-center font-weight-bold" }, [
+        _vm._v("Effectivity date:"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("tr", { staticStyle: { border: "2px solid black" } }, [
       _c("td", [_vm._v("FROM")]),
     ])
@@ -31323,6 +31363,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [
+        _c("input", {
+          staticClass: "text-center border-0 h-100",
+          attrs: { type: "date", name: "effective_date", id: "effective_date" },
+        }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("tr", { staticStyle: { border: "2px solid black" } }, [
       _c("td", [_vm._v("TO")]),
     ])
@@ -31338,6 +31391,18 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [_c("td", [_vm._v("SAME")])])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [
+        _c("button", { staticClass: "btn btn-primary w-100" }, [
+          _vm._v("Submit"),
+        ]),
+      ]),
+    ])
   },
   function () {
     var _vm = this

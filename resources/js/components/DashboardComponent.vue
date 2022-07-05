@@ -3,7 +3,7 @@
         <navbar></navbar>
         <div class="container mt-4 d-print-none">
             <div class="input-group ">
-                <input placeholder="Type employee name here ..." class="form-control" @change="search($event.target.value)" id="searchbox" data-autofill="employees">
+                <input placeholder="Type employee name here ..." class="form-control" @change="search($event.target.value)" id="searchbox" list="" @keyup="searchUpdate()" >
                 <datalist id="employees">
                     <option v-for="(employee,index) in employees" :key="index"  :value="employee.empno">{{employee.firstname}} {{employee.middlename != null ? employee.middlename : ''}}  {{employee.lastname}} {{employee.servarea != 'N/A' ? 'of ' + employee.servarea : ''}}</option>
                 </datalist>
@@ -195,6 +195,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="text-center font-weight-bold">Effectivity date:</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -244,6 +247,9 @@
                                     </tr>
                                     <tr>
                                         <td><input type="text" name="other" id="other"  class="border-0 text-center h-100"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="date" name="effective_date" id="effective_date" class="text-center border-0 h-100"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -335,6 +341,11 @@
                                     </tr>
                                     <tr>
                                         <td>SAME</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-primary w-100">Submit</button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -546,6 +557,17 @@ export default {
                 this.selected_cost_center = response.data.info1.ecostcenter
                 this.selected_department = response.data.info1.ecurrdept
             }).catch(error => console.log(error.response.data))
+        },
+        searchUpdate(){
+            if($("#searchbox").val() != ''){
+                $("#searchbox").attr("list","employees")
+            }else{
+                $("#searchbox").attr("list","")
+            }
+            // if($("#searchbox").val("list","employees")){
+
+            // }
+            // $("#searchbox").attr("list","employees");
         }
     },
     created(){
