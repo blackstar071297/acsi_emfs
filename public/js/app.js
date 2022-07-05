@@ -5822,8 +5822,8 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error.response.data);
       });
     },
-    search: function search(value) {
-      this.getUser(value);
+    search: function search(e) {
+      this.getUser(e.value);
     },
     getUser: function getUser(emp_no) {
       var _this2 = this;
@@ -5831,6 +5831,11 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/acsi_emfs/api/employees/' + emp_no).then(function (response) {
         console.log(response.data);
         _this2.selected_employee = response.data;
+
+        if (response.date != '') {
+          $("#searchbox").attr("list", "");
+          $("#searchbox").val(_this2.selected_employee.firstname + ' ' + _this2.selected_employee.middlename + ' ' + _this2.selected_employee.lastname);
+        }
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
@@ -5879,9 +5884,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this8 = this;
 
       axios.post('/acsi_emfs/api/supervisor/' + e.target.value).then(function (response) {
-        console.log(response.data);
+        // console.log(response.data)
         _this8.supervisor = response.data;
-        _this8.selected_manager = response.data.info1.emngr;
+        _this8.selected_manager = response.data.info1.esup;
         _this8.manager_toggler = true;
         _this8.cost_toggler = true;
         _this8.departments_toggler = true;
@@ -5965,13 +5970,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     navbar: _components_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
-    return {};
+    return {
+      form: [],
+      alerts: []
+    };
+  },
+  methods: {
+    login: function login() {
+      var _this = this;
+
+      this.alerts = [];
+      var fd = new FormData();
+      fd.append('username', this.form.username);
+      fd.append('password', this.form.password);
+      axios.post('/acsi_emfs/api/login', fd).then(function (response) {
+        if (response.data.errors) {
+          for (var error in response.data.errors) {
+            _this.alerts.push({
+              message: response.data.errors[error][0],
+              type: 'danger'
+            });
+          }
+        } else {
+          console.log(response); // let token = response.data.token
+          // axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+          // AppStorage.storeToken(token)
+          // this.$router.push({path:'/tsi_fsth/admin/'})
+        }
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+    }
   }
 });
 
@@ -29357,7 +29415,7 @@ var render = function () {
             },
             on: {
               change: function ($event) {
-                return _vm.search($event.target.value)
+                return _vm.search($event.target)
               },
               keyup: function ($event) {
                 return _vm.searchUpdate()
@@ -30332,14 +30390,6 @@ var render = function () {
                                   _vm.selected_employee.info1.supervisor
                                     .firstname
                                 ) +
-                                  " " +
-                                  _vm._s(
-                                    _vm.selected_employee.info1.supervisor
-                                      .middlename != null
-                                      ? _vm.selected_employee.info1.supervisor
-                                          .middlename
-                                      : ""
-                                  ) +
                                   "  " +
                                   _vm._s(
                                     _vm.selected_employee.info1.supervisor
@@ -30358,14 +30408,6 @@ var render = function () {
                                 _vm._s(
                                   _vm.selected_employee.info1.manager.firstname
                                 ) +
-                                  " " +
-                                  _vm._s(
-                                    _vm.selected_employee.info1.manager
-                                      .middlename != null
-                                      ? _vm.selected_employee.info1.manager
-                                          .middlename
-                                      : ""
-                                  ) +
                                   "  " +
                                   _vm._s(
                                     _vm.selected_employee.info1.manager.lastname
@@ -30789,12 +30831,6 @@ var render = function () {
                                         _vm._v(
                                           _vm._s(supervisor.user.firstname) +
                                             " " +
-                                            _vm._s(
-                                              supervisor.user.middlename == null
-                                                ? ""
-                                                : supervisor.user.middlename
-                                            ) +
-                                            " " +
                                             _vm._s(supervisor.user.lastname)
                                         ),
                                       ]
@@ -30868,12 +30904,6 @@ var render = function () {
                                       _vm._v(
                                         _vm._s(manager.user.firstname) +
                                           " " +
-                                          _vm._s(
-                                            manager.user.middlename == null
-                                              ? ""
-                                              : manager.user.middlename
-                                          ) +
-                                          " " +
                                           _vm._s(manager.user.lastname)
                                       ),
                                     ]
@@ -30930,14 +30960,6 @@ var render = function () {
                                         _vm.selected_employee.info1.supervisor
                                           .firstname
                                       ) +
-                                        " " +
-                                        _vm._s(
-                                          _vm.selected_employee.info1.supervisor
-                                            .middlename != null
-                                            ? _vm.selected_employee.info1
-                                                .supervisor.middlename
-                                            : ""
-                                        ) +
                                         "  " +
                                         _vm._s(
                                           _vm.selected_employee.info1.supervisor
@@ -30988,14 +31010,6 @@ var render = function () {
                                     _vm.selected_employee.info1.manager
                                       .firstname
                                   ) +
-                                    " " +
-                                    _vm._s(
-                                      _vm.selected_employee.info1.manager
-                                        .middlename != null
-                                        ? _vm.selected_employee.info1.manager
-                                            .middlename
-                                        : ""
-                                    ) +
                                     "  " +
                                     _vm._s(
                                       _vm.selected_employee.info1.manager
@@ -31047,12 +31061,6 @@ var render = function () {
                                   [
                                     _vm._v(
                                       _vm._s(this.supervisor.firstname) +
-                                        " " +
-                                        _vm._s(
-                                          this.supervisor.middlename != null
-                                            ? this.supervisor.middlename
-                                            : ""
-                                        ) +
                                         " " +
                                         _vm._s(this.supervisor.lastname)
                                     ),
@@ -31118,13 +31126,6 @@ var render = function () {
                                   [
                                     _vm._v(
                                       _vm._s(_vm.selected_employee.firstname) +
-                                        " " +
-                                        _vm._s(
-                                          _vm.selected_employee.middlename !=
-                                            null
-                                            ? _vm.selected_employee.middlename
-                                            : ""
-                                        ) +
                                         "  " +
                                         _vm._s(_vm.selected_employee.lastname)
                                     ),
@@ -31533,20 +31534,185 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("navbar"), _vm._v(" "), _vm._m(0)], 1)
+  return _c("div", [
+    _c("div", { staticClass: "row align-items-center vh-100" }, [
+      _c("div", { staticClass: "col-12 col-md-3 col-lg-4 col-xl-2 mx-auto" }, [
+        _c(
+          "div",
+          { staticClass: "card border-primary h-100" },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._l(_vm.alerts, function (alert, index) {
+              return _c(
+                "div",
+                {
+                  key: index,
+                  class:
+                    "alert mx-2 my-2 fade show text-center alert-" + alert.type,
+                  attrs: { role: "alert" },
+                },
+                [
+                  _c("strong", { staticClass: "text-center" }, [
+                    _vm._v(_vm._s(alert.message)),
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1, true),
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "form",
+                {
+                  attrs: { action: "", method: "post" },
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      return _vm.login.apply(null, arguments)
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.username,
+                          expression: "form.username",
+                        },
+                      ],
+                      staticClass: "form-control ",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Username",
+                        name: "username",
+                        id: "user",
+                      },
+                      domProps: { value: _vm.form.username },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "username", $event.target.value)
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.password,
+                          expression: "form.password",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "password",
+                        placeholder: "Password",
+                        name: "password",
+                        ID: "pass",
+                      },
+                      domProps: { value: _vm.form.password },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "password", $event.target.value)
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(4),
+                ]
+              ),
+            ]),
+          ],
+          2
+        ),
+      ]),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row align-items-center vh-100" }, [
-      _c("div", { staticClass: "col-12 col-md-6 col-lg-4 mx-auto" }, [
-        _c("div", { staticClass: "card border-primary h-100" }, [
-          _c("div", { staticClass: "card-body" }, [_c("p", [_vm._v("login")])]),
-        ]),
+    return _c("div", { staticClass: "card-header bg-primary text-white" }, [
+      _c("h3", { staticClass: "card-title text-center font-weight-bold" }, [
+        _vm._v("RFPS"),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text", attrs: { id: "user" } }, [
+        _c("i", { staticClass: "fa-solid fa-user" }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "span",
+        { staticClass: "input-group-text", attrs: { id: "password" } },
+        [_c("i", { staticClass: "fa-solid fa-key" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-success w-100",
+        attrs: { type: "submit", name: "submit" },
+      },
+      [
+        _vm._v("Login "),
+        _c("i", { staticClass: "fa-solid fa-arrow-right-to-bracket" }),
+      ]
+    )
   },
 ]
 render._withStripped = true

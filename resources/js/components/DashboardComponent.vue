@@ -3,7 +3,7 @@
         <navbar></navbar>
         <div class="container mt-4 d-print-none">
             <div class="input-group ">
-                <input placeholder="Type employee name here ..." class="form-control" @change="search($event.target.value)" id="searchbox" list="" @keyup="searchUpdate()" >
+                <input placeholder="Type employee name here ..." class="form-control" @change="search($event.target)" id="searchbox" list="" @keyup="searchUpdate()" >
                 <datalist id="employees">
                     <option v-for="(employee,index) in employees" :key="index"  :value="employee.empno">{{employee.firstname}} {{employee.middlename != null ? employee.middlename : ''}}  {{employee.lastname}} {{employee.servarea != 'N/A' ? 'of ' + employee.servarea : ''}}</option>
                 </datalist>
@@ -235,11 +235,11 @@
                                     </tr>
                                     <tr>
                                         <td v-if="selected_employee.length == 0 || selected_employee.info1.supervisor.length == 0">N/A</td>
-                                        <td v-else>{{selected_employee.info1.supervisor.firstname}} {{selected_employee.info1.supervisor.middlename != null ? selected_employee.info1.supervisor.middlename : ''}}  {{selected_employee.info1.supervisor.lastname}}</td>
+                                        <td v-else>{{selected_employee.info1.supervisor.firstname}}  {{selected_employee.info1.supervisor.lastname}}</td>
                                     </tr>
                                     <tr>
                                         <td v-if="selected_employee.length == 0 || selected_employee.info1.manager.length == 0">N/A</td>
-                                        <td v-else>{{selected_employee.info1.manager.firstname}} {{selected_employee.info1.manager.middlename != null ? selected_employee.info1.manager.middlename : ''}}  {{selected_employee.info1.manager.lastname}}</td>
+                                        <td v-else>{{selected_employee.info1.manager.firstname}}  {{selected_employee.info1.manager.lastname}}</td>
                                     </tr>
                                     <tr>
                                         <td v-if="extension_toggler == false">N/A</td>
@@ -324,7 +324,7 @@
                                         <td v-if="supervisor_toggler == false">SAME</td>
                                         <td v-if="supervisor_toggler == true">
                                             <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_supervisor" @change="supervisorUpdate($event)">
-                                                <option v-for="(supervisor,index) in supervisors" :key="index" :value="supervisor.empno" >{{supervisor.user.firstname}} {{supervisor.user.middlename == null ? '' :  supervisor.user.middlename}} {{supervisor.user.lastname}}</option>
+                                                <option v-for="(supervisor,index) in supervisors" :key="index" :value="supervisor.empno" >{{supervisor.user.firstname}} {{supervisor.user.lastname}}</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -332,7 +332,7 @@
                                         <td v-if="manager_toggler == false">SAME</td>
                                         <td v-if="manager_toggler == true">
                                             <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_manager">
-                                                <option v-for="(manager,index) in managers" :key="index" :value="manager.empno" :selected="selected_manager == manager.empno ? true : false">{{manager.user.firstname}} {{manager.user.middlename == null ? '' :  manager.user.middlename}} {{manager.user.lastname}}</option>
+                                                <option v-for="(manager,index) in managers" :key="index" :value="manager.empno" :selected="selected_manager == manager.empno ? true : false">{{manager.user.firstname}} {{manager.user.lastname}}</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -363,7 +363,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold text-uppercase">{{selected_employee.info1.supervisor.firstname}} {{selected_employee.info1.supervisor.middlename != null ? selected_employee.info1.supervisor.middlename : ''}}  {{selected_employee.info1.supervisor.lastname}}</h6>
+                                        <h6 class="align-middle font-weight-bold text-uppercase">{{selected_employee.info1.supervisor.firstname}}  {{selected_employee.info1.supervisor.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.supervisor.info1.eposition }}</h6>
                                     </div>
                                 </td>
@@ -371,7 +371,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold">{{selected_employee.info1.manager.firstname}} {{selected_employee.info1.manager.middlename != null ? selected_employee.info1.manager.middlename : ''}}  {{selected_employee.info1.manager.lastname}}</h6>
+                                        <h6 class="align-middle font-weight-bold">{{selected_employee.info1.manager.firstname}}  {{selected_employee.info1.manager.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.manager.info1.eposition }}</h6>
                                     </div>
                                 </td>
@@ -381,7 +381,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold" v-if="Object.keys(this.supervisor).length">{{ this.supervisor.firstname }} {{ this.supervisor.middlename != null ?  this.supervisor.middlename : ''}} {{ this.supervisor.lastname }}</h6>
+                                        <h6 class="align-middle font-weight-bold" v-if="Object.keys(this.supervisor).length">{{ this.supervisor.firstname }} {{ this.supervisor.lastname }}</h6>
                                         <h6 class="align-middle font-weight-bold" v-if="Object.keys(this.supervisor).length">{{ this.supervisor.info1.eposition }}</h6>
                                     </div>
                                 </td>
@@ -418,7 +418,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold">{{selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</h6>
+                                        <h6 class="align-middle font-weight-bold">{{selected_employee.firstname}}  {{selected_employee.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.eposition }}</h6>
                                     </div>
                                 </td>
@@ -515,13 +515,17 @@ export default {
                 this.employees = response.data
             }).catch(error => console.log(error.response.data))
         },
-        search(value){
-            this.getUser(value)
+        search(e){
+            this.getUser(e.value)
         },
         getUser(emp_no){
             axios.post('/acsi_emfs/api/employees/'+emp_no).then(response => {
                 console.log(response.data)
                 this.selected_employee = response.data
+                if(response.date != ''){
+                    $("#searchbox").attr("list","")
+                    $("#searchbox").val(this.selected_employee.firstname + ' ' + this.selected_employee.middlename + ' ' + this.selected_employee.lastname ) 
+                }
             }).catch(error => console.log(error.response.data))
         },
         getPositions(){
@@ -548,9 +552,9 @@ export default {
         },
         supervisorUpdate(e){
             axios.post('/acsi_emfs/api/supervisor/'+e.target.value).then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 this.supervisor = response.data
-                this.selected_manager = response.data.info1.emngr
+                this.selected_manager = response.data.info1.esup
                 this.manager_toggler = true
                 this.cost_toggler = true
                 this.departments_toggler = true
