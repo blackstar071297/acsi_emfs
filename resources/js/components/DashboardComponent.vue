@@ -55,19 +55,19 @@
                 </div>
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-12 col-md-10">
                             <table class="table table-bordered " >
                                 <tbody>
                                     <tr style="border: 2px solid black">
-                                        <td>Name:</td>
+                                        <td>Name: <strong >{{selected_employee.length == 0 ?  'N/A' : selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</strong></td>
                                     </tr>
                                     <tr style="border: 2px solid black">
-                                        <td>Employee ID:</td>
+                                        <td>Employee ID: <strong >{{selected_employee.empno == null ? 'N/A' : selected_employee.empno}}</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-7">
+                        <!-- <div class="col-12 col-md-7">
                             <table class="table table-bordered ">
                                 <tbody>
                                     <tr style="border: 2px solid black">
@@ -78,7 +78,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </div> -->
                         <div class="col-2" v-if="Object.keys(selected_employee).length > 0">
                             <img :src="'http://tsi-acsi1.webhop.biz'+selected_employee.info1.emp_pic.picloc" alt="employee image" height="94px">
                         </div>
@@ -93,7 +93,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-4">
+                <div class="col-12 col-md-4">
                     <table class="table table-bordered table-sm table-striped">
                         <tbody>
                             <tr style="border: 2px solid black">
@@ -201,9 +201,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-8">
+                <div class="col-12 col-md-8">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <table class="table table-sm table-bordered w-100 text-center font-weight-bold table-striped">
                                 <tbody>
                                     <tr style="border: 2px solid black">
@@ -254,7 +254,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <table class="table table-sm table-bordered w-100 text-center font-weight-bold table-striped">
                                 <tbody>
                                     <tr style="border: 2px solid black">
