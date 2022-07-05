@@ -5807,7 +5807,8 @@ __webpack_require__.r(__webpack_exports__);
       selected_cost_center: 'SAME',
       selected_supervisor: 'SAME',
       selected_manager: 'SAME',
-      supervisor: []
+      supervisor: [],
+      effectivity_date: ''
     };
   },
   methods: {
@@ -5918,6 +5919,7 @@ __webpack_require__.r(__webpack_exports__);
         this.job_status_toggler = false;
         this.job_status = [];
         this.job_level_toggler = false;
+        this.effectivity_date = '';
       } // if($("#searchbox").val("list","employees")){
       // }
       // $("#searchbox").attr("list","employees");
@@ -30385,7 +30387,19 @@ var render = function () {
                       _vm._v(" "),
                       _vm._m(9),
                       _vm._v(" "),
-                      _vm._m(10),
+                      _c("tr", [
+                        _c("td", [
+                          _c("input", {
+                            staticClass: "text-center border-0 h-100",
+                            attrs: {
+                              type: "date",
+                              name: "effective_date",
+                              id: "effective_date",
+                            },
+                            domProps: { value: _vm.effectivity_date },
+                          }),
+                        ]),
+                      ]),
                     ]),
                   ]
                 ),
@@ -30400,7 +30414,7 @@ var render = function () {
                   },
                   [
                     _c("tbody", [
-                      _vm._m(11),
+                      _vm._m(10),
                       _vm._v(" "),
                       _c("tr", [
                         _vm.position_toggler == false
@@ -30871,11 +30885,11 @@ var render = function () {
                           : _vm._e(),
                       ]),
                       _vm._v(" "),
+                      _vm._m(11),
+                      _vm._v(" "),
                       _vm._m(12),
                       _vm._v(" "),
                       _vm._m(13),
-                      _vm._v(" "),
-                      _vm._m(14),
                     ]),
                   ]
                 ),
@@ -30886,7 +30900,7 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(15),
+                _vm._m(14),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
@@ -31064,7 +31078,7 @@ var render = function () {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(16),
+                      _vm._m(15),
                     ])
                   : _vm._e(),
               ]),
@@ -31074,11 +31088,11 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(17),
+                _vm._m(16),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
-                      _vm._m(18),
+                      _vm._m(17),
                       _vm._v(" "),
                       Object.keys(_vm.selected_employee.info1.supervisor)
                         .length > 0
@@ -31172,7 +31186,7 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
-          _vm._m(19),
+          _vm._m(18),
         ]),
       ]),
     ],
@@ -31378,19 +31392,6 @@ var staticRenderFns = [
         _c("input", {
           staticClass: "border-0 text-center h-100",
           attrs: { type: "text", name: "other", id: "other" },
-        }),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("input", {
-          staticClass: "text-center border-0 h-100",
-          attrs: { type: "date", name: "effective_date", id: "effective_date" },
         }),
       ]),
     ])

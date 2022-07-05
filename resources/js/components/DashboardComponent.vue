@@ -249,7 +249,7 @@
                                         <td><input type="text" name="other" id="other"  class="border-0 text-center h-100"></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="date" name="effective_date" id="effective_date" class="text-center border-0 h-100"></td>
+                                        <td><input type="date" name="effective_date" id="effective_date" class="text-center border-0 h-100" :value="effectivity_date"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -504,7 +504,8 @@ export default {
             selected_cost_center: 'SAME',
             selected_supervisor: 'SAME',
             selected_manager: 'SAME',
-            supervisor: []
+            supervisor: [],
+            effectivity_date: ''
         }
     },
     methods:{
@@ -586,6 +587,7 @@ export default {
                 this.job_status_toggler = false
                 this.job_status = []
                 this.job_level_toggler = false
+                this.effectivity_date = ''
             }
             // if($("#searchbox").val("list","employees")){
 
