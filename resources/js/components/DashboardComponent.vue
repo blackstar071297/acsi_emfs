@@ -519,6 +519,30 @@ export default {
             this.getUser(e.value)
         },
         getUser(emp_no){
+            this.selected_employee = []
+            this.position_toggler = false
+            this.supervisor_toggler = false
+            this.manager_toggler = false
+            this.salary_toggler = false
+            this.allowance_toggler = false
+            this.extension_toggler = false
+            this.other_toggler =false
+            this.selected_position = 'SAME'
+            this.selected_status = 'SAME'
+            this.selected_level = 'SAME'
+            this.selected_role = 'SAME'
+            this.selected_department = 'SAME'
+            this.selected_cost_center = 'SAME'
+            this.selected_supervisor = 'SAME'
+            this.selected_manager = 'SAME'
+            this.supervisor = []
+            this.departments_toggler = false
+            this.departments =[]
+            this.cost_toggler = false
+            this.job_status_toggler = false
+            this.job_status = []
+            this.job_level_toggler = false
+            this.effectivity_date = ''
             axios.post('/acsi_emfs/api/employees/'+emp_no).then(response => {
                 console.log(response.data)
                 this.selected_employee = response.data
