@@ -27,11 +27,13 @@ class LoginController extends Controller
         if($validator->fails()){
             return response()->json(['errors'=>$validator->errors()]);
         }else{
-            $salt = 'Txpertz4ever2008';
             $user = Employee::where('username', $request->get('username'))->first();
-            $salted_pass = base64_encode(hash('sha256', $request->get('password').$salt, true));
-            
-            if (! $user || ! Hash::check($salted_pass, $user->userpass)) {
+            $bcrypt = '';
+            if(hash('sha256',$request->get('password')) == $user->userpass){
+                $bcrypt = bcrypt($request->get('password'));
+            }
+            // return hash('sha256',$request->get('password'));
+            if (! $user || ! Hash::check($request->get('password'), $bcrypt)) {
                 return response()->json(['errors'=>['username'=>['username and password not match']]]);
             }
             
@@ -41,6 +43,17 @@ class LoginController extends Controller
             $token = $token[1];
             return response()->json(['token'=>$token],200);
         }
+    }
+    private function decrypt($data) {
+        $key = 'Txpertz4ever2008';
+        $iv_size = openssl_cipher_iv_length( "AES-256-CBC-HMAC-SHA256" );
+        $hash = hash( 'sha256', $key );
+        $iv = substr( $hash, strlen( $hash ) - $iv_size );
+        // $key = substr( $hash, 0, 32 );
+        $decrypted = openssl_decrypt( base64_decode( $data ), "AES-256-CBC-HMAC-SHA256", $key, OPENSSL_RAW_DATA, $iv );
+        $decrypted = rtrim( $decrypted, "\0" );
+
+        return $decrypted;
     }
     /**
      * Display a listing of the resource.

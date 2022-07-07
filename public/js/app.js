@@ -5979,6 +5979,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/NavbarComponent.vue */ "./resources/js/components/NavbarComponent.vue");
+/* harmony import */ var _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Helpers/AppStorage */ "./resources/js/components/Helpers/AppStorage.js");
 //
 //
 //
@@ -6017,6 +6018,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6045,10 +6047,14 @@ __webpack_require__.r(__webpack_exports__);
             });
           }
         } else {
-          console.log(response); // let token = response.data.token
-          // axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
-          // AppStorage.storeToken(token)
-          // this.$router.push({path:'/tsi_fsth/admin/'})
+          console.log(response);
+          var token = response.data.token;
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+          _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].storeToken(token);
+
+          _this.$router.push({
+            path: '/acsi_emfs/'
+          });
         }
       })["catch"](function (error) {
         return console.log(error.response.data);
@@ -6246,6 +6252,52 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/Helpers/AppStorage.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/Helpers/AppStorage.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var AppStorage = /*#__PURE__*/function () {
+  function AppStorage() {
+    _classCallCheck(this, AppStorage);
+  }
+
+  _createClass(AppStorage, [{
+    key: "storeToken",
+    value: function storeToken(token) {
+      return localStorage.setItem('token', token);
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      localStorage.removeItem('token');
+    }
+  }, {
+    key: "getToken",
+    value: function getToken() {
+      return localStorage.getItem('token');
+    }
+  }]);
+
+  return AppStorage;
+}();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AppStorage = new AppStorage());
 
 /***/ }),
 

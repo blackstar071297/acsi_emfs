@@ -38,6 +38,8 @@
 
 <script>
 import navbar from '../components/NavbarComponent.vue'
+import AppStorage from '../components/Helpers/AppStorage'
+
 export default {
     components:{navbar},
     data(){
@@ -59,10 +61,10 @@ export default {
                     } 
                 }else{
                     console.log(response)
-                    // let token = response.data.token
-                    // axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
-                    // AppStorage.storeToken(token)
-                    // this.$router.push({path:'/tsi_fsth/admin/'})
+                    let token = response.data.token
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+                    AppStorage.storeToken(token)
+                    this.$router.push({path:'/acsi_emfs/'})
                 }
             }).catch(error => console.log(error.response.data))
         }
