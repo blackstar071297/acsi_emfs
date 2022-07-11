@@ -109,7 +109,7 @@
                             <tr>
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="position_title" v-model="position_toggler" :disabled="current_user.position != 'hr_officer'">
+                                        <input type="checkbox" class="custom-control-input" id="position_title" v-model="position_toggler" :disabled="current_user.position == 'hr_officer' ? false : true">
                                         <label class="custom-control-label" for="position_title">POSITION TITLE</label>
                                     </div>
                                 </td>
@@ -117,7 +117,7 @@
                             <tr >
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="job_status" v-model="job_status_toggler" :disabled="current_user.position != 'hr_officer'">
+                                        <input type="checkbox" class="custom-control-input" id="job_status" v-model="job_status_toggler" :disabled="current_user.position == 'hr_officer' ? false : true">
                                         <label class="custom-control-label" for="job_status">JOB STATUS</label>
                                     </div>
                                 </td>
@@ -133,7 +133,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler" :disabled="current_user.position != 'hr_officer' || current_user.position != 'supervisor' || current_user.position != 'manager'">
+                                        <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
                                         <label class="custom-control-label" for="role">ROLE ASSIGNMENT</label>
                                     </div>
                                 </td>
@@ -157,7 +157,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="salary" v-model="salary_toggler" :disabled="current_user.position != 'hr_officer'">
+                                        <input type="checkbox" class="custom-control-input" id="salary" v-model="salary_toggler" :disabled="current_user.position == 'hr_officer'  ? false : true">
                                         <label class="custom-control-label" for="salary">SALARY</label>
                                     </div>
                                 </td>
@@ -165,7 +165,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler" :disabled="current_user.position != 'hr_officer' || current_user.position != 'supervisor' || current_user.position != 'manager'">
+                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
                                         <label class="custom-control-label" for="allowance">MONTHLY ALLOWANCE</label>
                                     </div>
                                 </td>
@@ -173,7 +173,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler" >
+                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler" :disabled=" current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
                                         <label class="custom-control-label" for="immediate_superior">IMMEDIATE SUPERIOR</label>
                                     </div>
                                 </td>
@@ -181,7 +181,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="department_manager" v-model="manager_toggler" :disabled="current_user.position != 'hr_officer'">
+                                        <input type="checkbox" class="custom-control-input" id="department_manager" v-model="manager_toggler" :disabled="current_user.position == 'hr_officer'  ? false : true">
                                         <label class="custom-control-label" for="department_manager">DEPARTMENT MANAGER</label>
                                     </div>
                                 </td>
@@ -238,7 +238,7 @@
                                         <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center h-100"></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center h-100"></td>
+                                        <td><input type="text" name="allowance" id="allowance" placeholder="" class="border-0 text-center h-100"></td>
                                     </tr>
                                     <tr>
                                         <td v-if="selected_employee.length == 0 || selected_employee.info1.supervisor.length == 0">N/A</td>
@@ -270,7 +270,7 @@
                                     <tr>
                                         <td v-if="position_toggler == false">SAME</td>
                                         <td v-if="position_toggler == true">
-                                            <select name="position_title" id="position_title" class="border-0 w-100 text-center" v-model="selected_position" :disabled="current_user.position != 'hr_officer'">
+                                            <select name="position_title" id="position_title" class="border-0 w-100 text-center" v-model="selected_position" :disabled="current_user.positio == 'hr_officer' ? false : true">
                                                 <option v-for="(position,index) in positions" :key="index" i :value="position.eposition" >{{position.eposition}}</option>
                                             </select>
                                         </td>
@@ -278,7 +278,7 @@
                                     <tr>
                                         <td v-if="job_status_toggler == false">SAME</td>
                                         <td v-if="job_status_toggler == true">
-                                            <select name="job_status" id="job_status" class="border-0 w-100 text-center" v-model="selected_status" :disabled="current_user.position != 'hr_officer' || current_user.position != 'supervisor' || current_user.position != 'manager'">
+                                            <select name="job_status" id="job_status" class="border-0 w-100 text-center" v-model="selected_status" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true" >
                                                 <option value="Probationary">Probationary</option>
                                                 <option value="Regular">Regular</option>
                                             </select>
@@ -295,7 +295,7 @@
                                     <tr>
                                         <td v-if="role_toggler == false">SAME</td>
                                         <td v-if="role_toggler == true">
-                                            <select name="role" id="role" class="border-0 w-100 text-center" v-model="selected_role" :disabled="current_user.position != 'hr_officer' || current_user.position != 'supervisor' || current_user.position != 'manager'">
+                                            <select name="role" id="role" class="border-0 w-100 text-center" v-model="selected_role" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true">
                                                 <option value="">N/A</option>
                                                 <option v-for="(role,index) in roles" :key="index" :value="role.role_name">{{role.role_name}}</option>
                                             </select>
@@ -321,16 +321,16 @@
                                     </tr>
                                     <tr>
                                         <td v-if="salary_toggler == false">SAME</td>
-                                        <input v-else type="text" name="to_salary" id="to_salary" placeholder="" class="border-0 text-center" :disabled="current_user.position != 'hr_officer'">
+                                        <input v-else type="text" name="to_salary" id="to_salary" placeholder="" class="border-0 text-center" :disabled="current_user.position == 'hr_officer' ? false : true">
                                     </tr>
                                     <tr>
                                         <td v-if="allowance_toggler == false">SAME</td>
-                                        <input v-else type="text" name="to_allowance" id="to_allowance" placeholder="" class="border-0 text-center" :disabled="current_user.position != 'hr_officer'">
+                                        <input v-else type="text" name="to_allowance" id="to_allowance" placeholder="" class="border-0 text-center" :disabled="current_user.position == 'hr_officer' ? false : true">
                                     </tr>
                                     <tr>
                                         <td v-if="supervisor_toggler == false">SAME</td>
                                         <td v-if="supervisor_toggler == true">
-                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_supervisor" @change="supervisorUpdate($event)" :disabled="current_user.position != 'supervisor' || current_user.position != 'manager'">
+                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_supervisor" @change="supervisorUpdate($event)" :disabled="current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true">
                                                 <option v-for="(supervisor,index) in supervisors" :key="index" :value="supervisor.empno" >{{supervisor.user.firstname}} {{supervisor.user.lastname}}</option>
                                             </select>
                                         </td>
@@ -338,7 +338,7 @@
                                     <tr>
                                         <td v-if="manager_toggler == false">SAME</td>
                                         <td v-if="manager_toggler == true">
-                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_manager" :disabled="current_user.position != 'hr_officer'">
+                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_manager" :disabled="current_user.position == 'hr_officer' ? false : true">
                                                 <option v-for="(manager,index) in managers" :key="index" :value="manager.empno" :selected="selected_manager == manager.empno ? true : false">{{manager.user.firstname}} {{manager.user.lastname}}</option>
                                             </select>
                                         </td>

@@ -30928,7 +30928,9 @@ var render = function () {
                               type: "checkbox",
                               id: "position_title",
                               disabled:
-                                _vm.current_user.position != "hr_officer",
+                                _vm.current_user.position == "hr_officer"
+                                  ? false
+                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.position_toggler)
@@ -30992,7 +30994,9 @@ var render = function () {
                               type: "checkbox",
                               id: "job_status",
                               disabled:
-                                _vm.current_user.position != "hr_officer",
+                                _vm.current_user.position == "hr_officer"
+                                  ? false
+                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.job_status_toggler)
@@ -31119,9 +31123,11 @@ var render = function () {
                               type: "checkbox",
                               id: "role",
                               disabled:
-                                _vm.current_user.position != "hr_officer" ||
-                                _vm.current_user.position != "supervisor" ||
-                                _vm.current_user.position != "manager",
+                                _vm.current_user.position == "hr_officer" ||
+                                _vm.current_user.position == "supervisor" ||
+                                _vm.current_user.position == "manager"
+                                  ? false
+                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.role_toggler)
@@ -31305,7 +31311,9 @@ var render = function () {
                               type: "checkbox",
                               id: "salary",
                               disabled:
-                                _vm.current_user.position != "hr_officer",
+                                _vm.current_user.position == "hr_officer"
+                                  ? false
+                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.salary_toggler)
@@ -31369,9 +31377,11 @@ var render = function () {
                               type: "checkbox",
                               id: "allowance",
                               disabled:
-                                _vm.current_user.position != "hr_officer" ||
-                                _vm.current_user.position != "supervisor" ||
-                                _vm.current_user.position != "manager",
+                                _vm.current_user.position == "hr_officer" ||
+                                _vm.current_user.position == "supervisor" ||
+                                _vm.current_user.position == "manager"
+                                  ? false
+                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.allowance_toggler)
@@ -31436,6 +31446,11 @@ var render = function () {
                             attrs: {
                               type: "checkbox",
                               id: "immediate_superior",
+                              disabled:
+                                _vm.current_user.position == "supervisor" ||
+                                _vm.current_user.position == "manager"
+                                  ? false
+                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.supervisor_toggler)
@@ -31501,7 +31516,9 @@ var render = function () {
                               type: "checkbox",
                               id: "department_manager",
                               disabled:
-                                _vm.current_user.position != "hr_officer",
+                                _vm.current_user.position == "hr_officer"
+                                  ? false
+                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.manager_toggler)
@@ -31864,7 +31881,9 @@ var render = function () {
                                     name: "position_title",
                                     id: "position_title",
                                     disabled:
-                                      _vm.current_user.position != "hr_officer",
+                                      _vm.current_user.positio == "hr_officer"
+                                        ? false
+                                        : true,
                                   },
                                   on: {
                                     change: function ($event) {
@@ -31930,11 +31949,13 @@ var render = function () {
                                     name: "job_status",
                                     id: "job_status",
                                     disabled:
-                                      _vm.current_user.position !=
+                                      _vm.current_user.position ==
                                         "hr_officer" ||
-                                      _vm.current_user.position !=
+                                      _vm.current_user.position ==
                                         "supervisor" ||
-                                      _vm.current_user.position != "manager",
+                                      _vm.current_user.position == "manager"
+                                        ? false
+                                        : true,
                                   },
                                   on: {
                                     change: function ($event) {
@@ -32058,11 +32079,13 @@ var render = function () {
                                     name: "role",
                                     id: "role",
                                     disabled:
-                                      _vm.current_user.position !=
+                                      _vm.current_user.position ==
                                         "hr_officer" ||
-                                      _vm.current_user.position !=
+                                      _vm.current_user.position ==
                                         "supervisor" ||
-                                      _vm.current_user.position != "manager",
+                                      _vm.current_user.position == "manager"
+                                        ? false
+                                        : true,
                                   },
                                   on: {
                                     change: function ($event) {
@@ -32265,7 +32288,9 @@ var render = function () {
                                 id: "to_salary",
                                 placeholder: "",
                                 disabled:
-                                  _vm.current_user.position != "hr_officer",
+                                  _vm.current_user.position == "hr_officer"
+                                    ? false
+                                    : true,
                               },
                             }),
                       ]),
@@ -32281,7 +32306,9 @@ var render = function () {
                                 id: "to_allowance",
                                 placeholder: "",
                                 disabled:
-                                  _vm.current_user.position != "hr_officer",
+                                  _vm.current_user.position == "hr_officer"
+                                    ? false
+                                    : true,
                               },
                             }),
                       ]),
@@ -32309,9 +32336,11 @@ var render = function () {
                                     name: "supervisor",
                                     id: "supervisor",
                                     disabled:
-                                      _vm.current_user.position !=
+                                      _vm.current_user.position ==
                                         "supervisor" ||
-                                      _vm.current_user.position != "manager",
+                                      _vm.current_user.position == "manager"
+                                        ? false
+                                        : true,
                                   },
                                   on: {
                                     change: [
@@ -32390,7 +32419,9 @@ var render = function () {
                                     name: "supervisor",
                                     id: "supervisor",
                                     disabled:
-                                      _vm.current_user.position != "hr_officer",
+                                      _vm.current_user.position == "hr_officer"
+                                        ? false
+                                        : true,
                                   },
                                   on: {
                                     change: function ($event) {
@@ -32905,8 +32936,8 @@ var staticRenderFns = [
           staticClass: "border-0 text-center h-100",
           attrs: {
             type: "text",
-            name: "salary",
-            id: "salary",
+            name: "allowance",
+            id: "allowance",
             placeholder: "",
           },
         }),
