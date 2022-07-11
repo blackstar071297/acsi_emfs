@@ -13,7 +13,7 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/acsi_emfs/new-employee">New employee</a>
+                    <a class="nav-link" href="/acsi_emfs/new-employee" v-if="current_user.useraccess == 'super_admin' && current_user.position == 'system_admin'">New employee</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

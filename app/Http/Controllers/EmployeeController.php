@@ -44,6 +44,7 @@ class EmployeeController extends Controller
         $users = (object) array_merge((array) $users, ['info1'=> (array) $info1]) ;
 
         $users->info1['ecostcenter'] = $sup_cost_center->ecostcenter;
+        $users->info1['ecurrdept'] = $sup_cost_center->ecurrdept;
         return $users;
     }
     public function getSuperior(){

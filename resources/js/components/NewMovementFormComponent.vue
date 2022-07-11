@@ -109,7 +109,7 @@
                             <tr>
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="position_title" v-model="position_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="position_title" v-model="position_toggler" :disabled="current_user.position != 'hr_officer'">
                                         <label class="custom-control-label" for="position_title">POSITION TITLE</label>
                                     </div>
                                 </td>
@@ -117,7 +117,7 @@
                             <tr >
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="job_status" v-model="job_status_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="job_status" v-model="job_status_toggler" :disabled="current_user.position != 'hr_officer'">
                                         <label class="custom-control-label" for="job_status">JOB STATUS</label>
                                     </div>
                                 </td>
@@ -125,7 +125,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="job_level" v-model="job_level_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="job_level" v-model="job_level_toggler" >
                                         <label class="custom-control-label" for="job_level">JOB LEVEL</label>
                                     </div>
                                 </td>
@@ -133,7 +133,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler" :disabled="current_user.position != 'hr_officer' || current_user.position != 'supervisor' || current_user.position != 'manager'">
                                         <label class="custom-control-label" for="role">ROLE ASSIGNMENT</label>
                                     </div>
                                 </td>
@@ -157,7 +157,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="salary" v-model="salary_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="salary" v-model="salary_toggler" :disabled="current_user.position != 'hr_officer'">
                                         <label class="custom-control-label" for="salary">SALARY</label>
                                     </div>
                                 </td>
@@ -165,7 +165,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler" :disabled="current_user.position != 'hr_officer' || current_user.position != 'supervisor' || current_user.position != 'manager'">
                                         <label class="custom-control-label" for="allowance">MONTHLY ALLOWANCE</label>
                                     </div>
                                 </td>
@@ -173,7 +173,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler" >
                                         <label class="custom-control-label" for="immediate_superior">IMMEDIATE SUPERIOR</label>
                                     </div>
                                 </td>
@@ -181,7 +181,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="department_manager" v-model="manager_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="department_manager" v-model="manager_toggler" :disabled="current_user.position != 'hr_officer'">
                                         <label class="custom-control-label" for="department_manager">DEPARTMENT MANAGER</label>
                                     </div>
                                 </td>
@@ -454,6 +454,7 @@
 
 <script>
 import navbar from './NavbarComponent.vue'
+import AppStorage from '../components/Helpers/AppStorage'
 export default {
     components:{navbar},
     data(){
@@ -512,7 +513,8 @@ export default {
             selected_supervisor: 'SAME',
             selected_manager: 'SAME',
             supervisor: [],
-            effectivity_date: ''
+            effectivity_date: '',
+            current_user:[]
         }
     },
     methods:{
@@ -631,7 +633,16 @@ export default {
 
             // }
             // $("#searchbox").attr("list","employees");
-        }
+        },
+        getCurrentUser(){
+            if(AppStorage.getToken()){
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
+            }
+            axios.post('/acsi_emfs/api/get-current-user').then(response => {
+                console.log(response.data)
+                this.current_user = response.data
+            })
+        },
     },
     created(){
         this.getUsers()
@@ -640,6 +651,7 @@ export default {
         this.getCostCenter()
         this.getSupervisor()
         this.getManager()
+        this.getCurrentUser()
     }
 }
 </script>

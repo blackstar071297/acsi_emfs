@@ -77,7 +77,7 @@ export default {
                 position: 'system_admin',
                 
             },
-            alerts:[]
+            alerts:[],
 
         }
     },
@@ -102,7 +102,13 @@ export default {
                     this.alerts.push({message: 'New employee added',type: 'success' })
                 }
             }).catch(error => console.log(error.response))
-        }
+        },
+        getCurrentUser(){
+            if(AppStorage.getToken()){
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
+            }
+            axios.post('/acsi_emfs/api/get-current-user').then(response => {this.current_user = response.data})
+        },
     }
     
 }

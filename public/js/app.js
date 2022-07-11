@@ -5626,6 +5626,17 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error.response);
       });
+    },
+    getCurrentUser: function getCurrentUser() {
+      var _this2 = this;
+
+      if (AppStorage.getToken()) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken();
+      }
+
+      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+        _this2.current_user = response.data;
+      });
     }
   }
 });
@@ -5644,6 +5655,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NavbarComponent.vue */ "./resources/js/components/NavbarComponent.vue");
+/* harmony import */ var _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Helpers/AppStorage */ "./resources/js/components/Helpers/AppStorage.js");
 //
 //
 //
@@ -6098,6 +6110,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6192,7 +6205,8 @@ __webpack_require__.r(__webpack_exports__);
       selected_supervisor: 'SAME',
       selected_manager: 'SAME',
       supervisor: [],
-      effectivity_date: ''
+      effectivity_date: '',
+      current_user: []
     };
   },
   methods: {
@@ -6335,6 +6349,18 @@ __webpack_require__.r(__webpack_exports__);
       // }
       // $("#searchbox").attr("list","employees");
 
+    },
+    getCurrentUser: function getCurrentUser() {
+      var _this9 = this;
+
+      if (_components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken()) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken();
+      }
+
+      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+        console.log(response.data);
+        _this9.current_user = response.data;
+      });
     }
   },
   created: function created() {
@@ -6344,6 +6370,7 @@ __webpack_require__.r(__webpack_exports__);
     this.getCostCenter();
     this.getSupervisor();
     this.getManager();
+    this.getCurrentUser();
   }
 });
 
@@ -30178,7 +30205,19 @@ var render = function () {
           _c("ul", { staticClass: "navbar-nav ml-auto" }, [
             _vm._m(2),
             _vm._v(" "),
-            _vm._m(3),
+            _c("li", { staticClass: "nav-item" }, [
+              _vm.current_user.useraccess == "super_admin" &&
+              _vm.current_user.position == "system_admin"
+                ? _c(
+                    "a",
+                    {
+                      staticClass: "nav-link",
+                      attrs: { href: "/acsi_emfs/new-employee" },
+                    },
+                    [_vm._v("New employee")]
+                  )
+                : _vm._e(),
+            ]),
             _vm._v(" "),
             _c("li", { staticClass: "nav-item dropdown" }, [
               _c(
@@ -30292,18 +30331,6 @@ var staticRenderFns = [
         _vm._v("Home "),
         _c("span", { staticClass: "sr-only" }, [_vm._v("(current)")]),
       ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "nav-item" }, [
-      _c(
-        "a",
-        { staticClass: "nav-link", attrs: { href: "/acsi_emfs/new-employee" } },
-        [_vm._v("New employee")]
-      ),
     ])
   },
 ]
@@ -30897,7 +30924,12 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: { type: "checkbox", id: "position_title" },
+                            attrs: {
+                              type: "checkbox",
+                              id: "position_title",
+                              disabled:
+                                _vm.current_user.position != "hr_officer",
+                            },
                             domProps: {
                               checked: Array.isArray(_vm.position_toggler)
                                 ? _vm._i(_vm.position_toggler, null) > -1
@@ -30956,7 +30988,12 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: { type: "checkbox", id: "job_status" },
+                            attrs: {
+                              type: "checkbox",
+                              id: "job_status",
+                              disabled:
+                                _vm.current_user.position != "hr_officer",
+                            },
                             domProps: {
                               checked: Array.isArray(_vm.job_status_toggler)
                                 ? _vm._i(_vm.job_status_toggler, null) > -1
@@ -31078,7 +31115,14 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: { type: "checkbox", id: "role" },
+                            attrs: {
+                              type: "checkbox",
+                              id: "role",
+                              disabled:
+                                _vm.current_user.position != "hr_officer" ||
+                                _vm.current_user.position != "supervisor" ||
+                                _vm.current_user.position != "manager",
+                            },
                             domProps: {
                               checked: Array.isArray(_vm.role_toggler)
                                 ? _vm._i(_vm.role_toggler, null) > -1
@@ -31257,7 +31301,12 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: { type: "checkbox", id: "salary" },
+                            attrs: {
+                              type: "checkbox",
+                              id: "salary",
+                              disabled:
+                                _vm.current_user.position != "hr_officer",
+                            },
                             domProps: {
                               checked: Array.isArray(_vm.salary_toggler)
                                 ? _vm._i(_vm.salary_toggler, null) > -1
@@ -31316,7 +31365,14 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: { type: "checkbox", id: "allowance" },
+                            attrs: {
+                              type: "checkbox",
+                              id: "allowance",
+                              disabled:
+                                _vm.current_user.position != "hr_officer" ||
+                                _vm.current_user.position != "supervisor" ||
+                                _vm.current_user.position != "manager",
+                            },
                             domProps: {
                               checked: Array.isArray(_vm.allowance_toggler)
                                 ? _vm._i(_vm.allowance_toggler, null) > -1
@@ -31444,6 +31500,8 @@ var render = function () {
                             attrs: {
                               type: "checkbox",
                               id: "department_manager",
+                              disabled:
+                                _vm.current_user.position != "hr_officer",
                             },
                             domProps: {
                               checked: Array.isArray(_vm.manager_toggler)

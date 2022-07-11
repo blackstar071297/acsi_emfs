@@ -61,7 +61,7 @@ class LoginController extends Controller
     
     public function getCurrentUser(){
         // return Auth::guard('employee')->user();
-        return DB::table('users')->select('firstname','lastname','useraccess','empno')->where('empno',Auth::guard('employee')->user()->empno)->first();
+        return DB::table('users')->select('firstname','lastname','useraccess','empno','useraccess','position')->where('empno',Auth::guard('employee')->user()->empno)->first();
     }
     /**
      * Display a listing of the resource.
