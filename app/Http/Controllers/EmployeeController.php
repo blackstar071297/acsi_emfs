@@ -10,17 +10,21 @@ class EmployeeController extends Controller
         return $positions = DB::table('emp_positions')->get();
     }
     public function getDepartments(){
-        return $positions = DB::table('departments')->get();
+        $positions = DB::table('departments')->where('DEPTENABLE',1)->get();
+        foreach($positions as $key=>$position){
+            $positions[$key]->DEPTNAME = ucwords($position->DEPTNAME);
+        }
+        return $positions;
     }
     public function getCostCenter(){
-        return $positions = DB::table('costcenter')->get();
+        return $positions = DB::table('costcenter')->where('ccenable',1)->get();
     }
     public function getSupervisor($id){
         $user = [];
         $users = DB::table('emp_info')->where('empno',$id)->first();
         $info1 = DB::table('emp_comp')->where('empid',$users->empid)->first();
         $user_pic = DB::table('emp_pic')->where('empid',$users->empid)->first();
-        $sup_cost_center = DB::table('emp_comp')->where('esup',$users->empno)->first();
+        $sup_cost_center = DB::table('emp_comp')->where('esup',$users->empno)->where('eactive','Active')->first();
 
         $supervisor = DB::table('emp_info')->where('empno',$info1->esup)->first();
         
@@ -59,7 +63,8 @@ class EmployeeController extends Controller
             }
         }
         foreach($superiors as $key=>$superior){
-            $sup_cost_center = DB::table('emp_comp')->where('esup',$superior->empno)->first();
+            $sup_cost_center = DB::table('emp_comp')->where('esup',$superior->empno)->where('eactive','Active')->first();
+            
             // if($superior->user['info1']['eactive'] != 'Active'){
             //     unset($superiors[$key]);
             // }

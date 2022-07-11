@@ -10,7 +10,18 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/acsi_emfs">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/acsi_emfs/new-employee">New employee</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Welcome {{ Object.keys(current_user).length > 0 ? current_user.empno : ''}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="logout.php" @click.prevent="logout()">Logout</a>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -18,8 +29,47 @@
 </template>
 
 <script>
-export default {
+import AppStorage from './Helpers/AppStorage'
 
+export default {
+    components:{},
+    data(){
+        return {
+            current_user: []
+        }
+    },
+    methods:{
+        checkUser(){
+            if(AppStorage.getToken()){
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
+            }
+            axios.post('/acsi_emfs/api/is-logged-in').then(response => {
+                if(response.data == true){
+                    this.getCurrentUser()
+                }
+            }).catch(error => console.log(error.response))
+        },
+        getCurrentUser(){
+            if(AppStorage.getToken()){
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
+            }
+            axios.post('/acsi_emfs/api/get-current-user').then(response => {this.current_user = response.data})
+        },
+        logout(){
+            if(AppStorage.getToken()){
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
+            }
+            axios.post('/acsi_emfs/api/logout').then(response => {
+                if(response.data == true){
+                    this.$router.push({path:'/acsi_emfs/login'})
+                    AppStorage.clear()
+                }
+            }).catch(error => console.log(error.response))
+        }
+    },
+    created(){
+        this.checkUser()
+    }
 }
 </script>
 

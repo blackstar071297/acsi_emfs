@@ -15,7 +15,7 @@ class Employee extends Authenticatable
     protected $table = 'users';
 
     protected $primaryKey = 'userid';
-
+    public $timestamps = false;
     protected $fillable = [
         'useruniq',
         'username',

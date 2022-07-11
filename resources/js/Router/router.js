@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import AppStorage from '../components/Admin/Helpers/AppStorage'
+import AppStorage from '../components/Helpers/AppStorage'
 
 //component imports
 
 import DashboardComponent from '../components/DashboardComponent'
 import loginComponent from '../components/LoginComponent'
+import NewMovementFormComponent from '../components/NewMovementFormComponent'
+import NewEmployeeComponent from '../components/NewEmployeeComponent'
+
 Vue.use(VueRouter)
 
 const guard = (to,from,next) => {
@@ -14,14 +17,16 @@ const guard = (to,from,next) => {
     if(AppStorage.getToken()){
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
     }
-    axios.post('/tsi_fsth/api/is-admin').then(response => {     
-        response.data == false ? next({path : '/tsi_fsth/admin/login'}) : next()
-    }).catch(error => error.response.status == 401 ? next({path : '/tsi_fsth/admin/login'}) : console.log(error.response.data))
+    axios.post('/acsi_emfs/api/is-logged-in').then(response => {     
+        response.data == false ? next({path : '/acsi_emfs/login'}) : next()
+    }).catch(error => error.response.status == 401 ? next({path : '/acsi_emfs/login'}) : console.log(error.response.data))
 }
 
 let routes = [
-    {path:'/acsi_emfs/',component:DashboardComponent},
-    {path:'/acsi_emfs/login',component:loginComponent}
+    {path:'/acsi_emfs/',component:DashboardComponent,beforeEnter: guard},
+    {path:'/acsi_emfs/new-movement-form',component:NewMovementFormComponent,beforeEnter: guard},
+    {path:'/acsi_emfs/login',component:loginComponent},
+    {path: '/acsi_emfs/new-employee',component: NewEmployeeComponent,beforeEnter: guard}
 ]
 const router = new VueRouter({
     mode: 'history',

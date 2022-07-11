@@ -12,7 +12,7 @@ use Hash;
 use Carbon\Carbon;
 use File;
 use Crypt;
-
+use Illuminate\Support\Facades\DB;
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
@@ -44,16 +44,24 @@ class LoginController extends Controller
             return response()->json(['token'=>$token],200);
         }
     }
-    private function decrypt($data) {
-        $key = 'Txpertz4ever2008';
-        $iv_size = openssl_cipher_iv_length( "AES-256-CBC-HMAC-SHA256" );
-        $hash = hash( 'sha256', $key );
-        $iv = substr( $hash, strlen( $hash ) - $iv_size );
-        // $key = substr( $hash, 0, 32 );
-        $decrypted = openssl_decrypt( base64_decode( $data ), "AES-256-CBC-HMAC-SHA256", $key, OPENSSL_RAW_DATA, $iv );
-        $decrypted = rtrim( $decrypted, "\0" );
-
-        return $decrypted;
+    public function isLoggedIn(Request $request){
+        
+        if(Auth::guard('employee')->check()){
+            return 'true';
+        }
+        return 'false';
+    }
+    public function logout(Request $request){
+        if($request->user()->currentAccessToken()->delete()){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+    
+    public function getCurrentUser(){
+        // return Auth::guard('employee')->user();
+        return DB::table('users')->select('firstname','lastname','useraccess','empno')->where('empno',Auth::guard('employee')->user()->empno)->first();
     }
     /**
      * Display a listing of the resource.
