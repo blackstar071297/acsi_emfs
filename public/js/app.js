@@ -31863,6 +31863,8 @@ var render = function () {
                                   attrs: {
                                     name: "position_title",
                                     id: "position_title",
+                                    disabled:
+                                      _vm.current_user.position != "hr_officer",
                                   },
                                   on: {
                                     change: function ($event) {
@@ -31927,6 +31929,12 @@ var render = function () {
                                   attrs: {
                                     name: "job_status",
                                     id: "job_status",
+                                    disabled:
+                                      _vm.current_user.position !=
+                                        "hr_officer" ||
+                                      _vm.current_user.position !=
+                                        "supervisor" ||
+                                      _vm.current_user.position != "manager",
                                   },
                                   on: {
                                     change: function ($event) {
@@ -32046,7 +32054,16 @@ var render = function () {
                                     },
                                   ],
                                   staticClass: "border-0 w-100 text-center",
-                                  attrs: { name: "role", id: "role" },
+                                  attrs: {
+                                    name: "role",
+                                    id: "role",
+                                    disabled:
+                                      _vm.current_user.position !=
+                                        "hr_officer" ||
+                                      _vm.current_user.position !=
+                                        "supervisor" ||
+                                      _vm.current_user.position != "manager",
+                                  },
                                   on: {
                                     change: function ($event) {
                                       var $$selectedVal = Array.prototype.filter
@@ -32247,6 +32264,8 @@ var render = function () {
                                 name: "to_salary",
                                 id: "to_salary",
                                 placeholder: "",
+                                disabled:
+                                  _vm.current_user.position != "hr_officer",
                               },
                             }),
                       ]),
@@ -32261,6 +32280,8 @@ var render = function () {
                                 name: "to_allowance",
                                 id: "to_allowance",
                                 placeholder: "",
+                                disabled:
+                                  _vm.current_user.position != "hr_officer",
                               },
                             }),
                       ]),
@@ -32287,6 +32308,10 @@ var render = function () {
                                   attrs: {
                                     name: "supervisor",
                                     id: "supervisor",
+                                    disabled:
+                                      _vm.current_user.position !=
+                                        "supervisor" ||
+                                      _vm.current_user.position != "manager",
                                   },
                                   on: {
                                     change: [
@@ -32364,6 +32389,8 @@ var render = function () {
                                   attrs: {
                                     name: "supervisor",
                                     id: "supervisor",
+                                    disabled:
+                                      _vm.current_user.position != "hr_officer",
                                   },
                                   on: {
                                     change: function ($event) {
