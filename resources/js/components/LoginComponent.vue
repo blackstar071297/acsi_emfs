@@ -5,7 +5,7 @@
             <div class="col-12 col-md-3 col-lg-4 col-xl-2 mx-auto">
                 <div class="card border-primary h-100">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="card-title text-center font-weight-bold">RFPS</h3>
+                        <h3 class="card-title text-center font-weight-bold">EMFS</h3>
                     </div>
                     <div v-for="(alert,index) in alerts" :key="index" :class="`alert mx-2 my-2 fade show text-center alert-${alert.type}`" role="alert">
                         <strong class="text-center">{{ alert.message }}</strong>
