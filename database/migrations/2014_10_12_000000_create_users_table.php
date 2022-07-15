@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('userid');
-            $table->unsignedBigInteger('useruniq');
+            $table->integer('useruniq')->unsigned()->index();
             $table->foreign('useruniq')->references('empid')->on('emp_info');
             $table->string('username')->nullable();
             $table->string('userpass')->nullable();
