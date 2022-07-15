@@ -10,6 +10,7 @@
             </nav>
             <div class="card">
                 <div class="card-body">
+                    <button @click="generate">Lazy generate</button>
                     <div v-for="(alert,index) in alerts" :key="index" :class="`alert mx-2 my-2 fade show text-center alert-${alert.type}`" role="alert">
                         <strong class="text-center">{{ alert.message }}</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -109,6 +110,9 @@ export default {
             }
             axios.post('/acsi_emfs/api/get-current-user').then(response => {this.current_user = response.data})
         },
+        generate(){
+            axios.post('/acsi_emfs/api/generate-user').then(response => console.log(response.data)).catch(error => console.log(error.response))
+        }
     }
     
 }

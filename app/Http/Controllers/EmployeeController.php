@@ -4,8 +4,63 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Employee;
 class EmployeeController extends Controller
 {
+    public function generateUser(){
+        $managers = DB::table('lmngr')->leftjoin('emp_info','lmngr.empno','=','emp_info.empno')->leftjoin('emp_comp','emp_comp.empid','=','emp_info.empid')->where('lmngr.mngr_enabled',1)->get();
+        
+        $mngr = [];
+        foreach($managers as $key=>$manager){
+            array_push($mngr,$managers[$key]->empno);
+        }
+        // return $mngr;
+        $supervisor = DB::table('lsup')->leftjoin('emp_info','lsup.empno','=','emp_info.empno')->leftjoin('emp_comp','emp_comp.empid','=','emp_info.empid')->where('lsup.sup_enabled',1)->whereNotIn('lsup.empno',$mngr)->get();
+        $hr = DB::table('emp_info')->leftjoin('emp_comp','emp_info.empid','=','emp_comp.empid')->where('emp_comp.eactive','Active')->where('emp_comp.ecurrdept','Human Resources')->get();
+        foreach($managers as $key=>$manager){
+            $employee = new Employee();
+            $employee->useruniq = $manager->empid;
+
+            $employee->empno = $manager->empno;
+            $employee->firstname = $manager->firstname;;
+            $employee->lastname = $manager->lastname;;
+            $employee->username = $manager->empno;
+            $employee->userpass = hash('sha256','password') ;
+            $employee->useraccess = 'super_admin';
+            $employee->position = 'manager';
+
+            $employee->save();
+        }
+        foreach($supervisor as $key=>$manager){
+            $employee = new Employee();
+            $employee->useruniq = $manager->empid;
+
+            $employee->empno = $manager->empno;
+            $employee->firstname = $manager->firstname;;
+            $employee->lastname = $manager->lastname;;
+            $employee->username = $manager->empno;
+            $employee->userpass = hash('sha256','password') ;
+            $employee->useraccess = 'super_admin';
+            $employee->position = 'supervisor';
+
+            $employee->save();
+        }
+
+        foreach($hr as $key=>$manager){
+            $employee = new Employee();
+            $employee->useruniq = $manager->empid;
+
+            $employee->empno = $manager->empno;
+            $employee->firstname = $manager->firstname;;
+            $employee->lastname = $manager->lastname;;
+            $employee->username = $manager->empno;
+            $employee->userpass = hash('sha256','password') ;
+            $employee->useraccess = 'super_admin';
+            $employee->position = 'hr_officer';
+
+            $employee->save();
+        }
+    }
     public function getPositions(){
         return $positions = DB::table('emp_positions')->get();
     }

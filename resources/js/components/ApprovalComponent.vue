@@ -8,15 +8,6 @@
                     <li class="breadcrumb-item active" aria-current="page">New movement form</li>
                 </ol>
             </nav>
-            <div class="input-group ">
-                <input placeholder="Type employee name here ..." class="form-control" @change="search($event.target)" id="searchbox" list="" @keyup="searchUpdate()" @keyup.enter="searchUpdate()">
-                <datalist id="employees">
-                    <option v-for="(employee,index) in employees" :key="index"  :value="employee.empno">{{employee.firstname}} {{employee.middlename != null ? employee.middlename : ''}}  {{employee.lastname}} {{employee.servarea != 'N/A' ? 'of ' + employee.servarea : ''}}</option>
-                </datalist>
-                <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" id="button-addon2" @click="search(selected_employee)" :disabled="selected_employee.length == 0 ? true : false"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-            </div>
         </div>
         <div class="container">
             <div class="row d-none d-print-flex">
@@ -109,7 +100,7 @@
                             <tr>
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="position_title" v-model="position_toggler" :disabled="current_user.position == 'hr_officer' ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="position_title" v-model="form.move_position" disabled>
                                         <label class="custom-control-label" for="position_title">POSITION TITLE</label>
                                     </div>
                                 </td>
@@ -117,7 +108,7 @@
                             <tr >
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="job_status" v-model="job_status_toggler" :disabled="current_user.position == 'hr_officer' ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="job_status" v-model="form.move_job_status" disabled>
                                         <label class="custom-control-label" for="job_status">JOB STATUS</label>
                                     </div>
                                 </td>
@@ -125,7 +116,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="job_level" v-model="job_level_toggler" >
+                                        <input type="checkbox" class="custom-control-input" id="job_level" v-model="form.move_job_level" disabled>
                                         <label class="custom-control-label" for="job_level">JOB LEVEL</label>
                                     </div>
                                 </td>
@@ -133,7 +124,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="role" v-model="form.move_role" disabled>
                                         <label class="custom-control-label" for="role">ROLE ASSIGNMENT</label>
                                     </div>
                                 </td>
@@ -141,7 +132,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="department" v-model="departments_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="department" v-model="form.move_department" disabled>
                                         <label class="custom-control-label" for="department">DEPARTMENT</label>
                                     </div>
                                 </td>
@@ -149,7 +140,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="cost_center" v-model="cost_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="cost_center" v-model="form.move_cost_center" disabled>
                                         <label class="custom-control-label" for="cost_center">COST CENTER</label>
                                     </div>
                                 </td>
@@ -157,7 +148,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="salary" v-model="salary_toggler" :disabled="current_user.position == 'hr_officer'  ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="salary" v-model="form.move_salary" disabled>
                                         <label class="custom-control-label" for="salary">SALARY</label>
                                     </div>
                                 </td>
@@ -165,7 +156,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="form.move_allowance" disabled>
                                         <label class="custom-control-label" for="allowance">MONTHLY ALLOWANCE</label>
                                     </div>
                                 </td>
@@ -173,7 +164,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler" :disabled=" current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="form.move_immediate_superior" disabled>
                                         <label class="custom-control-label" for="immediate_superior">IMMEDIATE SUPERIOR</label>
                                     </div>
                                 </td>
@@ -181,7 +172,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="department_manager" v-model="manager_toggler" :disabled="current_user.position == 'hr_officer'  ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="department_manager" v-model="form.move_manager" disabled>
                                         <label class="custom-control-label" for="department_manager">DEPARTMENT MANAGER</label>
                                     </div>
                                 </td>
@@ -189,7 +180,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="extion_of_contract" v-model="extension_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="extion_of_contract" v-model="form.move_contract" disabled>
                                         <label class="custom-control-label" for="extion_of_contract">EXTENSION OF CONTRACT</label>
                                     </div>
                                 </td>
@@ -197,7 +188,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="others" v-model="other_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="others" v-model="form.move_others" disabled>
                                         <label class="custom-control-label" for="others">OTHERS</label>
                                     </div>
                                 </td>
@@ -220,40 +211,40 @@
                                         <td >FROM</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ selected_employee.length == 0 ?  'N/A' : selected_employee.info1.eposition }}</td>
+                                        <td>{{ form.from_position }}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ selected_employee.length == 0 ?  'N/A' : selected_employee.info1.estatus }}</td>
+                                        <td>{{ form.from_job_status }}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ selected_employee.length == 0 ?  'N/A' : selected_employee.info1.elevel }}</td>
+                                        <td>{{ form.from_job_level }}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ selected_employee.length == 0 ?  'N/A' : selected_employee.info1.erole }}</td>
+                                        <td>{{ form.from_role }}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ selected_employee.length == 0 ?  'N/A' : selected_employee.info1.ecurrdept }}</td>
+                                        <td>{{ form.from_department }}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ selected_employee.length == 0 ?  'N/A' : selected_employee.info1.ecostcenter }}</td>
+                                        <td>{{ form.from_cost_center }}</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center h-100"></td>
+                                        <td>{{ form.from_salary == null ? 0 :  form.from_salary}}</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="allowance" id="allowance" v-model="from_allowance" placeholder="" class="border-0 text-center h-100"></td>
+                                        <td>{{form.allowance == null ? 0 :  form.allowance}}</td>
                                     </tr>
                                     <tr>
-                                        <td v-if="selected_employee.length == 0 || selected_employee.info1.supervisor.length == 0">N/A</td>
-                                        <td v-else>{{selected_employee.info1.supervisor.firstname}}  {{selected_employee.info1.supervisor.lastname}}</td>
+                                        <td>{{ selected_supervisor.firstname}} {{ selected_supervisor.lastname}}</td>
+                                        
                                     </tr>
                                     <tr>
-                                        <td v-if="selected_employee.length == 0 || selected_employee.info1.manager.length == 0">N/A</td>
-                                        <td v-else>{{selected_employee.info1.manager.firstname}}  {{selected_employee.info1.manager.lastname}}</td>
+            
+                                        <td >{{selected_employee.info1.manager.firstname}}  {{selected_employee.info1.manager.lastname}}</td>
                                     </tr>
                                     <tr>
-                                        <td v-if="extension_toggler == false">N/A</td>
-                                        <td v-else><input type="date" name="eoc" id="eoc"  class="border-0 text-center" ></td>
+                                        
+                                        <td ><input type="date" name="eoc" id="eoc"  class="border-0 text-center" ></td>
                                     </tr>
                                     <tr>
                                         <td><input type="text" name="other" id="other"  class="border-0 text-center h-100"></td>
@@ -274,21 +265,10 @@
                                         <td >TO</td>
                                     </tr>
                                     <tr>
-                                        <td v-if="position_toggler == false">SAME</td>
-                                        <td v-if="position_toggler == true">
-                                            <select name="position_title" id="position_title" class="border-0 w-100 text-center" v-model="selected_position" :disabled="current_user.positio == 'hr_officer' ? false : true">
-                                                <option v-for="(position,index) in positions" :key="index" i :value="position.eposition" >{{position.eposition}}</option>
-                                            </select>
-                                        </td>
+                                        <td>{{form.to_position == null ? 'SAME' : form.to_position}}</td>
                                     </tr>
                                     <tr>
-                                        <td v-if="job_status_toggler == false">SAME</td>
-                                        <td v-if="job_status_toggler == true">
-                                            <select name="job_status" id="job_status" class="border-0 w-100 text-center" v-model="selected_status" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true" >
-                                                <option value="Probationary">Probationary</option>
-                                                <option value="Regular">Regular</option>
-                                            </select>
-                                        </td>
+                                        {{form.to_job_status == null ? 'SAME' : form.to_job_status}}
                                     </tr>
                                     <tr>
                                         <td v-if="job_level_toggler == false">SAME</td>
@@ -308,13 +288,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td v-if="departments_toggler == false">SAME</td>
-                                        <td v-if="departments_toggler == true">
-                                            <select name="department" id="department" class="border-0 w-100 text-center" v-model="selected_department" @change="departmentUpdate()">
-                                                <option v-for="(cost_center,index) in cost_centers" :key="index" :value="cost_center.ccname" :selected="cost_center.ccname == selected_cost_center ? true : false">{{cost_center.ccname}}</option>
-                                            </select>
-                                            <!-- {{selected_department}} -->
-                                        </td>
+                                        <label></label>
                                     </tr>
                                     <tr>
                                         <td v-if="cost_toggler == false">SAME</td>
@@ -468,6 +442,7 @@ export default {
     components:{navbar},
     data(){
         return{
+            form:[],
             employees:[],
             selected_employee: [],
             
@@ -486,7 +461,7 @@ export default {
                 {eposition: 'Jr Finance Officer'},
                 {eposition: 'General Facilities Assistant'}
             ],
-            
+
             job_status: [],
             
             job_level:[{job_name:'Managerial'},{job_name:'Supervisor'},{job_name:'Technical Specialist'},{job_name:'Assistant Manager'},{job_name:'Rank & File'}],
@@ -505,24 +480,8 @@ export default {
                 {DEPTNAME: 'Area 4'},
                 {DEPTNAME: 'Tier 2'}
             ],
-            position_toggler: false,
-            job_status_toggler: false,
-            job_level_toggler: false,
-            departments_toggler: false,
-            cost_toggler: false,
-            role_toggler: false,
-            supervisor_toggler: false,
-            manager_toggler: false,
-            salary_toggler: false,
-            allowance_toggler: false,
-            extension_toggler: false,
-            other_toggler:false,
-            selected_position: [],
-            selected_status: [],
-            selected_level: [],
-            selected_role: [],
-            selected_department: [],
-            selected_cost_center: [],
+            current_supervisor:[],
+            current_manager:[],
             selected_supervisor: [],
             selected_manager: [],
             effectivity_date: new Date().toISOString().slice(0, -14),
@@ -533,29 +492,16 @@ export default {
         }
     },
     methods:{
-        getUsers(){
-            axios.post('/acsi_emfs/api/employees').then(response => {
-                // console.log(response.data)
-                this.employees = response.data
-            }).catch(error => console.log(error.response.data))
-        },
-        search(e){
-            if(e.value != ''){
-                this.getUser(e.value)
-            }
-            
+        getForm(){
+            axios.get('/acsi_emfs/api/employee-movement-form/'+this.$route.params.request_no).then(response => {
+                this.form = response.data
+                this.selected_employee = this.getUser(response.data.employee.empno)
+            })
         },
         getUser(emp_no){
-            this.clearField()
             axios.post('/acsi_emfs/api/employees/'+emp_no).then(response => {
                 // console.log(response.data)
-                this.selected_employee = response.data
-                this.supervisor_toggler = true
-                this.supervisorUpdate(this.current_user.empno)
-                if(response.date != ''){
-                    $("#searchbox").attr("list","")
-                    $("#searchbox").val(this.selected_employee.firstname + ' ' + this.selected_employee.middlename + ' ' + this.selected_employee.lastname ) 
-                }
+                return response.data
             }).catch(error => console.log(error.response.data))
         },
         getPositions(){
@@ -593,18 +539,6 @@ export default {
                 this.selected_department = response.data.info1.ecurrdept
             }).catch(error => console.log(error.response.data))
         },
-        searchUpdate(){
-            if($("#searchbox").val() != ''){
-                $("#searchbox").attr("list","employees")
-            }else{
-                $("#searchbox").attr("list","")
-                this.clearField()
-            }
-            // if($("#searchbox").val("list","employees")){
-
-            // }
-            // $("#searchbox").attr("list","employees");
-        },
         getCurrentUser(){
             if(AppStorage.getToken()){
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
@@ -614,96 +548,10 @@ export default {
                 this.current_user = response.data
             })
         },
-        submit(){
-            let fd = new FormData()
-            fd.append('emp_no',this.selected_employee.empno)
-            fd.append('request_by',this.current_user.empno)
-            fd.append('from_position',this.selected_employee.info1.eposition)
-            fd.append('from_job_status',this.selected_employee.info1.estatus)
-            fd.append('from_job_level',this.selected_employee.info1.elevel)
-            fd.append('from_role',this.selected_employee.info1.erole)
-            fd.append('from_department',this.selected_employee.info1.ecurrdept)
-            fd.append('from_cost_center',this.selected_employee.info1.ecostcenter)
-            // From salary
-            fd.append('from_allowance',this.from_allowance)
-            fd.append('from_immediate_superior',this.selected_employee.info1.esup)
-            fd.append('from_manager',this.selected_employee.info1.emngr)
-            // From others
-            // From contract
-            fd.append('move_position',this.position_toggler)
-            fd.append('move_job_status',this.job_status_toggler)
-            fd.append('move_job_level',this.job_level_toggler)
-            fd.append('move_role',this.role_toggler)
-            fd.append('move_department',this.departments_toggler)
-            fd.append('move_cost_center',this.cost_toggler)
-            // salary toggler
-            // allowance toggler
-            
-            fd.append('move_immediate_superior',this.supervisor_toggler)
-            fd.append('move_manager',this.manager_toggler)
-            // contract toggler
-            // others toggler
-
-            fd.append('to_position',this.selected_position)
-            fd.append('to_job_status',this.selected_status)
-            fd.append('to_job_level',this.selected_level)
-            fd.append('to_role',this.selected_role)
-            fd.append('to_department',this.selected_department)
-            fd.append('to_cost_center',this.selected_cost_center)
-            // to salary
-            fd.append('to_allowance',this.to_allowance)
-            fd.append('to_immediate_superior',this.selected_supervisor.empno)
-            
-            fd.append('to_manager',this.selected_supervisor.info1.supervisor.empno)
-            // to contract
-            // to others
-            fd.append('reason_for_movement',this.reason)
-            fd.append('effectivity_date',this.effectivity_date)
-            axios.post('/acsi_emfs/api/employee-movement-form',fd).then(response => {
-                if(response.data == 'success'){
-                    this.clearField()
-                    $("#searchbox").val('')
-                    alert('Movement request done !')
-                }
-            }).catch(error => console.log(error.response.data))
-        },
-        clearField(){
-            this.selected_employee  = []
-            this.position_toggler =  false
-            this.job_status_toggler =  false
-            this.job_level_toggler =  false
-            this.departments_toggler =  false
-            this.cost_toggler =  false
-            this.role_toggler =  false
-            this.supervisor_toggler =  false
-            this.manager_toggler =  false
-            this.salary_toggler =  false
-            this.allowance_toggler =  false
-            this.extension_toggler =  false
-            this.other_toggler = false
-            this.selected_position =  []
-            this.selected_status =  []
-            this.selected_level =  []
-            this.selected_role =  []
-            this.selected_department =  []
-            this.selected_cost_center =  []
-            this.selected_supervisor =  []
-            this.selected_manager =  []
-            this.effectivity_date =  new Date().toISOString().slice(0, -14)
-            
-            this.reason = []
-            this.from_allowance =  0
-            this.to_allowance = 0
-        }
     },
     created(){
+        this.getForm()
         this.getCurrentUser()
-        this.getUsers()
-        this.getPositions()
-        this.getDepartments()
-        this.getCostCenter()
-        this.getSupervisor()
-        this.getManager()
         
         
     }

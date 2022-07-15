@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\EmployeeMovementFormController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,7 +31,9 @@ Route::post('/get-current-user',[LoginController::class,'getCurrentUser']);
 Route::post('/logout',[LoginController::class,'logout'])->middleware('auth:employee');
 
 Route::post('/register',[RegisterController::class,'store']);
+Route::post('generate-user',[EmployeeController::class,'generateUser']);
 
+Route::resource('/employee-movement-form',EmployeeMovementFormController::class)->middleware('auth:employee');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

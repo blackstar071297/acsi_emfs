@@ -8,11 +8,13 @@ import DashboardComponent from '../components/DashboardComponent'
 import loginComponent from '../components/LoginComponent'
 import NewMovementFormComponent from '../components/NewMovementFormComponent'
 import NewEmployeeComponent from '../components/NewEmployeeComponent'
+import ApprovalComponent from '../components/ApprovalComponent'
 
 Vue.use(VueRouter)
 
 const guard = (to,from,next) => {
     let current_path = to.fullPath.split('/')
+
     document.title = process.env.MIX_APP_NAME + ' | ' + to.meta.title
     if(AppStorage.getToken()){
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
@@ -23,10 +25,11 @@ const guard = (to,from,next) => {
 }
 
 let routes = [
-    {path:'/acsi_emfs/',component:DashboardComponent,beforeEnter: guard},
-    {path:'/acsi_emfs/new-movement-form',component:NewMovementFormComponent,beforeEnter: guard},
+    {path:'/acsi_emfs/',component:DashboardComponent,beforeEnter: guard, meta:{title: 'Dashboard'}},
+    {path:'/acsi_emfs/new-movement-form',component:NewMovementFormComponent,beforeEnter: guard,meta:{title: 'Movement form'}},
     {path:'/acsi_emfs/login',component:loginComponent},
-    {path: '/acsi_emfs/new-employee',component: NewEmployeeComponent,beforeEnter: guard}
+    {path: '/acsi_emfs/new-employee',component: NewEmployeeComponent,beforeEnter: guard,meta:{title: 'New employee'}},
+    {path: '/acsi_emfs/approvals/:request_no',component: ApprovalComponent,beforeEnter: guard,meta:{title: 'Approval'}},
 ]
 const router = new VueRouter({
     mode: 'history',
