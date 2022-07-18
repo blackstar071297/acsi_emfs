@@ -5,14 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmployeeInfo extends Model
+class EmployeeInfo1 extends Model
 {
     use HasFactory;
-    protected $table = 'emp_info';
+    protected $table = 'emp_comp';
 
     protected $primaryKey = 'empid';
-
-    public function info1(){
-        return $this->hasOne(EmployeeInfo1::class,'empid','empid');
-    }
 }

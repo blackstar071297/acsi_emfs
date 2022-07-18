@@ -6,6 +6,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EmployeeMovementFormController;
+use App\Http\Controllers\MovementRecordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,6 +35,7 @@ Route::post('/register',[RegisterController::class,'store']);
 Route::post('generate-user',[EmployeeController::class,'generateUser']);
 
 Route::resource('/employee-movement-form',EmployeeMovementFormController::class)->middleware('auth:employee');
+Route::resource('/movement-record',MovementRecordController::class)->middleware('auth:employee');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

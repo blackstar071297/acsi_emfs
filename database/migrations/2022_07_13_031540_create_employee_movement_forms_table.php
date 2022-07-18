@@ -67,6 +67,7 @@ class CreateEmployeeMovementFormsTable extends Migration
             $table->date('new_superior_accept_date')->nullable();
             $table->date('manager_accept_date')->nullable();
             $table->date('new_manager_accept_date')->nullable();
+            $table->date('cable_head_accept_date')->nullable();
             $table->date('employee_accept_date')->nullable();
             $table->date('hr_accept_date')->nullable();
             $table->date('effectivity_date')->nullable();

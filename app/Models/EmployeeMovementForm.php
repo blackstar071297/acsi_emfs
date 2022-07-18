@@ -35,6 +35,18 @@ class EmployeeMovementForm extends Model
     public function requestor(){
         return $this->hasOne(EmployeeInfo::class,'empno','request_by');
     }
+    public function current_superior(){
+        return $this->hasOne(EmployeeInfo::class,'empno','from_immediate_superior');
+    }
+    public function current_manager(){
+        return $this->hasOne(EmployeeInfo::class,'empno','from_manager');
+    }
+    public function new_superior(){
+        return $this->hasOne(EmployeeInfo::class,'empno','to_immediate_superior');
+    }
+    public function new_manager(){
+        return $this->hasOne(EmployeeInfo::class,'empno','to_manager');
+    }
     public function records(){
         return $this->hasMany(MovementRecord::class,'request_no','request_no')->latest();
     }

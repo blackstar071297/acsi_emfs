@@ -137,7 +137,7 @@ class EmployeeMovementFormController extends Controller
     public function show(EmployeeMovementForm $employeeMovementForm)
     {
         //
-        return $form = EmployeeMovementForm::with('employee','requestor','records.status')->where('request_no',$employeeMovementForm->request_no)->first();
+        return $form = EmployeeMovementForm::with('employee.info1','requestor.info1','records.status','current_manager.info1','current_superior.info1','new_superior.info1','new_manager.info1')->where('request_no',$employeeMovementForm->request_no)->first();
         
     }
 
