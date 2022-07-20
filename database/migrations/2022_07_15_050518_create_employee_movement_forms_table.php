@@ -52,7 +52,7 @@ class CreateEmployeeMovementFormsTable extends Migration
             $table->string('to_job_status')->nullable();
             $table->string('to_job_level')->nullable();
             $table->string('to_role')->nullable();
-            $table->string('to_department')->nullalbe();
+            $table->string('to_department')->nullable();
             $table->string('to_cost_center')->nullable();
             $table->float('to_salary')->nullable();
             $table->float('to_allowance')->nullable();
@@ -62,6 +62,9 @@ class CreateEmployeeMovementFormsTable extends Migration
             $table->foreign('to_manager')->references('empno')->on('emp_info');
             $table->string('to_contract')->nullable();
             $table->string('to_others')->nullable();
+            $table->string('hr_account_officer')->nullable();
+            $table->foreign('hr_account_officer')->references('empno')->on('emp_info');
+
 
             $table->date('superior_accept_date')->nullable();
             $table->date('new_superior_accept_date')->nullable();

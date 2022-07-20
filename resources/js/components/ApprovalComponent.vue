@@ -217,7 +217,6 @@
                                     </tr>
                                     <tr>
                                         <td>{{ form.current_superior.firstname}} {{ form.current_superior.lastname}}</td>
-                                        
                                     </tr>
                                     <tr>
                                         <td >{{form.current_manager.firstname}}  {{form.current_manager.lastname}}</td>
@@ -269,10 +268,12 @@
                                         <td>{{form.to_allowance == null ? 'SAME' : form.to_allowance}}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{form.new_superior.firstname}} {{form.new_superior.lastname}}</td>
+                                        <td v-if="form.to_immediate_superior != null">{{form.new_superior.firstname}} {{form.new_superior.lastname}}</td>
+                                        <td v-else>SAME</td>
                                     </tr>
                                     <tr>
-                                        <td>{{form.new_manager.firstname}} {{form.new_manager.lastname}}</td>
+                                        <td v-if="form.to_manager != null">{{form.new_manager.firstname}} {{form.new_manager.lastname}}</td>
+                                        <td v-else>SAME</td>
                                     </tr>
                                     <tr>
                                         <td>SAME</td>
@@ -292,7 +293,7 @@
                             <tr style="border: 5px solid black">
                                 <td class="font-weight-bold " colspan="2">APPROVAL</td>
                             </tr>
-                            <tr >
+                            <tr>
                                 <td style='font-weight: bold;' class="border-0 w-50"  >
                                     <br>
                                     <br>
@@ -313,11 +314,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style='font-weight: bold;' class="border-0 w-50">
+                                <td style='font-weight: bold;' class="border-0 w-50" v-if="form.to_manager != null">
                                     <br>
                                     <br>
-                                    <div class="text-center mt-5" >
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 3 && current_user.empno == form.new_manager.empno">Approve</button>
+                                    <div class="text-center mt-5" v-if="form.from_manager != form.to_manager && form.to_manager != 'ACSI-200634'">
+                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 4 && current_user.empno == form.new_manager.empno">Approve</button>
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.firstname }} {{ form.new_manager.lastname }}</h6>
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.info1.eposition }}</h6>
                                     </div>
@@ -326,7 +327,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 4 && current_user.empno == 'ACSI-200634'">Approve</button>
+                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 5 && current_user.empno == 'ACSI-200634'">Approve</button>
                                         <h6 class="align-middle font-weight-bold">Oliver Angeles</h6>
                                         <h6 class="align-middle font-weight-bold">Head, Cable Operations</h6>
                                     </div>
@@ -347,7 +348,8 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold">Sunshine Cunanan</h6>
+                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 6 && current_user.empno == form.hr_account_officer">Approve</button>
+                                        <h6 class="align-middle font-weight-bold">{{ form.account_officer.firstname}} {{ form.account_officer.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">HR Account Officer</h6>
                                     </div>
                                 </td>
@@ -356,7 +358,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 5 && current_user.empno == form.emp_no">Approve</button>
+                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 7 && current_user.empno == form.emp_no">Approve</button>
                                         <h6 class="align-middle font-weight-bold">{{form.employee.firstname}}  {{form.employee.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ form.employee.info1.eposition }}</h6>
                                     </div>
@@ -398,6 +400,7 @@ export default {
             current_manager:[],
             selected_supervisor: [],
             selected_manager: [],
+            current_user: []
         }
     },
     methods:{
@@ -428,7 +431,13 @@ export default {
             const fd = new FormData()
             fd.append('request_no',this.$route.params.request_no)
             fd.append('current_status',this.form.records[0].status_id)
-            axios.post('/acsi_emfs/api/movement-record',fd).then(response => console.log(response.data)).catch(error => console.log(error.response.data))
+            axios.post('/acsi_emfs/api/movement-record',fd).then(response => {
+                console.log(response.data)
+                if(response.data == 'success'){
+                    alert('Movement Approved!')
+                    window.location.reload()
+                }
+            }).catch(error => console.log(error.response.data))
         }
     },
     created(){

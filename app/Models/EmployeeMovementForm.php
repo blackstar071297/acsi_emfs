@@ -47,8 +47,12 @@ class EmployeeMovementForm extends Model
     public function new_manager(){
         return $this->hasOne(EmployeeInfo::class,'empno','to_manager');
     }
+    public function account_officer(){
+        return $this->hasOne(EmployeeInfo::class,'empno','hr_account_officer');
+    }
     public function records(){
         return $this->hasMany(MovementRecord::class,'request_no','request_no')->latest();
     }
+    
     
 }

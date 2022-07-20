@@ -5654,6 +5654,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5668,7 +5670,8 @@ __webpack_require__.r(__webpack_exports__);
       current_supervisor: [],
       current_manager: [],
       selected_supervisor: [],
-      selected_manager: []
+      selected_manager: [],
+      current_user: []
     };
   },
   methods: {
@@ -5705,7 +5708,12 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('request_no', this.$route.params.request_no);
       fd.append('current_status', this.form.records[0].status_id);
       axios.post('/acsi_emfs/api/movement-record', fd).then(function (response) {
-        return console.log(response.data);
+        console.log(response.data);
+
+        if (response.data == 'success') {
+          alert('Movement Approved!');
+          window.location.reload();
+        }
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
@@ -6724,6 +6732,8 @@ __webpack_require__.r(__webpack_exports__);
       selected_manager: [],
       effectivity_date: new Date().toISOString().slice(0, -14),
       reason: [],
+      from_salary: 0,
+      to_salary: 0,
       from_allowance: 0,
       to_allowance: 0
     };
@@ -6819,6 +6829,16 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error.response.data);
       });
     },
+    checkSupervisorToggler: function checkSupervisorToggler(e) {
+      console.log(e.target.checked);
+
+      if (e.target.checked == false) {
+        this.departments_toggler = false;
+        this.cost_toggler = false;
+        this.manager_toggler = false;
+        this.selected_supervisor = [];
+      }
+    },
     searchUpdate: function searchUpdate() {
       if ($("#searchbox").val() != '') {
         $("#searchbox").attr("list", "employees");
@@ -6853,8 +6873,8 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('from_job_level', this.selected_employee.info1.elevel);
       fd.append('from_role', this.selected_employee.info1.erole);
       fd.append('from_department', this.selected_employee.info1.ecurrdept);
-      fd.append('from_cost_center', this.selected_employee.info1.ecostcenter); // From salary
-
+      fd.append('from_cost_center', this.selected_employee.info1.ecostcenter);
+      fd.append('from_salary', this.from_salary);
       fd.append('from_allowance', this.from_allowance);
       fd.append('from_immediate_superior', this.selected_employee.info1.esup);
       fd.append('from_manager', this.selected_employee.info1.emngr); // From others
@@ -6865,9 +6885,9 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('move_job_level', this.job_level_toggler);
       fd.append('move_role', this.role_toggler);
       fd.append('move_department', this.departments_toggler);
-      fd.append('move_cost_center', this.cost_toggler); // salary toggler
-      // allowance toggler
-
+      fd.append('move_cost_center', this.cost_toggler);
+      fd.append('move_salary', this.salary_toggler);
+      fd.append('move_allowance', this.allowance_toggler);
       fd.append('move_immediate_superior', this.supervisor_toggler);
       fd.append('move_manager', this.manager_toggler); // contract toggler
       // others toggler
@@ -6877,16 +6897,18 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('to_job_level', this.selected_level);
       fd.append('to_role', this.selected_role);
       fd.append('to_department', this.selected_department);
-      fd.append('to_cost_center', this.selected_cost_center); // to salary
-
+      fd.append('to_cost_center', this.selected_cost_center);
+      fd.append('to_salary', this.to_salary);
       fd.append('to_allowance', this.to_allowance);
       fd.append('to_immediate_superior', this.selected_supervisor.empno);
-      fd.append('to_manager', this.selected_supervisor.info1.supervisor.empno); // to contract
+      fd.append('to_manager', Object.keys(this.selected_supervisor).length > 0 ? this.selected_supervisor.info1.supervisor.empno : null); // to contract
       // to others
 
       fd.append('reason_for_movement', this.reason);
       fd.append('effectivity_date', this.effectivity_date);
       axios.post('/acsi_emfs/api/employee-movement-form', fd).then(function (response) {
+        console.log(response);
+
         if (response.data == 'success') {
           _this10.clearField();
 
@@ -30924,23 +30946,27 @@ var render = function () {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                _vm._s(_vm.form.new_superior.firstname) +
-                                  " " +
-                                  _vm._s(_vm.form.new_superior.lastname)
-                              ),
-                            ]),
+                            _vm.form.to_immediate_superior != null
+                              ? _c("td", [
+                                  _vm._v(
+                                    _vm._s(_vm.form.new_superior.firstname) +
+                                      " " +
+                                      _vm._s(_vm.form.new_superior.lastname)
+                                  ),
+                                ])
+                              : _c("td", [_vm._v("SAME")]),
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                _vm._s(_vm.form.new_manager.firstname) +
-                                  " " +
-                                  _vm._s(_vm.form.new_manager.lastname)
-                              ),
-                            ]),
+                            _vm.form.to_manager != null
+                              ? _c("td", [
+                                  _vm._v(
+                                    _vm._s(_vm.form.new_manager.firstname) +
+                                      " " +
+                                      _vm._s(_vm.form.new_manager.lastname)
+                                  ),
+                                ])
+                              : _c("td", [_vm._v("SAME")]),
                           ]),
                           _vm._v(" "),
                           _vm._m(9),
@@ -31086,63 +31112,82 @@ var render = function () {
                       ]),
                       _vm._v(" "),
                       _c("tr", [
-                        _c(
-                          "td",
-                          {
-                            staticClass: "border-0 w-50",
-                            staticStyle: { "font-weight": "bold" },
-                          },
-                          [
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "text-center mt-5" }, [
-                              _vm.form.records[0].status_id == 3 &&
-                              _vm.current_user.empno ==
-                                _vm.form.new_manager.empno
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-success w-75",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.approved()
-                                        },
-                                      },
-                                    },
-                                    [_vm._v("Approve")]
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _c(
-                                "h6",
-                                {
-                                  staticClass: "align-middle font-weight-bold",
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(_vm.form.new_manager.firstname) +
-                                      " " +
-                                      _vm._s(_vm.form.new_manager.lastname)
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "h6",
-                                {
-                                  staticClass: "align-middle font-weight-bold",
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(_vm.form.new_manager.info1.eposition)
-                                  ),
-                                ]
-                              ),
-                            ]),
-                          ]
-                        ),
+                        _vm.form.to_manager != null
+                          ? _c(
+                              "td",
+                              {
+                                staticClass: "border-0 w-50",
+                                staticStyle: { "font-weight": "bold" },
+                              },
+                              [
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("br"),
+                                _vm._v(" "),
+                                _vm.form.from_manager != _vm.form.to_manager &&
+                                _vm.form.to_manager != "ACSI-200634"
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "text-center mt-5" },
+                                      [
+                                        _vm.form.records[0].status_id == 4 &&
+                                        _vm.current_user.empno ==
+                                          _vm.form.new_manager.empno
+                                          ? _c(
+                                              "button",
+                                              {
+                                                staticClass:
+                                                  "btn btn-success w-75",
+                                                on: {
+                                                  click: function ($event) {
+                                                    return _vm.approved()
+                                                  },
+                                                },
+                                              },
+                                              [_vm._v("Approve")]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "h6",
+                                          {
+                                            staticClass:
+                                              "align-middle font-weight-bold",
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.form.new_manager.firstname
+                                              ) +
+                                                " " +
+                                                _vm._s(
+                                                  _vm.form.new_manager.lastname
+                                                )
+                                            ),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "h6",
+                                          {
+                                            staticClass:
+                                              "align-middle font-weight-bold",
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.form.new_manager.info1
+                                                  .eposition
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                              ]
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _c(
                           "td",
@@ -31156,7 +31201,7 @@ var render = function () {
                             _c("br"),
                             _vm._v(" "),
                             _c("div", { staticClass: "text-center mt-5" }, [
-                              _vm.form.records[0].status_id == 4 &&
+                              _vm.form.records[0].status_id == 5 &&
                               _vm.current_user.empno == "ACSI-200634"
                                 ? _c(
                                     "button",
@@ -31205,7 +31250,59 @@ var render = function () {
                       _vm._m(12),
                       _vm._v(" "),
                       _c("tr", [
-                        _vm._m(13),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "border-0 w-50",
+                            staticStyle: { "font-weight": "bold" },
+                          },
+                          [
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "text-center mt-5" }, [
+                              _vm.form.records[0].status_id == 6 &&
+                              _vm.current_user.empno ==
+                                _vm.form.hr_account_officer
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-success w-75",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.approved()
+                                        },
+                                      },
+                                    },
+                                    [_vm._v("Approve")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c(
+                                "h6",
+                                {
+                                  staticClass: "align-middle font-weight-bold",
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.form.account_officer.firstname) +
+                                      " " +
+                                      _vm._s(_vm.form.account_officer.lastname)
+                                  ),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "h6",
+                                {
+                                  staticClass: "align-middle font-weight-bold",
+                                },
+                                [_vm._v("HR Account Officer")]
+                              ),
+                            ]),
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "td",
@@ -31220,7 +31317,7 @@ var render = function () {
                             _c("br"),
                             _vm._v(" "),
                             _c("div", { staticClass: "text-center mt-5" }, [
-                              _vm.form.records[0].status_id == 5 &&
+                              _vm.form.records[0].status_id == 7 &&
                               _vm.current_user.empno == _vm.form.emp_no
                                 ? _c(
                                     "button",
@@ -31307,7 +31404,7 @@ var render = function () {
                 ),
               ]),
               _vm._v(" "),
-              _vm._m(14),
+              _vm._m(13),
             ]),
           ])
         : _vm._e(),
@@ -31811,30 +31908,6 @@ var staticRenderFns = [
         _vm._v("ACKNOWLEDGED"),
       ]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "td",
-      { staticClass: "border-0 w-50", staticStyle: { "font-weight": "bold" } },
-      [
-        _c("br"),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-center mt-5" }, [
-          _c("h6", { staticClass: "align-middle font-weight-bold" }, [
-            _vm._v("Sunshine Cunanan"),
-          ]),
-          _vm._v(" "),
-          _c("h6", { staticClass: "align-middle font-weight-bold" }, [
-            _vm._v("HR Account Officer"),
-          ]),
-        ]),
-      ]
-    )
   },
   function () {
     var _vm = this
@@ -33497,28 +33570,33 @@ var render = function () {
                                 : _vm.supervisor_toggler,
                             },
                             on: {
-                              change: function ($event) {
-                                var $$a = _vm.supervisor_toggler,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      (_vm.supervisor_toggler = $$a.concat([
-                                        $$v,
-                                      ]))
+                              change: [
+                                function ($event) {
+                                  var $$a = _vm.supervisor_toggler,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.supervisor_toggler = $$a.concat([
+                                          $$v,
+                                        ]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.supervisor_toggler = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
                                   } else {
-                                    $$i > -1 &&
-                                      (_vm.supervisor_toggler = $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1)))
+                                    _vm.supervisor_toggler = $$c
                                   }
-                                } else {
-                                  _vm.supervisor_toggler = $$c
-                                }
-                              },
+                                },
+                                function ($event) {
+                                  return _vm.checkSupervisorToggler($event)
+                                },
+                              ],
                             },
                           }),
                           _vm._v(" "),
@@ -33817,7 +33895,35 @@ var render = function () {
                         ]),
                       ]),
                       _vm._v(" "),
-                      _vm._m(8),
+                      _c("tr", [
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.from_salary,
+                                expression: "from_salary",
+                              },
+                            ],
+                            staticClass: "border-0 text-center h-100",
+                            attrs: {
+                              type: "text",
+                              name: "salary",
+                              id: "salary",
+                            },
+                            domProps: { value: _vm.from_salary },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.from_salary = $event.target.value
+                              },
+                            },
+                          }),
+                        ]),
+                      ]),
                       _vm._v(" "),
                       _c("tr", [
                         _c("td", [
@@ -33835,7 +33941,6 @@ var render = function () {
                               type: "text",
                               name: "allowance",
                               id: "allowance",
-                              placeholder: "",
                             },
                             domProps: { value: _vm.from_allowance },
                             on: {
@@ -33897,7 +34002,7 @@ var render = function () {
                             ]),
                       ]),
                       _vm._v(" "),
-                      _vm._m(9),
+                      _vm._m(8),
                       _vm._v(" "),
                       _c("tr", { staticClass: " d-print-none" }, [
                         _c("td", [
@@ -33973,7 +34078,7 @@ var render = function () {
                   },
                   [
                     _c("tbody", [
-                      _vm._m(10),
+                      _vm._m(9),
                       _vm._v(" "),
                       _c("tr", [
                         _vm.position_toggler == false
@@ -34398,16 +34503,32 @@ var render = function () {
                         _vm.salary_toggler == false
                           ? _c("td", [_vm._v("SAME")])
                           : _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.to_salary,
+                                  expression: "to_salary",
+                                },
+                              ],
                               staticClass: "border-0 text-center h-100",
                               attrs: {
                                 type: "text",
                                 name: "to_salary",
                                 id: "to_salary",
-                                placeholder: "",
                                 disabled:
                                   _vm.current_user.position == "hr_officer"
                                     ? false
                                     : true,
+                              },
+                              domProps: { value: _vm.to_salary },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.to_salary = $event.target.value
+                                },
                               },
                             }),
                       ]),
@@ -34422,7 +34543,6 @@ var render = function () {
                                 name: "to_allowance",
                                 id: "to_allowance",
                                 "v-model": _vm.to_allowance,
-                                placeholder: "",
                                 disabled:
                                   _vm.current_user.position == "supervisor" ||
                                   _vm.current_user.position == "manager"
@@ -34596,11 +34716,11 @@ var render = function () {
                           : _vm._e(),
                       ]),
                       _vm._v(" "),
+                      _vm._m(10),
+                      _vm._v(" "),
                       _vm._m(11),
                       _vm._v(" "),
                       _vm._m(12),
-                      _vm._v(" "),
-                      _vm._m(13),
                       _vm._v(" "),
                       _c("tr", [
                         _c("td", [
@@ -34635,7 +34755,7 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(14),
+                _vm._m(13),
                 _vm._v(" "),
                 Object.keys(_vm.selected_employee).length != 0
                   ? _c("tr", [
@@ -34813,7 +34933,7 @@ var render = function () {
                           )
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm._m(15),
+                      _vm._m(14),
                     ])
                   : _vm._e(),
               ]),
@@ -34823,11 +34943,11 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(16),
+                _vm._m(15),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
-                      _vm._m(17),
+                      _vm._m(16),
                       _vm._v(" "),
                       Object.keys(_vm.selected_employee.info1.supervisor)
                         .length > 0
@@ -34914,7 +35034,7 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
-          _vm._m(18),
+          _vm._m(17),
         ]),
       ]),
     ],
@@ -35086,24 +35206,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", { staticStyle: { border: "2px solid black" } }, [
       _c("td", [_vm._v("FROM")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("input", {
-          staticClass: "border-0 text-center h-100",
-          attrs: {
-            type: "text",
-            name: "salary",
-            id: "salary",
-            placeholder: "",
-          },
-        }),
-      ]),
     ])
   },
   function () {

@@ -173,7 +173,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler" :disabled=" current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler" :disabled=" current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true" @change="checkSupervisorToggler($event)">
                                         <label class="custom-control-label" for="immediate_superior">IMMEDIATE SUPERIOR</label>
                                     </div>
                                 </td>
@@ -238,10 +238,10 @@
                                         <td>{{ selected_employee.length == 0 ?  'N/A' : selected_employee.info1.ecostcenter }}</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="salary" id="salary" placeholder="" class="border-0 text-center h-100"></td>
+                                        <td><input type="text" name="salary" id="salary" v-model="from_salary" class="border-0 text-center h-100"></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="allowance" id="allowance" v-model="from_allowance" placeholder="" class="border-0 text-center h-100"></td>
+                                        <td><input type="text" name="allowance" id="allowance" v-model="from_allowance" class="border-0 text-center h-100"></td>
                                     </tr>
                                     <tr>
                                         <td v-if="selected_employee.length == 0 || selected_employee.info1.supervisor.length == 0">N/A</td>
@@ -327,11 +327,11 @@
                                     </tr>
                                     <tr>
                                         <td v-if="salary_toggler == false">SAME</td>
-                                        <input v-else type="text" name="to_salary" id="to_salary" placeholder="" class="border-0 text-center h-100" :disabled="current_user.position == 'hr_officer' ? false : true">
+                                        <input v-else type="text" name="to_salary" id="to_salary" v-model="to_salary" class="border-0 text-center h-100" :disabled="current_user.position == 'hr_officer' ? false : true">
                                     </tr>
                                     <tr>
                                         <td v-if="allowance_toggler == false">SAME</td>
-                                        <input v-else type="text" name="to_allowance" id="to_allowance" :v-model="to_allowance" placeholder="" class="border-0 text-center h-100" :disabled="current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true">
+                                        <input v-else type="text" name="to_allowance" id="to_allowance" :v-model="to_allowance" class="border-0 text-center h-100" :disabled="current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true">
                                     </tr>
                                     <tr>
                                         <td v-if="supervisor_toggler == false">SAME</td>
@@ -525,9 +525,12 @@ export default {
             selected_cost_center: [],
             selected_supervisor: [],
             selected_manager: [],
+            
             effectivity_date: new Date().toISOString().slice(0, -14),
             
             reason:[],
+            from_salary: 0,
+            to_salary: 0,
             from_allowance: 0,
             to_allowance:0
         }
@@ -593,6 +596,15 @@ export default {
                 this.selected_department = response.data.info1.ecurrdept
             }).catch(error => console.log(error.response.data))
         },
+        checkSupervisorToggler(e){
+            console.log(e.target.checked)
+            if(e.target.checked == false){
+                this.departments_toggler = false
+                this.cost_toggler = false
+                this.manager_toggler = false
+                this.selected_supervisor = []
+            }
+        },
         searchUpdate(){
             if($("#searchbox").val() != ''){
                 $("#searchbox").attr("list","employees")
@@ -624,7 +636,7 @@ export default {
             fd.append('from_role',this.selected_employee.info1.erole)
             fd.append('from_department',this.selected_employee.info1.ecurrdept)
             fd.append('from_cost_center',this.selected_employee.info1.ecostcenter)
-            // From salary
+            fd.append('from_salary',this.from_salary)
             fd.append('from_allowance',this.from_allowance)
             fd.append('from_immediate_superior',this.selected_employee.info1.esup)
             fd.append('from_manager',this.selected_employee.info1.emngr)
@@ -636,8 +648,8 @@ export default {
             fd.append('move_role',this.role_toggler)
             fd.append('move_department',this.departments_toggler)
             fd.append('move_cost_center',this.cost_toggler)
-            // salary toggler
-            // allowance toggler
+            fd.append('move_salary',this.salary_toggler)
+            fd.append('move_allowance',this.allowance_toggler)
             
             fd.append('move_immediate_superior',this.supervisor_toggler)
             fd.append('move_manager',this.manager_toggler)
@@ -650,16 +662,17 @@ export default {
             fd.append('to_role',this.selected_role)
             fd.append('to_department',this.selected_department)
             fd.append('to_cost_center',this.selected_cost_center)
-            // to salary
+            fd.append('to_salary',this.to_salary)
             fd.append('to_allowance',this.to_allowance)
             fd.append('to_immediate_superior',this.selected_supervisor.empno)
             
-            fd.append('to_manager',this.selected_supervisor.info1.supervisor.empno)
+            fd.append('to_manager',Object.keys(this.selected_supervisor).length > 0 ?  this.selected_supervisor.info1.supervisor.empno : null)
             // to contract
             // to others
             fd.append('reason_for_movement',this.reason)
             fd.append('effectivity_date',this.effectivity_date)
             axios.post('/acsi_emfs/api/employee-movement-form',fd).then(response => {
+                console.log(response)
                 if(response.data == 'success'){
                     this.clearField()
                     $("#searchbox").val('')

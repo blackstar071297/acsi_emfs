@@ -56,6 +56,7 @@ class EmployeeMovementFormController extends Controller
         $emf->from_department = $request->from_department;
         $emf->from_immediate_superior = $request->from_immediate_superior;
         $emf->from_manager = $request->from_manager;
+        $emf->from_salary = $request->from_salary;
         
         if($request->move_position == "true"){
             $emf->move_position = true;
@@ -105,6 +106,7 @@ class EmployeeMovementFormController extends Controller
             $emf->move_others = true;
             $emf->to_others = $request->to_others;
         }
+        $emf->hr_account_officer = $this->search_account_officer($emf);
         $emf->reason_for_movement = $request->reason_for_movement;
         $emf->effectivity_date = $request->effectivity_date;
         try{
@@ -127,7 +129,23 @@ class EmployeeMovementFormController extends Controller
          }
         return $emf;
     }
+    private function search_account_officer($form){
+        if(($form->to_cost_center == 'Area 3') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170010' && $form->move_immediate_superior == "true")){
+            return 'ACSI-200722';
+        }elseif(($form->to_cost_center == 'Area 4') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170006' && $form->move_immediate_superior == "true")){
+            return 'ACSI-200761';
+        }elseif(($form->to_cost_center == 'Area 6') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170208' && $form->move_immediate_superior == "true")){
+            return 'ACSI-190545';
+        }
 
+        if(($form->from_cost_center == 'Area 3') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170010' && $form->move_immediate_superior == "false")){
+            return 'ACSI-200722';
+        }elseif(($form->from_cost_center == 'Area 4') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170006' && $form->move_immediate_superior == "false")){
+            return 'ACSI-200761';
+        }elseif(($form->from_cost_center == 'Area 6') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170208' && $form->move_immediate_superior == "false")){
+            return 'ACSI-190545';
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -137,7 +155,7 @@ class EmployeeMovementFormController extends Controller
     public function show(EmployeeMovementForm $employeeMovementForm)
     {
         //
-        return $form = EmployeeMovementForm::with('employee.info1','requestor.info1','records.status','current_manager.info1','current_superior.info1','new_superior.info1','new_manager.info1')->where('request_no',$employeeMovementForm->request_no)->first();
+        return $form = EmployeeMovementForm::with('employee.info1','requestor.info1','records.status','current_manager.info1','current_superior.info1','new_superior.info1','new_manager.info1','account_officer.info1')->where('request_no',$employeeMovementForm->request_no)->first();
         
     }
 
