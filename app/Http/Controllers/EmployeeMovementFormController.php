@@ -39,6 +39,7 @@ class EmployeeMovementFormController extends Controller
     public function store(Request $request)
     {
         //
+        return $request;
         $emf = new EmployeeMovementForm();
         $ctr = EmployeeMovementForm::whereYear('created_at','=',date('Y'))->get();
         $count = count($ctr,COUNT_RECURSIVE) + 1;

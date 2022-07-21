@@ -26,13 +26,13 @@ class CreateEmployeeMovementFormsTable extends Migration
             $table->string('from_role')->nullable();
             $table->string('from_department')->nullalbe();
             $table->string('from_cost_center')->nullable();
-            $table->float('from_salary')->nullable();
-            $table->float('from_allowance')->nullable();
+            $table->string('from_salary')->nullable();
+            $table->string('from_allowance')->nullable();
             $table->string('from_immediate_superior')->nullable();
             $table->foreign('from_immediate_superior')->references('empno')->on('emp_info');
             $table->string('from_manager')->nullable();
             $table->foreign('from_manager')->references('empno')->on('emp_info');
-            $table->string('from_contract')->nullable();
+            $table->date('from_contract')->nullable();
             $table->string('from_others')->nullable();
 
             $table->boolean('move_position')->default(0);
@@ -54,13 +54,13 @@ class CreateEmployeeMovementFormsTable extends Migration
             $table->string('to_role')->nullable();
             $table->string('to_department')->nullable();
             $table->string('to_cost_center')->nullable();
-            $table->float('to_salary')->nullable();
-            $table->float('to_allowance')->nullable();
+            $table->string('to_salary')->nullable();
+            $table->string('to_allowance')->nullable();
             $table->string('to_immediate_superior')->nullable();
             $table->foreign('to_immediate_superior')->references('empno')->on('emp_info');
             $table->string('to_manager')->nullable();
             $table->foreign('to_manager')->references('empno')->on('emp_info');
-            $table->string('to_contract')->nullable();
+            $table->date('to_contract')->nullable();
             $table->string('to_others')->nullable();
             $table->string('hr_account_officer')->nullable();
             $table->foreign('hr_account_officer')->references('empno')->on('emp_info');

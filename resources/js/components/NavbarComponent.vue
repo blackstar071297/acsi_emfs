@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #e3f2fd;">
         <a class="navbar-brand" href="/acsi_emfs">
-            <img src="/acsi_emfs/public/images/tsi_acsi_logo2.png" width="60" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            <img src="/acsi_emfs/public/images/tsi_acsi_logo2.png" width="60" height="30" class="d-inline-block align-top" alt="logo" loading="lazy">
             <span class="d-xs-none">Employee Movement Form</span> 
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,7 +17,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Welcome {{ Object.keys(current_user).length > 0 ? current_user.empno : ''}}
+                        Welcome {{ Object.keys(current_user).length > 0 ? current_user.firstname + ' ' + current_user.lastname : ''}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="logout.php" @click.prevent="logout()">Logout</a>

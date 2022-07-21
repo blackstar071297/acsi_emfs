@@ -5656,6 +5656,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5743,6 +5756,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/NavbarComponent.vue */ "./resources/js/components/NavbarComponent.vue");
+/* harmony import */ var _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Helpers/AppStorage */ "./resources/js/components/Helpers/AppStorage.js");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5780,13 +5799,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     navbar: _components_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
-      forms: []
+      forms: [],
+      current_user: []
     };
   },
   methods: {
@@ -5799,10 +5820,39 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
+    },
+    getCurrentUser: function getCurrentUser() {
+      var _this2 = this;
+
+      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+        _this2.current_user = response.data;
+      });
+    },
+    checkUser: function checkUser(form) {
+      if (form.records[0].status_id == 1 && form.from_immediate_superior == this.current_user.empno) {
+        return true;
+      } else if (form.records[0].status_id == 2 && form.from_manager == this.current_user.empno) {
+        return true;
+      } else if (form.records[0].status_id == 4 && form.to_manager == this.current_user.empno) {
+        return true;
+      } else if (form.records[0].status_id == 5 && this.current_user.empno == 'ACSI-200634') {
+        return true;
+      } else if (form.records[0].status_id == 6 && form.hr_account_officer == this.current_user.empno) {
+        return true;
+      } else if (form.records[0].status_id == 7 && form.emp_no == this.current_user.empno) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   created: function created() {
+    if (_components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken()) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken();
+    }
+
     this.getForms();
+    this.getCurrentUser();
   }
 });
 
@@ -6635,6 +6685,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -6735,7 +6791,11 @@ __webpack_require__.r(__webpack_exports__);
       from_salary: 0,
       to_salary: 0,
       from_allowance: 0,
-      to_allowance: 0
+      to_allowance: 0,
+      from_contract: new Date().toISOString().slice(0, -14),
+      to_contract: new Date().toISOString().slice(0, -14),
+      from_others: null,
+      to_others: null
     };
   },
   methods: {
@@ -6877,9 +6937,9 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('from_salary', this.from_salary);
       fd.append('from_allowance', this.from_allowance);
       fd.append('from_immediate_superior', this.selected_employee.info1.esup);
-      fd.append('from_manager', this.selected_employee.info1.emngr); // From others
-      // From contract
-
+      fd.append('from_manager', this.selected_employee.info1.emngr);
+      fd.append('from_others', this.from_others);
+      fd.append('from_contract', this.from_contract);
       fd.append('move_position', this.position_toggler);
       fd.append('move_job_status', this.job_status_toggler);
       fd.append('move_job_level', this.job_level_toggler);
@@ -6889,9 +6949,9 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('move_salary', this.salary_toggler);
       fd.append('move_allowance', this.allowance_toggler);
       fd.append('move_immediate_superior', this.supervisor_toggler);
-      fd.append('move_manager', this.manager_toggler); // contract toggler
-      // others toggler
-
+      fd.append('move_manager', this.manager_toggler);
+      fd.append('move_contract', this.extension_toggler);
+      fd.append('move_others', this.other_toggler);
       fd.append('to_position', this.selected_position);
       fd.append('to_job_status', this.selected_status);
       fd.append('to_job_level', this.selected_level);
@@ -6901,9 +6961,9 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('to_salary', this.to_salary);
       fd.append('to_allowance', this.to_allowance);
       fd.append('to_immediate_superior', this.selected_supervisor.empno);
-      fd.append('to_manager', Object.keys(this.selected_supervisor).length > 0 ? this.selected_supervisor.info1.supervisor.empno : null); // to contract
-      // to others
-
+      fd.append('to_manager', Object.keys(this.selected_supervisor).length > 0 ? this.selected_supervisor.info1.supervisor.empno : null);
+      fd.append('to_contract', this.to_contract);
+      fd.append('to_others', this.to_others);
       fd.append('reason_for_movement', this.reason);
       fd.append('effectivity_date', this.effectivity_date);
       axios.post('/acsi_emfs/api/employee-movement-form', fd).then(function (response) {
@@ -30723,7 +30783,403 @@ var render = function () {
               _vm._v(" "),
               _vm._m(3),
               _vm._v(" "),
-              _vm._m(4),
+              _c("div", { staticClass: "col-12 col-md-4" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-bordered table-sm table-striped",
+                  },
+                  [
+                    _c("tbody", [
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox" },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "position_title",
+                                },
+                                domProps: { checked: _vm.form.move_position },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "position_title" },
+                                },
+                                [_vm._v("POSITION TITLE")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox" },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { type: "checkbox", id: "job_status" },
+                                domProps: { checked: _vm.form.move_job_status },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "job_status" },
+                                },
+                                [_vm._v("JOB STATUS")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { type: "checkbox", id: "job_level" },
+                                domProps: { checked: _vm.form.move_job_level },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "job_level" },
+                                },
+                                [_vm._v("JOB LEVEL")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { type: "checkbox", id: "role" },
+                                domProps: { checked: _vm.form.move_role },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "role" },
+                                },
+                                [_vm._v("ROLE ASSIGNMENT")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { type: "checkbox", id: "department" },
+                                domProps: { checked: _vm.form.move_department },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "department" },
+                                },
+                                [_vm._v("DEPARTMENT")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { type: "checkbox", id: "cost_center" },
+                                domProps: {
+                                  checked: _vm.form.move_cost_center,
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "cost_center" },
+                                },
+                                [_vm._v("COST CENTER")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox" },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { type: "checkbox", id: "salary" },
+                                domProps: { checked: _vm.form.move_salary },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "salary" },
+                                },
+                                [_vm._v("SALARY")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { type: "checkbox", id: "allowance" },
+                                domProps: { checked: _vm.form.move_allowance },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "allowance" },
+                                },
+                                [_vm._v("MONTHLY ALLOWANCE")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "immediate_superior",
+                                },
+                                domProps: {
+                                  checked: _vm.form.move_immediate_superior,
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "immediate_superior" },
+                                },
+                                [_vm._v("IMMEDIATE SUPERIOR")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "department_manager",
+                                },
+                                domProps: { checked: _vm.form.move_manager },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "department_manager" },
+                                },
+                                [_vm._v("DEPARTMENT MANAGER")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "extion_of_contract",
+                                },
+                                domProps: { checked: _vm.form.move_contract },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "extion_of_contract" },
+                                },
+                                [_vm._v("EXTENSION OF CONTRACT")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "border-0" }, [
+                        _c("td", { staticClass: "font-weight-bold " }, [
+                          _c(
+                            "div",
+                            { staticClass: "custom-control custom-checkbox " },
+                            [
+                              _c("input", {
+                                staticClass: "custom-control-input",
+                                attrs: { type: "checkbox", id: "others" },
+                                domProps: { checked: _vm.form.move_others },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "others" },
+                                },
+                                [_vm._v("OTHERS")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(5),
+                      _vm._v(" "),
+                      _vm._m(6),
+                      _vm._v(" "),
+                      _vm._m(7),
+                      _vm._v(" "),
+                      _vm._m(8),
+                    ]),
+                  ]
+                ),
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-12 col-md-8" }, [
                 _c("div", { staticClass: "row" }, [
@@ -30736,7 +31192,7 @@ var render = function () {
                       },
                       [
                         _c("tbody", [
-                          _vm._m(5),
+                          _vm._m(9),
                           _vm._v(" "),
                           _c("tr", [
                             _c("td", [_vm._v(_vm._s(_vm.form.from_position))]),
@@ -30812,9 +31268,29 @@ var render = function () {
                             ]),
                           ]),
                           _vm._v(" "),
-                          _vm._m(6),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.form.from_contract == null
+                                    ? "N/A"
+                                    : _vm.form.from_contract
+                                )
+                              ),
+                            ]),
+                          ]),
                           _vm._v(" "),
-                          _vm._m(7),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.form.from_others == null
+                                    ? "N/A"
+                                    : _vm.form.from_others
+                                )
+                              ),
+                            ]),
+                          ]),
                           _vm._v(" "),
                           _c("tr", { staticClass: " d-print-none" }, [
                             _c("td", [
@@ -30833,6 +31309,20 @@ var render = function () {
                               _vm._v(_vm._s(_vm.form.effectivity_date)),
                             ]),
                           ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(_vm.form.requestor.firstname) +
+                                  " " +
+                                  _vm._s(_vm.form.requestor.lastname)
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [_vm._v(_vm._s(_vm.form.created_at))]),
+                          ]),
                         ]),
                       ]
                     ),
@@ -30847,7 +31337,7 @@ var render = function () {
                       },
                       [
                         _c("tbody", [
-                          _vm._m(8),
+                          _vm._m(10),
                           _vm._v(" "),
                           _c("tr", [
                             _c("td", [
@@ -30877,9 +31367,9 @@ var render = function () {
                             _c("td", [
                               _vm._v(
                                 _vm._s(
-                                  _vm.form.job_level == null
+                                  _vm.form.to_job_level == null
                                     ? "SAME"
-                                    : _vm.form.job_level
+                                    : _vm.form.to_job_level
                                 )
                               ),
                             ]),
@@ -30969,9 +31459,29 @@ var render = function () {
                               : _c("td", [_vm._v("SAME")]),
                           ]),
                           _vm._v(" "),
-                          _vm._m(9),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.form.to_contract == null
+                                    ? "SAME"
+                                    : _vm.form.to_contract
+                                )
+                              ),
+                            ]),
+                          ]),
                           _vm._v(" "),
-                          _vm._m(10),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.form._to_others == null
+                                    ? "SAME"
+                                    : _vm.form._to_others
+                                )
+                              ),
+                            ]),
+                          ]),
                         ]),
                       ]
                     ),
@@ -31000,6 +31510,18 @@ var render = function () {
                             _c("br"),
                             _vm._v(" "),
                             _c("div", { staticClass: "text-center mt-5" }, [
+                              _vm.form.superior_accept_date != null
+                                ? _c("img", {
+                                    staticClass: "d-inline-block align-top",
+                                    attrs: {
+                                      src: "/acsi_emfs/public/images/approved.png",
+                                      height: "50",
+                                      alt: "",
+                                      loading: "lazy",
+                                    },
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
                               _vm.form.records[0].status_id == 1 &&
                               _vm.current_user.empno ==
                                 _vm.form.current_superior.empno
@@ -31062,6 +31584,18 @@ var render = function () {
                             _c("br"),
                             _vm._v(" "),
                             _c("div", { staticClass: "text-center mt-5" }, [
+                              _vm.form.manager_accept_date != null
+                                ? _c("img", {
+                                    staticClass: "d-inline-block align-top",
+                                    attrs: {
+                                      src: "/acsi_emfs/public/images/approved.png",
+                                      height: "50",
+                                      alt: "",
+                                      loading: "lazy",
+                                    },
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
                               _vm.form.records[0].status_id == 2 &&
                               _vm.current_user.empno ==
                                 _vm.form.current_manager.empno
@@ -31130,6 +31664,19 @@ var render = function () {
                                       "div",
                                       { staticClass: "text-center mt-5" },
                                       [
+                                        _vm.form.new_manager_accept_date != null
+                                          ? _c("img", {
+                                              staticClass:
+                                                "d-inline-block align-top",
+                                              attrs: {
+                                                src: "/acsi_emfs/public/images/approved.png",
+                                                height: "50",
+                                                alt: "",
+                                                loading: "lazy",
+                                              },
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
                                         _vm.form.records[0].status_id == 4 &&
                                         _vm.current_user.empno ==
                                           _vm.form.new_manager.empno
@@ -31201,6 +31748,18 @@ var render = function () {
                             _c("br"),
                             _vm._v(" "),
                             _c("div", { staticClass: "text-center mt-5" }, [
+                              _vm.form.cable_head_accept_date != null
+                                ? _c("img", {
+                                    staticClass: "d-inline-block align-top",
+                                    attrs: {
+                                      src: "/acsi_emfs/public/images/approved.png",
+                                      height: "50",
+                                      alt: "",
+                                      loading: "lazy",
+                                    },
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
                               _vm.form.records[0].status_id == 5 &&
                               _vm.current_user.empno == "ACSI-200634"
                                 ? _c(
@@ -31262,6 +31821,18 @@ var render = function () {
                             _c("br"),
                             _vm._v(" "),
                             _c("div", { staticClass: "text-center mt-5" }, [
+                              _vm.form.hr_accept_date != null
+                                ? _c("img", {
+                                    staticClass: "d-inline-block align-top",
+                                    attrs: {
+                                      src: "/acsi_emfs/public/images/approved.png",
+                                      height: "50",
+                                      alt: "",
+                                      loading: "lazy",
+                                    },
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
                               _vm.form.records[0].status_id == 6 &&
                               _vm.current_user.empno ==
                                 _vm.form.hr_account_officer
@@ -31317,6 +31888,18 @@ var render = function () {
                             _c("br"),
                             _vm._v(" "),
                             _c("div", { staticClass: "text-center mt-5" }, [
+                              _vm.form.employee_accept_date != null
+                                ? _c("img", {
+                                    staticClass: "d-inline-block align-top",
+                                    attrs: {
+                                      src: "/acsi_emfs/public/images/approved.png",
+                                      height: "50",
+                                      alt: "",
+                                      loading: "lazy",
+                                    },
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
                               _vm.form.records[0].status_id == 7 &&
                               _vm.current_user.empno == _vm.form.emp_no
                                 ? _c(
@@ -31361,43 +31944,6 @@ var render = function () {
                             ]),
                           ]
                         ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticClass: "border-0 w-50",
-                            staticStyle: { "font-weight": "bold" },
-                          },
-                          [
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "text-center mt-5" }, [
-                              _c(
-                                "h6",
-                                {
-                                  staticClass: "align-middle font-weight-bold",
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      new Date().toLocaleDateString("en-US")
-                                    )
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "h6",
-                                {
-                                  staticClass: "align-middle font-weight-bold",
-                                },
-                                [_vm._v("DATE")]
-                              ),
-                            ]),
-                          ]
-                        ),
                       ]),
                     ]),
                   ]
@@ -31405,6 +31951,8 @@ var render = function () {
               ]),
               _vm._v(" "),
               _vm._m(13),
+              _vm._v(" "),
+              _vm._m(14),
             ]),
           ])
         : _vm._e(),
@@ -31547,292 +32095,50 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
-      _c(
-        "table",
-        { staticClass: "table table-bordered table-sm table-striped" },
-        [
-          _c("tbody", [
-            _c("tr", { staticStyle: { border: "2px solid black" } }, [
-              _c("td", { staticClass: "font-weight-bold text-center" }, [
-                _vm._v("MOVEMENT"),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox" }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: {
-                      type: "checkbox",
-                      id: "position_title",
-                      disabled: "",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "position_title" },
-                    },
-                    [_vm._v("POSITION TITLE")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox" }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: { type: "checkbox", id: "job_status", disabled: "" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "job_status" },
-                    },
-                    [_vm._v("JOB STATUS")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: { type: "checkbox", id: "job_level", disabled: "" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "job_level" },
-                    },
-                    [_vm._v("JOB LEVEL")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: { type: "checkbox", id: "role", disabled: "" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "role" },
-                    },
-                    [_vm._v("ROLE ASSIGNMENT")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: { type: "checkbox", id: "department", disabled: "" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "department" },
-                    },
-                    [_vm._v("DEPARTMENT")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: {
-                      type: "checkbox",
-                      id: "cost_center",
-                      disabled: "",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "cost_center" },
-                    },
-                    [_vm._v("COST CENTER")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox" }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: { type: "checkbox", id: "salary", disabled: "" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "salary" },
-                    },
-                    [_vm._v("SALARY")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: { type: "checkbox", id: "allowance", disabled: "" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "allowance" },
-                    },
-                    [_vm._v("MONTHLY ALLOWANCE")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: {
-                      type: "checkbox",
-                      id: "immediate_superior",
-                      disabled: "",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "immediate_superior" },
-                    },
-                    [_vm._v("IMMEDIATE SUPERIOR")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: {
-                      type: "checkbox",
-                      id: "department_manager",
-                      disabled: "",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "department_manager" },
-                    },
-                    [_vm._v("DEPARTMENT MANAGER")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: {
-                      type: "checkbox",
-                      id: "extion_of_contract",
-                      disabled: "",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "extion_of_contract" },
-                    },
-                    [_vm._v("EXTENSION OF CONTRACT")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "border-0" }, [
-              _c("td", { staticClass: "font-weight-bold " }, [
-                _c("div", { staticClass: "custom-control custom-checkbox " }, [
-                  _c("input", {
-                    staticClass: "custom-control-input",
-                    attrs: { type: "checkbox", id: "others", disabled: "" },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "others" },
-                    },
-                    [_vm._v("OTHERS")]
-                  ),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: " d-print-none" }, [
-              _c("td", { staticClass: "text-center font-weight-bold" }, [
-                _vm._v("Reason for transfer:"),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", { staticClass: "text-center font-weight-bold" }, [
-                _vm._v("Effectivity date:"),
-              ]),
-            ]),
-          ]),
-        ]
-      ),
+    return _c("tr", { staticStyle: { border: "2px solid black" } }, [
+      _c("td", { staticClass: "font-weight-bold text-center" }, [
+        _vm._v("MOVEMENT"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", { staticClass: " d-print-none" }, [
+      _c("td", { staticClass: "text-center font-weight-bold" }, [
+        _vm._v("Reason for transfer:"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "text-center font-weight-bold" }, [
+        _vm._v("Effectivity date:"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "text-center font-weight-bold" }, [
+        _vm._v("Created By:"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { staticClass: "text-center font-weight-bold" }, [
+        _vm._v("Date created:"),
+      ]),
     ])
   },
   function () {
@@ -31847,47 +32153,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("input", {
-          staticClass: "border-0 text-center",
-          attrs: { type: "date", name: "eoc", id: "eoc" },
-        }),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("input", {
-          staticClass: "border-0 text-center h-100",
-          attrs: { type: "text", name: "other", id: "other" },
-        }),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("tr", { staticStyle: { border: "2px solid black" } }, [
       _c("td", [_vm._v("TO")]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
   },
   function () {
     var _vm = this
@@ -31913,7 +32181,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12" }, [
+    return _c("div", { staticClass: "col-12 " }, [
       _c("br"),
       _vm._v(" "),
       _c("br"),
@@ -31922,6 +32190,25 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("h5", [_vm._v("HR Form 011: Employee Movement Formv2")]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "fixed-bottom d-flex justify-content-center" },
+      [
+        _c(
+          "a",
+          { staticClass: "btn btn-danger mb-3", attrs: { href: "/acsi_emfs" } },
+          [
+            _vm._v("BACK "),
+            _c("i", { staticClass: "fa-solid fa-circle-arrow-left" }),
+          ]
+        ),
+      ]
+    )
   },
 ]
 render._withStripped = true
@@ -32004,6 +32291,32 @@ var render = function () {
                 _c("td", [_vm._v(_vm._s(form.effectivity_date))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(form.records[0].status.status))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-primary mb-1",
+                      attrs: {
+                        href: "/acsi_emfs/approvals/" + form.request_no,
+                      },
+                    },
+                    [_c("i", { staticClass: "fa-solid fa-eye" })]
+                  ),
+                  _vm._v(" "),
+                  _vm.checkUser(form)
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-success mb-1",
+                          attrs: {
+                            href: "/acsi_emfs/approvals/" + form.request_no,
+                          },
+                        },
+                        [_c("i", { staticClass: "fa-solid fa-check" })]
+                      )
+                    : _vm._e(),
+                ]),
               ])
             }),
             0
@@ -32064,6 +32377,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Effectivity date")]),
       _vm._v(" "),
       _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
     ])
   },
 ]
@@ -32346,7 +32661,9 @@ var render = function () {
                     "\n                    Welcome " +
                       _vm._s(
                         Object.keys(_vm.current_user).length > 0
-                          ? _vm.current_user.empno
+                          ? _vm.current_user.firstname +
+                              " " +
+                              _vm.current_user.lastname
                           : ""
                       ) +
                       "\n                "
@@ -32399,7 +32716,7 @@ var staticRenderFns = [
             src: "/acsi_emfs/public/images/tsi_acsi_logo2.png",
             width: "60",
             height: "30",
-            alt: "",
+            alt: "logo",
             loading: "lazy",
           },
         }),
@@ -33170,7 +33487,14 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: { type: "checkbox", id: "job_level" },
+                            attrs: {
+                              type: "checkbox",
+                              id: "job_level",
+                              disabled:
+                                _vm.current_user.position == "hr_officer"
+                                  ? false
+                                  : true,
+                            },
                             domProps: {
                               checked: Array.isArray(_vm.job_level_toggler)
                                 ? _vm._i(_vm.job_level_toggler, null) > -1
@@ -33231,16 +33555,7 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: {
-                              type: "checkbox",
-                              id: "role",
-                              disabled:
-                                _vm.current_user.position == "hr_officer" ||
-                                _vm.current_user.position == "supervisor" ||
-                                _vm.current_user.position == "manager"
-                                  ? false
-                                  : true,
-                            },
+                            attrs: { type: "checkbox", id: "role" },
                             domProps: {
                               checked: Array.isArray(_vm.role_toggler)
                                 ? _vm._i(_vm.role_toggler, null) > -1
@@ -33485,16 +33800,7 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: {
-                              type: "checkbox",
-                              id: "allowance",
-                              disabled:
-                                _vm.current_user.position == "hr_officer" ||
-                                _vm.current_user.position == "supervisor" ||
-                                _vm.current_user.position == "manager"
-                                  ? false
-                                  : true,
-                            },
+                            attrs: { type: "checkbox", id: "allowance" },
                             domProps: {
                               checked: Array.isArray(_vm.allowance_toggler)
                                 ? _vm._i(_vm.allowance_toggler, null) > -1
@@ -33558,11 +33864,6 @@ var render = function () {
                             attrs: {
                               type: "checkbox",
                               id: "immediate_superior",
-                              disabled:
-                                _vm.current_user.position == "supervisor" ||
-                                _vm.current_user.position == "manager"
-                                  ? false
-                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.supervisor_toggler)
@@ -33698,6 +33999,10 @@ var render = function () {
                             attrs: {
                               type: "checkbox",
                               id: "extion_of_contract",
+                              disabled:
+                                _vm.current_user.position == "hr_officer"
+                                  ? false
+                                  : true,
                             },
                             domProps: {
                               checked: Array.isArray(_vm.extension_toggler)
@@ -33759,7 +34064,14 @@ var render = function () {
                               },
                             ],
                             staticClass: "custom-control-input",
-                            attrs: { type: "checkbox", id: "others" },
+                            attrs: {
+                              type: "checkbox",
+                              id: "others",
+                              disabled:
+                                _vm.current_user.position == "hr_officer"
+                                  ? false
+                                  : true,
+                            },
                             domProps: {
                               checked: Array.isArray(_vm.other_toggler)
                                 ? _vm._i(_vm.other_toggler, null) > -1
@@ -33996,13 +34308,65 @@ var render = function () {
                           ? _c("td", [_vm._v("N/A")])
                           : _c("td", [
                               _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.from_contract,
+                                    expression: "from_contract",
+                                  },
+                                ],
                                 staticClass: "border-0 text-center",
-                                attrs: { type: "date", name: "eoc", id: "eoc" },
+                                attrs: {
+                                  type: "date",
+                                  name: "eoc",
+                                  id: "eoc",
+                                  min: new Date().toISOString().slice(0, -14),
+                                },
+                                domProps: { value: _vm.from_contract },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.from_contract = $event.target.value
+                                  },
+                                },
                               }),
                             ]),
                       ]),
                       _vm._v(" "),
-                      _vm._m(8),
+                      _c("tr", [
+                        _vm.other_toggler == false
+                          ? _c("td", [_vm._v("N/A")])
+                          : _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.from_others,
+                                    expression: "from_others",
+                                  },
+                                ],
+                                staticClass: "border-0 text-center h-100",
+                                attrs: {
+                                  type: "text",
+                                  name: "other",
+                                  id: "other",
+                                },
+                                domProps: { value: _vm.from_others },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.from_others = $event.target.value
+                                  },
+                                },
+                              }),
+                            ]),
+                      ]),
                       _vm._v(" "),
                       _c("tr", { staticClass: " d-print-none" }, [
                         _c("td", [
@@ -34078,7 +34442,7 @@ var render = function () {
                   },
                   [
                     _c("tbody", [
-                      _vm._m(9),
+                      _vm._m(8),
                       _vm._v(" "),
                       _c("tr", [
                         _vm.position_toggler == false
@@ -34103,7 +34467,7 @@ var render = function () {
                                     name: "position_title",
                                     id: "position_title",
                                     disabled:
-                                      _vm.current_user.positio == "hr_officer"
+                                      _vm.current_user.position == "hr_officer"
                                         ? false
                                         : true,
                                   },
@@ -34171,11 +34535,7 @@ var render = function () {
                                     name: "job_status",
                                     id: "job_status",
                                     disabled:
-                                      _vm.current_user.position ==
-                                        "hr_officer" ||
-                                      _vm.current_user.position ==
-                                        "supervisor" ||
-                                      _vm.current_user.position == "manager"
+                                      _vm.current_user.position == "hr_officer"
                                         ? false
                                         : true,
                                   },
@@ -34237,7 +34597,14 @@ var render = function () {
                                     },
                                   ],
                                   staticClass: "border-0 w-100 text-center",
-                                  attrs: { name: "job_level", id: "job_level" },
+                                  attrs: {
+                                    name: "job_level",
+                                    id: "job_level",
+                                    disabled:
+                                      _vm.current_user.position == "hr_officer"
+                                        ? false
+                                        : true,
+                                  },
                                   on: {
                                     change: function ($event) {
                                       var $$selectedVal = Array.prototype.filter
@@ -34297,18 +34664,7 @@ var render = function () {
                                     },
                                   ],
                                   staticClass: "border-0 w-100 text-center",
-                                  attrs: {
-                                    name: "role",
-                                    id: "role",
-                                    disabled:
-                                      _vm.current_user.position ==
-                                        "hr_officer" ||
-                                      _vm.current_user.position ==
-                                        "supervisor" ||
-                                      _vm.current_user.position == "manager"
-                                        ? false
-                                        : true,
-                                  },
+                                  attrs: { name: "role", id: "role" },
                                   on: {
                                     change: function ($event) {
                                       var $$selectedVal = Array.prototype.filter
@@ -34536,20 +34892,33 @@ var render = function () {
                       _c("tr", [
                         _vm.allowance_toggler == false
                           ? _c("td", [_vm._v("SAME")])
-                          : _c("input", {
-                              staticClass: "border-0 text-center h-100",
-                              attrs: {
-                                type: "text",
-                                name: "to_allowance",
-                                id: "to_allowance",
-                                "v-model": _vm.to_allowance,
-                                disabled:
-                                  _vm.current_user.position == "supervisor" ||
-                                  _vm.current_user.position == "manager"
-                                    ? false
-                                    : true,
-                              },
-                            }),
+                          : _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.to_allowance,
+                                    expression: "to_allowance",
+                                  },
+                                ],
+                                staticClass: "border-0 text-center h-100",
+                                attrs: {
+                                  type: "text",
+                                  name: "to_allowance",
+                                  id: "to_allowance",
+                                },
+                                domProps: { value: _vm.to_allowance },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.to_allowance = $event.target.value
+                                  },
+                                },
+                              }),
+                            ]),
                       ]),
                       _vm._v(" "),
                       _c("tr", [
@@ -34574,12 +34943,6 @@ var render = function () {
                                   attrs: {
                                     name: "supervisor",
                                     id: "supervisor",
-                                    disabled:
-                                      _vm.current_user.position ==
-                                        "supervisor" ||
-                                      _vm.current_user.position == "manager"
-                                        ? false
-                                        : true,
                                   },
                                   on: {
                                     change: [
@@ -34660,8 +35023,8 @@ var render = function () {
                                   ],
                                   staticClass: "border-0 w-100 text-center",
                                   attrs: {
-                                    name: "supervisor",
-                                    id: "supervisor",
+                                    name: "manager",
+                                    id: "manager",
                                     disabled:
                                       _vm.current_user.position == "hr_officer"
                                         ? false
@@ -34716,11 +35079,72 @@ var render = function () {
                           : _vm._e(),
                       ]),
                       _vm._v(" "),
-                      _vm._m(10),
+                      _c("tr", [
+                        _vm.extension_toggler == false
+                          ? _c("td", [_vm._v("SAME")])
+                          : _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.to_contract,
+                                    expression: "to_contract",
+                                  },
+                                ],
+                                staticClass: "border-0 text-center",
+                                attrs: {
+                                  type: "date",
+                                  name: "eoc",
+                                  id: "eoc",
+                                  min: new Date().toISOString().slice(0, -14),
+                                },
+                                domProps: { value: _vm.to_contract },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.to_contract = $event.target.value
+                                  },
+                                },
+                              }),
+                            ]),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(11),
+                      _c("tr", [
+                        _vm.other_toggler == false
+                          ? _c("td", [_vm._v("SAME")])
+                          : _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.to_others,
+                                    expression: "to_others",
+                                  },
+                                ],
+                                staticClass: "border-0 text-center h-100",
+                                attrs: {
+                                  type: "text",
+                                  name: "to_other",
+                                  id: "to_other",
+                                },
+                                domProps: { value: _vm.to_others },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.to_others = $event.target.value
+                                  },
+                                },
+                              }),
+                            ]),
+                      ]),
                       _vm._v(" "),
-                      _vm._m(12),
+                      _vm._m(9),
                       _vm._v(" "),
                       _c("tr", [
                         _c("td", [
@@ -34755,7 +35179,7 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(13),
+                _vm._m(10),
                 _vm._v(" "),
                 Object.keys(_vm.selected_employee).length != 0
                   ? _c("tr", [
@@ -34933,7 +35357,7 @@ var render = function () {
                           )
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm._m(14),
+                      _vm._m(11),
                     ])
                   : _vm._e(),
               ]),
@@ -34943,11 +35367,11 @@ var render = function () {
           _c("div", { staticClass: "col-12" }, [
             _c("table", { staticClass: "table table-borderless table-sm" }, [
               _c("tbody", [
-                _vm._m(15),
+                _vm._m(12),
                 _vm._v(" "),
                 _vm.selected_employee != 0
                   ? _c("tr", [
-                      _vm._m(16),
+                      _vm._m(13),
                       _vm._v(" "),
                       Object.keys(_vm.selected_employee.info1.supervisor)
                         .length > 0
@@ -35034,7 +35458,9 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
-          _vm._m(17),
+          _vm._m(14),
+          _vm._v(" "),
+          _vm._m(15),
         ]),
       ]),
     ],
@@ -35212,34 +35638,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("input", {
-          staticClass: "border-0 text-center h-100",
-          attrs: { type: "text", name: "other", id: "other" },
-        }),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("tr", { staticStyle: { border: "2px solid black" } }, [
       _c("td", [_vm._v("TO")]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [_c("td", [_vm._v("SAME")])])
   },
   function () {
     var _vm = this
@@ -35330,6 +35731,25 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("h5", [_vm._v("HR Form 011: Employee Movement Formv2")]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "fixed-bottom d-flex justify-content-center" },
+      [
+        _c(
+          "a",
+          { staticClass: "btn btn-danger mb-3", attrs: { href: "/acsi_emfs" } },
+          [
+            _vm._v("BACK "),
+            _c("i", { staticClass: "fa-solid fa-circle-arrow-left" }),
+          ]
+        ),
+      ]
+    )
   },
 ]
 render._withStripped = true

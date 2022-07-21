@@ -25,6 +25,7 @@ class EmployeeMovementForm extends Model
         'move_manager' => 'boolean',
         'move_contract' => 'boolean',
         'move_others' => 'boolean',
+        'created_at' => 'date:Y-m-d',
     ];
     public function getRouteKeyName(){
         return 'request_no';

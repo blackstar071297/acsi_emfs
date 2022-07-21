@@ -81,7 +81,7 @@
                             <tr>
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="position_title"  disabled>
+                                        <input type="checkbox" class="custom-control-input" id="position_title"  @click.prevent="" :checked="form.move_position">
                                         <label class="custom-control-label" for="position_title">POSITION TITLE</label>
                                     </div>
                                 </td>
@@ -89,7 +89,7 @@
                             <tr >
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="job_status" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="job_status" @click.prevent="" :checked="form.move_job_status">
                                         <label class="custom-control-label" for="job_status">JOB STATUS</label>
                                     </div>
                                 </td>
@@ -97,7 +97,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="job_level" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="job_level" @click.prevent="" :checked="form.move_job_level">
                                         <label class="custom-control-label" for="job_level">JOB LEVEL</label>
                                     </div>
                                 </td>
@@ -105,7 +105,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="role" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="role" @click.prevent="" :checked="form.move_role">
                                         <label class="custom-control-label" for="role">ROLE ASSIGNMENT</label>
                                     </div>
                                 </td>
@@ -113,7 +113,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="department" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="department" @click.prevent="" :checked="form.move_department">
                                         <label class="custom-control-label" for="department">DEPARTMENT</label>
                                     </div>
                                 </td>
@@ -121,7 +121,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="cost_center" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="cost_center" @click.prevent="" :checked="form.move_cost_center">
                                         <label class="custom-control-label" for="cost_center">COST CENTER</label>
                                     </div>
                                 </td>
@@ -129,7 +129,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="salary" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="salary" @click.prevent="" :checked="form.move_salary">
                                         <label class="custom-control-label" for="salary">SALARY</label>
                                     </div>
                                 </td>
@@ -137,7 +137,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="allowance" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="allowance" @click.prevent="" :checked="form.move_allowance">
                                         <label class="custom-control-label" for="allowance">MONTHLY ALLOWANCE</label>
                                     </div>
                                 </td>
@@ -145,7 +145,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" @click.prevent="" :checked="form.move_immediate_superior">
                                         <label class="custom-control-label" for="immediate_superior">IMMEDIATE SUPERIOR</label>
                                     </div>
                                 </td>
@@ -153,7 +153,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="department_manager" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="department_manager" @click.prevent="" :checked="form.move_manager">
                                         <label class="custom-control-label" for="department_manager">DEPARTMENT MANAGER</label>
                                     </div>
                                 </td>
@@ -161,7 +161,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="extion_of_contract" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="extion_of_contract" @click.prevent="" :checked="form.move_contract">
                                         <label class="custom-control-label" for="extion_of_contract">EXTENSION OF CONTRACT</label>
                                     </div>
                                 </td>
@@ -169,7 +169,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="others" disabled>
+                                        <input type="checkbox" class="custom-control-input" id="others" @click.prevent="" :checked="form.move_others">
                                         <label class="custom-control-label" for="others">OTHERS</label>
                                     </div>
                                 </td>
@@ -179,6 +179,12 @@
                             </tr>
                             <tr>
                                 <td class="text-center font-weight-bold">Effectivity date:</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center font-weight-bold">Created By:</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center font-weight-bold">Date created:</td>
                             </tr>
                         </tbody>
                     </table>
@@ -222,16 +228,22 @@
                                         <td >{{form.current_manager.firstname}}  {{form.current_manager.lastname}}</td>
                                     </tr>
                                     <tr>
-                                        <td ><input type="date" name="eoc" id="eoc"  class="border-0 text-center" ></td>
+                                        <td >{{ form.from_contract == null ? 'N/A' : form.from_contract }}</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="other" id="other"  class="border-0 text-center h-100"></td>
+                                        <td>{{ form.from_others == null ? 'N/A' : form.from_others }}</td>
                                     </tr>
                                     <tr class=" d-print-none">
                                         <td>{{form.reason_for_movement == null ? 'N/A' : form.reason_for_movement}}</td>
                                     </tr>
                                     <tr>
                                         <td>{{form.effectivity_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{form.created_at}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -250,7 +262,7 @@
                                         
                                     </tr>
                                     <tr>
-                                        <td>{{form.job_level == null ? 'SAME' : form.job_level}}</td>
+                                        <td>{{form.to_job_level == null ? 'SAME' : form.to_job_level}}</td>
                                     </tr>
                                     <tr>
                                         <td>{{form.to_role == null ? 'SAME' : form.to_role}}</td>
@@ -276,10 +288,10 @@
                                         <td v-else>SAME</td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td>{{form.to_contract == null ? 'SAME' : form.to_contract}}</td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td>{{form._to_others == null ? 'SAME' : form._to_others}}</td>
                                     </tr>
                                     
                                 </tbody>
@@ -298,6 +310,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
+                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.superior_accept_date != null">
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 1 && current_user.empno == form.current_superior.empno">Approve</button>
                                         <h6 class="align-middle font-weight-bold">{{form.current_superior.firstname}}  {{form.current_superior.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ form.current_superior.info1.eposition }}</h6>
@@ -307,6 +320,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
+                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.manager_accept_date != null">
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 2 && current_user.empno == form.current_manager.empno">Approve</button>
                                         <h6 class="align-middle font-weight-bold">{{form.current_manager.firstname}}  {{form.current_manager.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ form.current_manager.info1.eposition }}</h6>
@@ -318,6 +332,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5" v-if="form.from_manager != form.to_manager && form.to_manager != 'ACSI-200634'">
+                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.new_manager_accept_date != null">
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 4 && current_user.empno == form.new_manager.empno">Approve</button>
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.firstname }} {{ form.new_manager.lastname }}</h6>
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.info1.eposition }}</h6>
@@ -327,6 +342,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
+                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.cable_head_accept_date != null">
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 5 && current_user.empno == 'ACSI-200634'">Approve</button>
                                         <h6 class="align-middle font-weight-bold">Oliver Angeles</h6>
                                         <h6 class="align-middle font-weight-bold">Head, Cable Operations</h6>
@@ -348,6 +364,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
+                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.hr_accept_date != null">
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 6 && current_user.empno == form.hr_account_officer">Approve</button>
                                         <h6 class="align-middle font-weight-bold">{{ form.account_officer.firstname}} {{ form.account_officer.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">HR Account Officer</h6>
@@ -358,28 +375,24 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
+                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.employee_accept_date != null">
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 7 && current_user.empno == form.emp_no">Approve</button>
                                         <h6 class="align-middle font-weight-bold">{{form.employee.firstname}}  {{form.employee.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ form.employee.info1.eposition }}</h6>
-                                    </div>
-                                </td>
-                                <td style='font-weight: bold;' class="border-0 w-50">
-                                    <br>
-                                    <br>
-                                    <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold">{{ new Date().toLocaleDateString("en-US") }}</h6>
-                                        <h6 class="align-middle font-weight-bold">DATE</h6>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="col-12">
+                <div class="col-12 ">
                     <br>
                     <br>
                     <br>
                     <h5>HR Form 011: Employee Movement Formv2</h5>
+                </div>
+                <div class="fixed-bottom d-flex justify-content-center">
+                    <a href="/acsi_emfs" class="btn btn-danger mb-3" >BACK <i class="fa-solid fa-circle-arrow-left"></i></a>
                 </div>
             </div>
         </div>

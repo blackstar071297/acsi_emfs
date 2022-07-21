@@ -69,10 +69,10 @@ class MovementRecordController extends Controller
                 $form->cable_head_accept_date = now()->toDateString();
             }
             if($request->current_status == 6){
-                $form->employee_accept_date = now()->toDateString();
+                $form->hr_accept_date = now()->toDateString();
             }
             if($request->current_status == 7){
-                $form->hr_accept_date = now()->toDateString();
+                $form->employee_accept_date = now()->toDateString();
             }
             if($request->current_status == 2 && $form->from_manager == $form->to_manager){
                 $form->manager_accept_date = now()->toDateString();

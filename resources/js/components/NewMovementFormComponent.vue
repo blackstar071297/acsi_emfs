@@ -125,7 +125,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="job_level" v-model="job_level_toggler" >
+                                        <input type="checkbox" class="custom-control-input" id="job_level" v-model="job_level_toggler" :disabled="current_user.position == 'hr_officer' ? false : true">
                                         <label class="custom-control-label" for="job_level">JOB LEVEL</label>
                                     </div>
                                 </td>
@@ -133,7 +133,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="role" v-model="role_toggler">
                                         <label class="custom-control-label" for="role">ROLE ASSIGNMENT</label>
                                     </div>
                                 </td>
@@ -165,7 +165,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true">
+                                        <input type="checkbox" class="custom-control-input" id="allowance" v-model="allowance_toggler">
                                         <label class="custom-control-label" for="allowance">MONTHLY ALLOWANCE</label>
                                     </div>
                                 </td>
@@ -173,7 +173,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler" :disabled=" current_user.position == 'supervisor' || current_user.position == 'manager'  ? false : true" @change="checkSupervisorToggler($event)">
+                                        <input type="checkbox" class="custom-control-input" id="immediate_superior" v-model="supervisor_toggler" @change="checkSupervisorToggler($event)">
                                         <label class="custom-control-label" for="immediate_superior">IMMEDIATE SUPERIOR</label>
                                     </div>
                                 </td>
@@ -189,7 +189,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="extion_of_contract" v-model="extension_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="extion_of_contract" v-model="extension_toggler" :disabled="current_user.position == 'hr_officer'  ? false : true">
                                         <label class="custom-control-label" for="extion_of_contract">EXTENSION OF CONTRACT</label>
                                     </div>
                                 </td>
@@ -197,7 +197,7 @@
                             <tr class="border-0">
                                 <td class="font-weight-bold ">
                                     <div class="custom-control custom-checkbox ">
-                                        <input type="checkbox" class="custom-control-input" id="others" v-model="other_toggler">
+                                        <input type="checkbox" class="custom-control-input" id="others" v-model="other_toggler" :disabled="current_user.position == 'hr_officer'  ? false : true">
                                         <label class="custom-control-label" for="others">OTHERS</label>
                                     </div>
                                 </td>
@@ -253,10 +253,11 @@
                                     </tr>
                                     <tr>
                                         <td v-if="extension_toggler == false">N/A</td>
-                                        <td v-else><input type="date" name="eoc" id="eoc"  class="border-0 text-center" ></td>
+                                        <td v-else><input type="date" name="eoc" id="eoc"  class="border-0 text-center" v-model="from_contract" :min="new Date().toISOString().slice(0, -14)"></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="other" id="other"  class="border-0 text-center h-100"></td>
+                                        <td v-if="other_toggler == false">N/A</td>
+                                        <td v-else><input type="text" name="other" id="other" class="border-0 text-center h-100" v-model="from_others"></td>
                                     </tr>
                                     <tr class=" d-print-none">
                                         <td><input type="text" name="reason_for_transfer" id="reason_for_transfer" class="h-100 border-0" v-model="reason"></td>
@@ -276,7 +277,7 @@
                                     <tr>
                                         <td v-if="position_toggler == false">SAME</td>
                                         <td v-if="position_toggler == true">
-                                            <select name="position_title" id="position_title" class="border-0 w-100 text-center" v-model="selected_position" :disabled="current_user.positio == 'hr_officer' ? false : true">
+                                            <select name="position_title" id="position_title" class="border-0 w-100 text-center" v-model="selected_position" :disabled="current_user.position == 'hr_officer' ? false : true">
                                                 <option v-for="(position,index) in positions" :key="index" i :value="position.eposition" >{{position.eposition}}</option>
                                             </select>
                                         </td>
@@ -284,7 +285,7 @@
                                     <tr>
                                         <td v-if="job_status_toggler == false">SAME</td>
                                         <td v-if="job_status_toggler == true">
-                                            <select name="job_status" id="job_status" class="border-0 w-100 text-center" v-model="selected_status" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true" >
+                                            <select name="job_status" id="job_status" class="border-0 w-100 text-center" v-model="selected_status" :disabled="current_user.position == 'hr_officer' ? false : true">
                                                 <option value="Probationary">Probationary</option>
                                                 <option value="Regular">Regular</option>
                                             </select>
@@ -293,7 +294,7 @@
                                     <tr>
                                         <td v-if="job_level_toggler == false">SAME</td>
                                         <td v-if="job_level_toggler == true">
-                                            <select name="job_level" id="job_level" class="border-0 w-100 text-center" v-model="selected_level">
+                                            <select name="job_level" id="job_level" class="border-0 w-100 text-center" v-model="selected_level" :disabled="current_user.position == 'hr_officer' ? false : true">
                                                 <option v-for="(job_level,index) in job_level" :key="index" :value="job_level.job_name">{{job_level.job_name}}</option>
                                             </select>
                                         </td>
@@ -301,7 +302,7 @@
                                     <tr>
                                         <td v-if="role_toggler == false">SAME</td>
                                         <td v-if="role_toggler == true">
-                                            <select name="role" id="role" class="border-0 w-100 text-center" v-model="selected_role" :disabled="current_user.position == 'hr_officer' || current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true">
+                                            <select name="role" id="role" class="border-0 w-100 text-center" v-model="selected_role" >
                                                 <option value="">N/A</option>
                                                 <option v-for="(role,index) in roles" :key="index" :value="role.role_name">{{role.role_name}}</option>
                                             </select>
@@ -331,12 +332,12 @@
                                     </tr>
                                     <tr>
                                         <td v-if="allowance_toggler == false">SAME</td>
-                                        <input v-else type="text" name="to_allowance" id="to_allowance" :v-model="to_allowance" class="border-0 text-center h-100" :disabled="current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true">
+                                        <td v-else><input  type="text" name="to_allowance" id="to_allowance" v-model="to_allowance" class="border-0 text-center h-100" ></td> 
                                     </tr>
                                     <tr>
                                         <td v-if="supervisor_toggler == false">SAME</td>
                                         <td v-if="supervisor_toggler == true">
-                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_supervisor.empno" @change="supervisorUpdate($event.target.value)" :disabled="current_user.position == 'supervisor' || current_user.position == 'manager' ? false : true">
+                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_supervisor.empno" @change="supervisorUpdate($event.target.value)" >
                                                 <option v-for="(supervisor,index) in supervisors" :key="index" :value="supervisor.empno" >{{supervisor.user.firstname}} {{supervisor.user.lastname}}</option>
                                             </select>
                                         </td>
@@ -344,16 +345,18 @@
                                     <tr>
                                         <td v-if="manager_toggler == false">SAME</td>
                                         <td v-if="manager_toggler == true">
-                                            <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_manager" :disabled="current_user.position == 'hr_officer' ? false : true">
+                                            <select name="manager" id="manager" class="border-0 w-100 text-center" v-model="selected_manager" :disabled="current_user.position == 'hr_officer' ? false : true">
                                                 <option v-for="(manager,index) in managers" :key="index" :value="manager.empno" :selected="selected_manager == manager.empno ? true : false">{{manager.user.firstname}} {{manager.user.lastname}}</option>
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="extension_toggler == false">SAME</td>
+                                        <td v-else><input type="date" name="eoc" id="eoc"  class="border-0 text-center" v-model="to_contract" :min="new Date().toISOString().slice(0, -14)"></td>
                                     </tr>
                                     <tr>
-                                        <td>SAME</td>
+                                        <td v-if="other_toggler == false">SAME</td>
+                                        <td v-else><input type="text" name="to_other" id="to_other" class="border-0 text-center h-100" v-model="to_others"></td>
                                     </tr>
                                     <tr class=" d-print-none">
                                         <td class="h-100 text-white">SAME</td>
@@ -456,6 +459,9 @@
                     <br>
                     <h5>HR Form 011: Employee Movement Formv2</h5>
                 </div>
+                <div class="fixed-bottom d-flex justify-content-center">
+                    <a href="/acsi_emfs" class="btn btn-danger mb-3" >BACK <i class="fa-solid fa-circle-arrow-left"></i></a>
+                </div>
             </div>
         </div>
     </div>
@@ -532,7 +538,11 @@ export default {
             from_salary: 0,
             to_salary: 0,
             from_allowance: 0,
-            to_allowance:0
+            to_allowance:0,
+            from_contract: new Date().toISOString().slice(0, -14),
+            to_contract: new Date().toISOString().slice(0, -14),
+            from_others: null,
+            to_others:null
         }
     },
     methods:{
@@ -640,8 +650,9 @@ export default {
             fd.append('from_allowance',this.from_allowance)
             fd.append('from_immediate_superior',this.selected_employee.info1.esup)
             fd.append('from_manager',this.selected_employee.info1.emngr)
-            // From others
-            // From contract
+            fd.append('from_others',this.from_others)
+            fd.append('from_contract',this.from_contract)
+
             fd.append('move_position',this.position_toggler)
             fd.append('move_job_status',this.job_status_toggler)
             fd.append('move_job_level',this.job_level_toggler)
@@ -650,11 +661,10 @@ export default {
             fd.append('move_cost_center',this.cost_toggler)
             fd.append('move_salary',this.salary_toggler)
             fd.append('move_allowance',this.allowance_toggler)
-            
             fd.append('move_immediate_superior',this.supervisor_toggler)
             fd.append('move_manager',this.manager_toggler)
-            // contract toggler
-            // others toggler
+            fd.append('move_contract',this.extension_toggler)
+            fd.append('move_others',this.other_toggler)
 
             fd.append('to_position',this.selected_position)
             fd.append('to_job_status',this.selected_status)
@@ -667,8 +677,8 @@ export default {
             fd.append('to_immediate_superior',this.selected_supervisor.empno)
             
             fd.append('to_manager',Object.keys(this.selected_supervisor).length > 0 ?  this.selected_supervisor.info1.supervisor.empno : null)
-            // to contract
-            // to others
+            fd.append('to_contract',this.to_contract)
+            fd.append('to_others',this.to_others)
             fd.append('reason_for_movement',this.reason)
             fd.append('effectivity_date',this.effectivity_date)
             axios.post('/acsi_emfs/api/employee-movement-form',fd).then(response => {
