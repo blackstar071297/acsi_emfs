@@ -6,6 +6,7 @@ use App\Models\EmployeeMovementForm;
 use Illuminate\Http\Request;
 use App\Models\MovementRecord;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class EmployeeMovementFormController extends Controller
 {
@@ -18,6 +19,14 @@ class EmployeeMovementFormController extends Controller
     {
         //
         return EmployeeMovementForm::with('employee','requestor','records.status')->where('is_closed',0)->latest()->get();
+    }
+    public function fstForm()
+    {
+        //
+
+        return EmployeeMovementForm::with('requestor','records.status','employee')->whereHas('employee',function($query){
+            $query->where('empno',Auth::guard('employee')->user()->empno);
+        })->where('is_closed',0)->latest()->get();
     }
 
     /**
@@ -39,7 +48,6 @@ class EmployeeMovementFormController extends Controller
     public function store(Request $request)
     {
         //
-        return $request;
         $emf = new EmployeeMovementForm();
         $ctr = EmployeeMovementForm::whereYear('created_at','=',date('Y'))->get();
         $count = count($ctr,COUNT_RECURSIVE) + 1;

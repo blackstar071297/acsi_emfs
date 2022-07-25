@@ -53,7 +53,9 @@ export default {
             if(AppStorage.getToken()){
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
             }
-            axios.post('/acsi_emfs/api/get-current-user').then(response => {this.current_user = response.data})
+            axios.post('/acsi_emfs/api/get-current-user').then(response => {
+                this.current_user = response.data
+            })
         },
         logout(){
             if(AppStorage.getToken()){

@@ -2,12 +2,8 @@
     <div>
         <navbar></navbar>
         <div class="container mt-4">
-            <nav aria-label="breadcrumb ">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Home</li>
-                </ol>
-            </nav>
-            <a href="/acsi_emfs/new-movement-form" class="btn btn-success mb-2">New movement form <i class="fa-solid fa-plus"></i></a>
+            
+            <h1>FST Dashboard</h1>
             
             <table class="table table-bordered table-stripe">
                 <thead>
@@ -52,18 +48,13 @@ export default {
     },
     methods:{
         getForms(){
-            axios.get('/acsi_emfs/api/employee-movement-form').then(response => {
+            axios.post('/acsi_emfs/api/fst/employee-movement-form').then(response => {
                 console.log(response.data)
                 this.forms = response.data
             }).catch(error => console.log(error.response.data))
         },
         getCurrentUser(){
-            axios.post('/acsi_emfs/api/get-current-user').then(response => {
-                this.current_user = response.data
-                if(response.data.position == 'fst'){
-                    this.$router.push({path:'/acsi_emfs/fst/'})
-                }
-            })
+            axios.post('/acsi_emfs/api/get-current-user').then(response => {this.current_user = response.data})
         },
         checkUser(form){
             if(form.records[0].status_id == 1 && form.from_immediate_superior == this.current_user.empno){

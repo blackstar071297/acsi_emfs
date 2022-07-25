@@ -60,6 +60,22 @@ class EmployeeController extends Controller
 
             $employee->save();
         }
+
+        $fst = DB::table('emp_info')->leftjoin('emp_comp','emp_comp.empid','=','emp_info.empid')->where('emp_comp.eposition','Field Service Technician')->where('emp_comp.eactive','Active')->get();
+        foreach($fst as $key=>$manager){
+            $employee = new Employee();
+            $employee->useruniq = $manager->empid;
+
+            $employee->empno = $manager->empno;
+            $employee->firstname = $manager->firstname;;
+            $employee->lastname = $manager->lastname;;
+            $employee->username = $manager->empno;
+            $employee->userpass = hash('sha256','password') ;
+            $employee->useraccess = 'viewer';
+            $employee->position = 'fst';
+
+            $employee->save();
+        }
     }
     public function getPositions(){
         return $positions = DB::table('emp_positions')->get();

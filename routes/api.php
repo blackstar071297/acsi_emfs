@@ -30,11 +30,13 @@ Route::post("/is-logged-in",[LoginController::class,'isLoggedIn'])->middleware('
 Route::post('/login',[LoginController::class,'login']);
 Route::post('/get-current-user',[LoginController::class,'getCurrentUser']);
 Route::post('/logout',[LoginController::class,'logout'])->middleware('auth:employee');
+Route::post('/fst/employee-movement-form',[EmployeeMovementFormController::class,'fstForm'])->middleware('auth:employee');
 
 Route::post('/register',[RegisterController::class,'store']);
 Route::post('generate-user',[EmployeeController::class,'generateUser']);
 
 Route::resource('/employee-movement-form',EmployeeMovementFormController::class)->middleware('auth:employee');
+
 Route::resource('/movement-record',MovementRecordController::class)->middleware('auth:employee');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

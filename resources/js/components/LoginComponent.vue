@@ -64,7 +64,13 @@ export default {
                     let token = response.data.token
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                     AppStorage.storeToken(token)
-                    this.$router.push({path:'/acsi_emfs/'})
+                    axios.post('/acsi_emfs/api/get-current-user').then(response =>{
+                        if(response.data.position == 'fst'){
+                            this.$router.push({path:'/acsi_emfs/fst/'})
+                        }else{
+                            this.$router.push({path:'/acsi_emfs/'})
+                        }
+                    })
                 }
             }).catch(error => console.log(error.response.data))
         }

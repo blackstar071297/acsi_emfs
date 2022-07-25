@@ -5826,6 +5826,122 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
         _this2.current_user = response.data;
+
+        if (response.data.position == 'fst') {
+          _this2.$router.push({
+            path: '/acsi_emfs/fst/'
+          });
+        }
+      });
+    },
+    checkUser: function checkUser(form) {
+      if (form.records[0].status_id == 1 && form.from_immediate_superior == this.current_user.empno) {
+        return true;
+      } else if (form.records[0].status_id == 2 && form.from_manager == this.current_user.empno) {
+        return true;
+      } else if (form.records[0].status_id == 4 && form.to_manager == this.current_user.empno) {
+        return true;
+      } else if (form.records[0].status_id == 5 && this.current_user.empno == 'ACSI-200634') {
+        return true;
+      } else if (form.records[0].status_id == 6 && form.hr_account_officer == this.current_user.empno) {
+        return true;
+      } else if (form.records[0].status_id == 7 && form.emp_no == this.current_user.empno) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  created: function created() {
+    if (_components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken()) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken();
+    }
+
+    this.getForms();
+    this.getCurrentUser();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FSTDashboardComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FSTDashboardComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _components_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/NavbarComponent.vue */ "./resources/js/components/NavbarComponent.vue");
+/* harmony import */ var _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Helpers/AppStorage */ "./resources/js/components/Helpers/AppStorage.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    navbar: _components_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      forms: [],
+      current_user: []
+    };
+  },
+  methods: {
+    getForms: function getForms() {
+      var _this = this;
+
+      axios.post('/acsi_emfs/api/fst/employee-movement-form').then(function (response) {
+        console.log(response.data);
+        _this.forms = response.data;
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+    },
+    getCurrentUser: function getCurrentUser() {
+      var _this2 = this;
+
+      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+        _this2.current_user = response.data;
       });
     },
     checkUser: function checkUser(form) {
@@ -5942,9 +6058,16 @@ __webpack_require__.r(__webpack_exports__);
           var token = response.data.token;
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
           _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].storeToken(token);
-
-          _this.$router.push({
-            path: '/acsi_emfs/'
+          axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+            if (response.data.position == 'fst') {
+              _this.$router.push({
+                path: '/acsi_emfs/fst/'
+              });
+            } else {
+              _this.$router.push({
+                path: '/acsi_emfs/'
+              });
+            }
           });
         }
       })["catch"](function (error) {
@@ -7050,14 +7173,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Helpers/AppStorage */ "./resources/js/components/Helpers/AppStorage.js");
 /* harmony import */ var _components_DashboardComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/DashboardComponent */ "./resources/js/components/DashboardComponent.vue");
 /* harmony import */ var _components_LoginComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/LoginComponent */ "./resources/js/components/LoginComponent.vue");
 /* harmony import */ var _components_NewMovementFormComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/NewMovementFormComponent */ "./resources/js/components/NewMovementFormComponent.vue");
 /* harmony import */ var _components_NewEmployeeComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/NewEmployeeComponent */ "./resources/js/components/NewEmployeeComponent.vue");
 /* harmony import */ var _components_ApprovalComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/ApprovalComponent */ "./resources/js/components/ApprovalComponent.vue");
+/* harmony import */ var _components_FSTDashboardComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/FSTDashboardComponent */ "./resources/js/components/FSTDashboardComponent.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
 
 
  //component imports
@@ -7067,17 +7193,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_6__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_7__["default"]);
+
+
+vue__WEBPACK_IMPORTED_MODULE_8__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_9__["default"]);
 
 var guard = function guard(to, from, next) {
   var current_path = to.fullPath.split('/');
   document.title = "ACSI EMFS" + ' | ' + to.meta.title;
 
   if (_components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken()) {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken();
+    (axios__WEBPACK_IMPORTED_MODULE_7___default().defaults.headers.common.Authorization) = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken();
   }
 
-  axios.post('/acsi_emfs/api/is-logged-in').then(function (response) {
+  axios__WEBPACK_IMPORTED_MODULE_7___default().post('/acsi_emfs/api/is-logged-in').then(function (response) {
     response.data == false ? next({
       path: '/acsi_emfs/login'
     }) : next();
@@ -7119,8 +7247,15 @@ var routes = [{
   meta: {
     title: 'Approval'
   }
+}, {
+  path: '/acsi_emfs/fst/',
+  component: _components_FSTDashboardComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
+  beforeEnter: guard,
+  meta: {
+    title: 'FST Dashboard'
+  }
 }];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_7__["default"]({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_9__["default"]({
   mode: 'history',
   hash: false,
   routes: routes // short for `routes: routes`
@@ -30243,6 +30378,45 @@ component.options.__file = "resources/js/components/DashboardComponent.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/FSTDashboardComponent.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/FSTDashboardComponent.vue ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _FSTDashboardComponent_vue_vue_type_template_id_0eedbdd6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FSTDashboardComponent.vue?vue&type=template&id=0eedbdd6& */ "./resources/js/components/FSTDashboardComponent.vue?vue&type=template&id=0eedbdd6&");
+/* harmony import */ var _FSTDashboardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FSTDashboardComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/FSTDashboardComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FSTDashboardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FSTDashboardComponent_vue_vue_type_template_id_0eedbdd6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _FSTDashboardComponent_vue_vue_type_template_id_0eedbdd6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/FSTDashboardComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/LoginComponent.vue":
 /*!****************************************************!*\
   !*** ./resources/js/components/LoginComponent.vue ***!
@@ -30472,6 +30646,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/FSTDashboardComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/FSTDashboardComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FSTDashboardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FSTDashboardComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FSTDashboardComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FSTDashboardComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/LoginComponent.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************!*\
   !*** ./resources/js/components/LoginComponent.vue?vue&type=script&lang=js& ***!
@@ -30608,6 +30798,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DashboardComponent_vue_vue_type_template_id_01ab55f4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DashboardComponent_vue_vue_type_template_id_01ab55f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DashboardComponent.vue?vue&type=template&id=01ab55f4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/DashboardComponent.vue?vue&type=template&id=01ab55f4&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/FSTDashboardComponent.vue?vue&type=template&id=0eedbdd6&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/FSTDashboardComponent.vue?vue&type=template&id=0eedbdd6& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FSTDashboardComponent_vue_vue_type_template_id_0eedbdd6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FSTDashboardComponent_vue_vue_type_template_id_0eedbdd6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FSTDashboardComponent_vue_vue_type_template_id_0eedbdd6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FSTDashboardComponent.vue?vue&type=template&id=0eedbdd6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FSTDashboardComponent.vue?vue&type=template&id=0eedbdd6&");
 
 
 /***/ }),
@@ -32361,6 +32568,142 @@ var staticRenderFns = [
       ]
     )
   },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("Request no.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Employee name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Requestor")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Reason of transfer")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Effectivity date")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FSTDashboardComponent.vue?vue&type=template&id=0eedbdd6&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FSTDashboardComponent.vue?vue&type=template&id=0eedbdd6& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("navbar"),
+      _vm._v(" "),
+      _c("div", { staticClass: "container mt-4" }, [
+        _c("h1", [_vm._v("FST Dashboard")]),
+        _vm._v(" "),
+        _c("table", { staticClass: "table table-bordered table-stripe" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.forms, function (form, index) {
+              return _c("tr", { key: index }, [
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "/acsi_emfs/approvals/" + form.request_no,
+                      },
+                    },
+                    [_vm._v(_vm._s(form.request_no))]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(form.employee.firstname) +
+                      " " +
+                      _vm._s(form.employee.lastname)
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(form.requestor.firstname) +
+                      " " +
+                      _vm._s(form.requestor.lastname)
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(
+                      form.reason_for_movement == null
+                        ? "N/A"
+                        : form.reason_for_movement
+                    )
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(form.effectivity_date))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(form.records[0].status.status))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-primary mb-1",
+                      attrs: {
+                        href: "/acsi_emfs/approvals/" + form.request_no,
+                      },
+                    },
+                    [_c("i", { staticClass: "fa-solid fa-eye" })]
+                  ),
+                  _vm._v(" "),
+                  _vm.checkUser(form)
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-success mb-1",
+                          attrs: {
+                            href: "/acsi_emfs/approvals/" + form.request_no,
+                          },
+                        },
+                        [_c("i", { staticClass: "fa-solid fa-check" })]
+                      )
+                    : _vm._e(),
+                ]),
+              ])
+            }),
+            0
+          ),
+        ]),
+      ]),
+    ],
+    1
+  )
+}
+var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
