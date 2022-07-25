@@ -6814,6 +6814,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -6909,7 +6929,7 @@ __webpack_require__.r(__webpack_exports__);
       selected_cost_center: [],
       selected_supervisor: [],
       selected_manager: [],
-      effectivity_date: new Date().toISOString().slice(0, -14),
+      effectivity_date: '',
       reason: [],
       from_salary: 0,
       to_salary: 0,
@@ -6918,7 +6938,8 @@ __webpack_require__.r(__webpack_exports__);
       from_contract: new Date().toISOString().slice(0, -14),
       to_contract: new Date().toISOString().slice(0, -14),
       from_others: null,
-      to_others: null
+      to_others: null,
+      errors: []
     };
   },
   methods: {
@@ -7061,7 +7082,7 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('from_allowance', this.from_allowance);
       fd.append('from_immediate_superior', this.selected_employee.info1.esup);
       fd.append('from_manager', this.selected_employee.info1.emngr);
-      fd.append('from_others', this.from_others);
+      fd.append('from_others', this.from_others == null ? '' : this.from_others);
       fd.append('from_contract', this.from_contract);
       fd.append('move_position', this.position_toggler);
       fd.append('move_job_status', this.job_status_toggler);
@@ -7083,26 +7104,31 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('to_cost_center', this.selected_cost_center);
       fd.append('to_salary', this.to_salary);
       fd.append('to_allowance', this.to_allowance);
-      fd.append('to_immediate_superior', this.selected_supervisor.empno);
-      fd.append('to_manager', Object.keys(this.selected_supervisor).length > 0 ? this.selected_supervisor.info1.supervisor.empno : null);
+      fd.append('to_immediate_superior', Object.keys(this.selected_supervisor).length > 0 ? this.selected_supervisor.empno : '');
+      fd.append('to_manager', Object.keys(this.selected_supervisor).length > 0 ? this.selected_supervisor.info1.supervisor.empno : '');
       fd.append('to_contract', this.to_contract);
-      fd.append('to_others', this.to_others);
+      fd.append('to_others', this.to_others == null ? '' : this.to_others);
       fd.append('reason_for_movement', this.reason);
       fd.append('effectivity_date', this.effectivity_date);
       axios.post('/acsi_emfs/api/employee-movement-form', fd).then(function (response) {
         console.log(response);
+        _this10.errors = [];
 
         if (response.data == 'success') {
           _this10.clearField();
 
           $("#searchbox").val('');
           alert('Movement request done !');
+        } else if (response.data.errors) {
+          alert('Fill up all required field!');
+          _this10.errors = response.data.errors;
         }
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
     },
     clearField: function clearField() {
+      this.errors = [];
       this.selected_employee = [];
       this.position_toggler = false;
       this.job_status_toggler = false;
@@ -7124,7 +7150,7 @@ __webpack_require__.r(__webpack_exports__);
       this.selected_cost_center = [];
       this.selected_supervisor = [];
       this.selected_manager = [];
-      this.effectivity_date = new Date().toISOString().slice(0, -14);
+      this.effectivity_date = '';
       this.reason = [];
       this.from_allowance = 0;
       this.to_allowance = 0;
@@ -32450,7 +32476,7 @@ var render = function () {
         _vm._v(" "),
         _vm._m(1),
         _vm._v(" "),
-        _c("table", { staticClass: "table table-bordered table-stripe" }, [
+        _c("table", { staticClass: "table table-bordered table-striped" }, [
           _vm._m(2),
           _vm._v(" "),
           _c(
@@ -32619,7 +32645,7 @@ var render = function () {
       _c("div", { staticClass: "container mt-4" }, [
         _c("h1", [_vm._v("FST Dashboard")]),
         _vm._v(" "),
-        _c("table", { staticClass: "table table-bordered table-stripe" }, [
+        _c("table", { staticClass: "table table-bordered table-striped" }, [
           _vm._m(0),
           _vm._v(" "),
           _c(
@@ -34660,12 +34686,7 @@ var render = function () {
                                   },
                                 ],
                                 staticClass: "border-0 text-center",
-                                attrs: {
-                                  type: "date",
-                                  name: "eoc",
-                                  id: "eoc",
-                                  min: new Date().toISOString().slice(0, -14),
-                                },
+                                attrs: { type: "date", name: "eoc", id: "eoc" },
                                 domProps: { value: _vm.from_contract },
                                 on: {
                                   input: function ($event) {
@@ -34722,7 +34743,7 @@ var render = function () {
                                 expression: "reason",
                               },
                             ],
-                            staticClass: "h-100 border-0",
+                            staticClass: "h-100 border-0 w-100",
                             attrs: {
                               type: "text",
                               name: "reason_for_transfer",
@@ -34738,6 +34759,12 @@ var render = function () {
                               },
                             },
                           }),
+                          _vm._v(" "),
+                          _vm.errors.reason_for_movement
+                            ? _c("small", { staticClass: "text-danger" }, [
+                                _vm._v("*This field is required!"),
+                              ])
+                            : _vm._e(),
                         ]),
                       ]),
                       _vm._v(" "),
@@ -34752,12 +34779,11 @@ var render = function () {
                                 expression: "effectivity_date",
                               },
                             ],
-                            staticClass: "text-center border-0 h-100",
+                            staticClass: "text-center border-0 h-100 w-100",
                             attrs: {
                               type: "date",
                               name: "effective_date",
                               id: "effective_date",
-                              min: new Date().toISOString().slice(0, -14),
                             },
                             domProps: { value: _vm.effectivity_date },
                             on: {
@@ -34769,6 +34795,12 @@ var render = function () {
                               },
                             },
                           }),
+                          _vm._v(" "),
+                          _vm.errors.effectivity_date
+                            ? _c("small", { staticClass: "text-danger" }, [
+                                _vm._v("*This field is required!"),
+                              ])
+                            : _vm._e(),
                         ]),
                       ]),
                     ]),
@@ -34851,6 +34883,12 @@ var render = function () {
                                 ),
                                 0
                               ),
+                              _vm._v(" "),
+                              _vm.errors.to_position
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                       ]),
@@ -34917,6 +34955,12 @@ var render = function () {
                                   ),
                                 ]
                               ),
+                              _vm._v(" "),
+                              _vm.errors.to_job_status
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                       ]),
@@ -34984,6 +35028,12 @@ var render = function () {
                                 ),
                                 0
                               ),
+                              _vm._v(" "),
+                              _vm.errors.to_job_level
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                       ]),
@@ -35046,6 +35096,12 @@ var render = function () {
                                 ],
                                 2
                               ),
+                              _vm._v(" "),
+                              _vm.errors.to_role
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                       ]),
@@ -35124,6 +35180,12 @@ var render = function () {
                                 ),
                                 0
                               ),
+                              _vm._v(" "),
+                              _vm.errors.to_department
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                       ]),
@@ -35194,6 +35256,12 @@ var render = function () {
                                 ),
                                 0
                               ),
+                              _vm._v(" "),
+                              _vm.errors.to_cost_center
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                       ]),
@@ -35261,6 +35329,12 @@ var render = function () {
                                   },
                                 },
                               }),
+                              _vm._v(" "),
+                              _vm.errors.to_allowance
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ]),
                       ]),
                       _vm._v(" "),
@@ -35342,6 +35416,12 @@ var render = function () {
                                 ),
                                 0
                               ),
+                              _vm._v(" "),
+                              _vm.errors.to_immediate_superior
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                       ]),
@@ -35418,6 +35498,12 @@ var render = function () {
                                 }),
                                 0
                               ),
+                              _vm._v(" "),
+                              _vm.errors.to_manager
+                                ? _c("small", { staticClass: "text-danger" }, [
+                                    _vm._v("*This field is required!"),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                       ]),

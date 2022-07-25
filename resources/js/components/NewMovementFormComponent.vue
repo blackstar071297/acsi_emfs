@@ -253,17 +253,28 @@
                                     </tr>
                                     <tr>
                                         <td v-if="extension_toggler == false">N/A</td>
-                                        <td v-else><input type="date" name="eoc" id="eoc"  class="border-0 text-center" v-model="from_contract" :min="new Date().toISOString().slice(0, -14)"></td>
+                                        <td v-else>
+                                            <input type="date" name="eoc" id="eoc"  class="border-0 text-center" v-model="from_contract">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td v-if="other_toggler == false">N/A</td>
-                                        <td v-else><input type="text" name="other" id="other" class="border-0 text-center h-100" v-model="from_others"></td>
+                                        <td v-else>
+                                            <input type="text" name="other" id="other" class="border-0 text-center h-100" v-model="from_others">
+                                        </td>
                                     </tr>
                                     <tr class=" d-print-none">
-                                        <td><input type="text" name="reason_for_transfer" id="reason_for_transfer" class="h-100 border-0" v-model="reason"></td>
+                                        <td>
+                                            <input type="text" name="reason_for_transfer" id="reason_for_transfer" class="h-100 border-0 w-100" v-model="reason">
+                                             <small class="text-danger" v-if="errors.reason_for_movement">*This field is required!</small>
+                                        </td>
+                                       
                                     </tr>
                                     <tr>
-                                        <td><input type="date" name="effective_date" id="effective_date" class="text-center border-0 h-100" :min="new Date().toISOString().slice(0, -14)" v-model="effectivity_date"></td>
+                                        <td>
+                                            <input type="date" name="effective_date" id="effective_date" class="text-center border-0 h-100 w-100" v-model="effectivity_date">
+                                            <small class="text-danger" v-if="errors.effectivity_date">*This field is required!</small>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -280,6 +291,7 @@
                                             <select name="position_title" id="position_title" class="border-0 w-100 text-center" v-model="selected_position" :disabled="current_user.position == 'hr_officer' ? false : true">
                                                 <option v-for="(position,index) in positions" :key="index" i :value="position.eposition" >{{position.eposition}}</option>
                                             </select>
+                                            <small class="text-danger" v-if="errors.to_position">*This field is required!</small>
                                         </td>
                                     </tr>
                                     <tr>
@@ -289,6 +301,7 @@
                                                 <option value="Probationary">Probationary</option>
                                                 <option value="Regular">Regular</option>
                                             </select>
+                                            <small class="text-danger" v-if="errors.to_job_status">*This field is required!</small>
                                         </td>
                                     </tr>
                                     <tr>
@@ -297,6 +310,7 @@
                                             <select name="job_level" id="job_level" class="border-0 w-100 text-center" v-model="selected_level" :disabled="current_user.position == 'hr_officer' ? false : true">
                                                 <option v-for="(job_level,index) in job_level" :key="index" :value="job_level.job_name">{{job_level.job_name}}</option>
                                             </select>
+                                            <small class="text-danger" v-if="errors.to_job_level">*This field is required!</small>
                                         </td>
                                     </tr>
                                     <tr>
@@ -306,6 +320,7 @@
                                                 <option value="">N/A</option>
                                                 <option v-for="(role,index) in roles" :key="index" :value="role.role_name">{{role.role_name}}</option>
                                             </select>
+                                            <small class="text-danger" v-if="errors.to_role">*This field is required!</small>
                                         </td>
                                     </tr>
                                     <tr>
@@ -314,7 +329,7 @@
                                             <select name="department" id="department" class="border-0 w-100 text-center" v-model="selected_department" @change="departmentUpdate()">
                                                 <option v-for="(cost_center,index) in cost_centers" :key="index" :value="cost_center.ccname" :selected="cost_center.ccname == selected_cost_center ? true : false">{{cost_center.ccname}}</option>
                                             </select>
-                                            <!-- {{selected_department}} -->
+                                            <small class="text-danger" v-if="errors.to_department">*This field is required!</small>
                                         </td>
                                     </tr>
                                     <tr>
@@ -323,7 +338,7 @@
                                             <select name="cost_center" id="cost_center" class="border-0 w-100 text-center" v-model="selected_cost_center">
                                                 <option v-for="(cost_center,index) in cost_centers" :key="index" :value="cost_center.ccname" :selected="cost_center.ccname == selected_cost_center ? true : false">{{cost_center.ccname}}</option>
                                             </select>
-                                            <!-- {{selected_cost_center}} -->
+                                           <small class="text-danger" v-if="errors.to_cost_center">*This field is required!</small>
                                         </td>
                                     </tr>
                                     <tr>
@@ -332,7 +347,10 @@
                                     </tr>
                                     <tr>
                                         <td v-if="allowance_toggler == false">SAME</td>
-                                        <td v-else><input  type="text" name="to_allowance" id="to_allowance" v-model="to_allowance" class="border-0 text-center h-100" ></td> 
+                                        <td v-else>
+                                            <input  type="text" name="to_allowance" id="to_allowance" v-model="to_allowance" class="border-0 text-center h-100" >
+                                            <small class="text-danger" v-if="errors.to_allowance">*This field is required!</small>
+                                        </td> 
                                     </tr>
                                     <tr>
                                         <td v-if="supervisor_toggler == false">SAME</td>
@@ -340,6 +358,7 @@
                                             <select name="supervisor" id="supervisor" class="border-0 w-100 text-center" v-model="selected_supervisor.empno" @change="supervisorUpdate($event.target.value)" >
                                                 <option v-for="(supervisor,index) in supervisors" :key="index" :value="supervisor.empno" >{{supervisor.user.firstname}} {{supervisor.user.lastname}}</option>
                                             </select>
+                                            <small class="text-danger" v-if="errors.to_immediate_superior">*This field is required!</small>
                                         </td>
                                     </tr>
                                     <tr>
@@ -348,6 +367,7 @@
                                             <select name="manager" id="manager" class="border-0 w-100 text-center" v-model="selected_manager" :disabled="current_user.position == 'hr_officer' ? false : true">
                                                 <option v-for="(manager,index) in managers" :key="index" :value="manager.empno" :selected="selected_manager == manager.empno ? true : false">{{manager.user.firstname}} {{manager.user.lastname}}</option>
                                             </select>
+                                            <small class="text-danger" v-if="errors.to_manager">*This field is required!</small>
                                         </td>
                                     </tr>
                                     <tr>
@@ -532,7 +552,7 @@ export default {
             selected_supervisor: [],
             selected_manager: [],
             
-            effectivity_date: new Date().toISOString().slice(0, -14),
+            effectivity_date: '',
             
             reason:[],
             from_salary: 0,
@@ -542,7 +562,8 @@ export default {
             from_contract: new Date().toISOString().slice(0, -14),
             to_contract: new Date().toISOString().slice(0, -14),
             from_others: null,
-            to_others:null
+            to_others:null,
+            errors: []
         }
     },
     methods:{
@@ -650,7 +671,7 @@ export default {
             fd.append('from_allowance',this.from_allowance)
             fd.append('from_immediate_superior',this.selected_employee.info1.esup)
             fd.append('from_manager',this.selected_employee.info1.emngr)
-            fd.append('from_others',this.from_others)
+            fd.append('from_others',this.from_others == null ? '' : this.from_others)
             fd.append('from_contract',this.from_contract)
 
             fd.append('move_position',this.position_toggler)
@@ -674,23 +695,28 @@ export default {
             fd.append('to_cost_center',this.selected_cost_center)
             fd.append('to_salary',this.to_salary)
             fd.append('to_allowance',this.to_allowance)
-            fd.append('to_immediate_superior',this.selected_supervisor.empno)
+            fd.append('to_immediate_superior',Object.keys(this.selected_supervisor).length > 0 ? this.selected_supervisor.empno : '')
             
-            fd.append('to_manager',Object.keys(this.selected_supervisor).length > 0 ?  this.selected_supervisor.info1.supervisor.empno : null)
+            fd.append('to_manager',Object.keys(this.selected_supervisor).length > 0 ?  this.selected_supervisor.info1.supervisor.empno : '')
             fd.append('to_contract',this.to_contract)
-            fd.append('to_others',this.to_others)
+            fd.append('to_others',this.to_others == null ? '' : this.to_others)
             fd.append('reason_for_movement',this.reason)
             fd.append('effectivity_date',this.effectivity_date)
             axios.post('/acsi_emfs/api/employee-movement-form',fd).then(response => {
                 console.log(response)
+                this.errors = []
                 if(response.data == 'success'){
                     this.clearField()
                     $("#searchbox").val('')
                     alert('Movement request done !')
+                }else if(response.data.errors){
+                    alert('Fill up all required field!')
+                    this.errors = response.data.errors
                 }
             }).catch(error => console.log(error.response.data))
         },
         clearField(){
+            this.errors = []
             this.selected_employee  = []
             this.position_toggler =  false
             this.job_status_toggler =  false
@@ -712,7 +738,7 @@ export default {
             this.selected_cost_center =  []
             this.selected_supervisor =  []
             this.selected_manager =  []
-            this.effectivity_date =  new Date().toISOString().slice(0, -14)
+            this.effectivity_date =  ''
             
             this.reason = []
             this.from_allowance =  0

@@ -5,7 +5,7 @@
             
             <h1>FST Dashboard</h1>
             
-            <table class="table table-bordered table-stripe">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <th scope="col">Request no.</th>
                     <th>Employee name</th>
