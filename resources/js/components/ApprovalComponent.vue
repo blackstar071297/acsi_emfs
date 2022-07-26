@@ -332,7 +332,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5" v-if="form.from_manager != form.to_manager && form.to_manager != 'ACSI-200634'">
-                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.new_manager_accept_date != null">
+                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.new_manager_accept_date != null">
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 4 && current_user.empno == form.new_manager.empno">Approve</button>
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.firstname }} {{ form.new_manager.lastname }}</h6>
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.info1.eposition }}</h6>
@@ -342,7 +342,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.cable_head_accept_date != null">
+                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.cable_head_accept_date != null">
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 5 && current_user.empno == 'ACSI-200634'">Approve</button>
                                         <h6 class="align-middle font-weight-bold">Oliver Angeles</h6>
                                         <h6 class="align-middle font-weight-bold">Head, Cable Operations</h6>
@@ -364,8 +364,8 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.hr_accept_date != null">
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 6 && current_user.empno == form.hr_account_officer">Approve</button>
+                                        <img src="/acsi_emfs/public/images/acknowledge.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.hr_accept_date != null">
+                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 6 && current_user.empno == form.hr_account_officer">Acknowledge</button>
                                         <h6 class="align-middle font-weight-bold">{{ form.account_officer.firstname}} {{ form.account_officer.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">HR Account Officer</h6>
                                     </div>
@@ -375,8 +375,8 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.employee_accept_date != null">
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 7 && current_user.empno == form.emp_no">Approve</button>
+                                        <img src="/acsi_emfs/public/images/acknowledge.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.employee_accept_date != null">
+                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 7 && current_user.empno == form.emp_no">Acknowledge</button>
                                         <h6 class="align-middle font-weight-bold">{{form.employee.firstname}}  {{form.employee.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ form.employee.info1.eposition }}</h6>
                                     </div>

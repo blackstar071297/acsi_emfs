@@ -90,28 +90,34 @@ class MovementRecordController extends Controller
     }
     private function choose_status($approval_process,$current_status,$form){
         if($approval_process == 1){
-            if((int) $current_status == 2){
+            if($current_status == 2 && $form->from_manager != 'ACSI-200634' ){
                 return 5;
-            }elseif($current_status == 3 && $form->from_manager == $form->to_manager){
-                return 5;
-            }elseif($current_status == 4 && $form->to_manager == 'ACSI-200634'){
+            }elseif($current_status == 2 && $form->from_manager == 'ACSI-200634'){
                 return 6;
             }else{
                 return (int) $current_status + 1;
             }
         }elseif($approval_process == 2){
-            if($current_status == 3 && $form->from_manager == $form->to_manager){
+            if($current_status == 2 && $form->from_manager == $form->to_manager){
                 return 5;
+            }elseif($current_status == 2 && $form->from_manager != $form->to_manager){
+                return 4;
             }elseif($current_status == 4 && $form->to_manager == 'ACSI-200634'){
                 return 6;
+            }elseif($current_status == 4 && $form->to_manager != 'ACSI-200634'){
+                return 5;
             }else{
                 return (int) $current_status + 1;
             }
         }elseif($approval_process == 3){
-            if((int) $current_status == 2){
+            if((int) $current_status == 2 && $form->from_manager != $form->to_manager){
                 return 4;
-            }elseif($current_status == 3 && $form->from_manager == $form->to_manager){
+            }elseif($current_status == 2 && $form->from_manager == $form->to_manager){
                 return 5;
+            }elseif($current_status == 4 && $form->to_manager != 'ACSI-200634'){
+                return 5;
+            }elseif($current_status == 4 && $form->to_manager == 'ACSI-200634'){
+                return 6;
             }else{
                 return (int) $current_status + 1;
             }
@@ -124,8 +130,6 @@ class MovementRecordController extends Controller
             return 2;
         }elseif(($form->move_immediate_superior == 1 && $form->move_manager == 1 && $form->move_department == 1 && $form->move_cost_center == 1) && ($form->move_position == 0 && $form->move_job_status == 0 && $form->move_job_level == 0 && $form->move_role == 0 && $form->move_salary == 0 && $form->move_allowance == 0 && $form->move_contract == 0  && $form->move_others == 0)) {
             return 3;
-        }else{
-            return 1;
         }
     }
 

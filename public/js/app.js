@@ -31904,7 +31904,7 @@ var render = function () {
                                               attrs: {
                                                 src: "/acsi_emfs/public/images/approved.png",
                                                 height: "50",
-                                                alt: "",
+                                                alt: "approve image",
                                                 loading: "lazy",
                                               },
                                             })
@@ -31987,7 +31987,7 @@ var render = function () {
                                     attrs: {
                                       src: "/acsi_emfs/public/images/approved.png",
                                       height: "50",
-                                      alt: "",
+                                      alt: "approve image",
                                       loading: "lazy",
                                     },
                                   })
@@ -32058,7 +32058,7 @@ var render = function () {
                                 ? _c("img", {
                                     staticClass: "d-inline-block align-top",
                                     attrs: {
-                                      src: "/acsi_emfs/public/images/approved.png",
+                                      src: "/acsi_emfs/public/images/acknowledge.png",
                                       height: "50",
                                       alt: "",
                                       loading: "lazy",
@@ -32079,7 +32079,7 @@ var render = function () {
                                         },
                                       },
                                     },
-                                    [_vm._v("Approve")]
+                                    [_vm._v("Acknowledge")]
                                   )
                                 : _vm._e(),
                               _vm._v(" "),
@@ -32125,7 +32125,7 @@ var render = function () {
                                 ? _c("img", {
                                     staticClass: "d-inline-block align-top",
                                     attrs: {
-                                      src: "/acsi_emfs/public/images/approved.png",
+                                      src: "/acsi_emfs/public/images/acknowledge.png",
                                       height: "50",
                                       alt: "",
                                       loading: "lazy",
@@ -32145,7 +32145,7 @@ var render = function () {
                                         },
                                       },
                                     },
-                                    [_vm._v("Approve")]
+                                    [_vm._v("Acknowledge")]
                                   )
                                 : _vm._e(),
                               _vm._v(" "),
