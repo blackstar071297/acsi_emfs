@@ -20,12 +20,28 @@ class EmployeeMovementFormController extends Controller
     public function index()
     {
         //
-        return EmployeeMovementForm::with('employee','requestor','records.status')->where('is_closed',0)->latest()->get();
+        if(Auth::guard('employee')->user()->position == 'hr_officer' || Auth::guard('employee')->user()->empno == 'ACSI-200634'){
+            return EmployeeMovementForm::with('employee','requestor','records.status')->where('is_closed',0)->latest()->get();
+        }else{
+            return EmployeeMovementForm::with('employee','requestor','records.status','current_manager','current_superior','new_superior','new_manager','account_officer')
+                ->whereHas('requestor',function($query){
+                    $query->where('empno',Auth::guard('employee')->user()->empno);
+                })
+                ->orWhereHas('current_superior',function($query){
+                    $query->where('empno',Auth::guard('employee')->user()->empno);
+                })
+                ->orWhereHas('current_manager',function($query){
+                    $query->where('empno',Auth::guard('employee')->user()->empno);
+                })
+                ->orWhereHas('new_manager',function($query){
+                    $query->where('empno',Auth::guard('employee')->user()->empno);
+                })
+            ->latest()->get();
+        }
     }
     public function fstForm()
     {
         //
-        
         return EmployeeMovementForm::with('requestor','records.status','employee')->whereHas('employee',function($query){
             $query->where('empno',Auth::guard('employee')->user()->empno);
         })->where('is_closed',0)->latest()->get();
@@ -87,6 +103,8 @@ class EmployeeMovementFormController extends Controller
             $emf->from_immediate_superior = $request->from_immediate_superior;
             $emf->from_manager = $request->from_manager;
             $emf->from_salary = $request->from_salary;
+            $emf->from_contract = $request->from_contract;
+            $emf->from_others = $request->from_others;
             
             if($request->move_position == "true"){
                 $emf->move_position = true;

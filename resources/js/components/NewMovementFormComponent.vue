@@ -203,7 +203,7 @@
                                 </td>
                             </tr>
                             <tr class=" d-print-none">
-                                <td class="text-center font-weight-bold">Reason for transfer:</td>
+                                <td class="text-center font-weight-bold">Reason for movement:</td>
                             </tr>
                             <tr>
                                 <td class="text-center font-weight-bold">Effectivity date:</td>
@@ -448,7 +448,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold">Sunshine Cunanan</h6>
+                                        <h6 class="align-middle font-weight-bold">___________________</h6>
                                         <h6 class="align-middle font-weight-bold">HR Account Officer</h6>
                                     </div>
                                 </td>
@@ -459,14 +459,6 @@
                                     <div class="text-center mt-5">
                                         <h6 class="align-middle font-weight-bold">{{selected_employee.firstname}}  {{selected_employee.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ selected_employee.info1.eposition }}</h6>
-                                    </div>
-                                </td>
-                                <td style='font-weight: bold;' class="border-0 w-50">
-                                    <br>
-                                    <br>
-                                    <div class="text-center mt-5">
-                                        <h6 class="align-middle font-weight-bold">{{ new Date().toLocaleDateString("en-US") }}</h6>
-                                        <h6 class="align-middle font-weight-bold">DATE</h6>
                                     </div>
                                 </td>
                             </tr>

@@ -50,19 +50,58 @@ class MovementRecordController extends Controller
         }
         return 'error';
     }
+    public function cancelled(Request $request){
+        $record = new MovementRecord();
+        $record->request_no = $request->request_no;
+        $approval_process = 0;
+        $record->status_id = 10;
+        $record->remarks = $request->remarks;
+        if($record->save()){
+            return 'success';
+        }
+        return 'error';
+    }
+    public function returned(Request $request){
+        $form = EmployeeMovementForm::where('request_no',$request->request_no)->first();
+        $records = MovementRecord::where('request_no',$request->request_no)->latest()->get();
+        
+        if($records[0]->status_id == 2){
+            $form->superior_accept_date = null;
+        }elseif($records[0]->status_id == 4){
+            $form->manager_accept_date = null;
+        }elseif($records[0]->status_id == 5){
+            $form->new_manager_accept_date = null;
+        }
+        if(!$form->save()){
+            return 'error 1';
+        }
+        
+        if(!$records[0]->delete()){
+            return 'error 2';
+        }
+
+        $record = MovementRecord::where('request_no',$request->request_no)->latest()->first();
+        $record->remarks = $request->remarks;
+
+        if($record->save()){
+            return 'success';
+        }
+
+        return $form[0];
+    }
     private function updateForm($request){
         $form = EmployeeMovementForm::where('request_no',$request->request_no)->first();
         
             if($request->current_status == 1){
                 $form->superior_accept_date = now()->toDateString();
             }
-            if($request->current_status == 2){
+            if($request->current_status == 2 && $form->from_manager != $form->to_manager){
                 $form->manager_accept_date = now()->toDateString();
             }
             if($request->current_status == 3){
                 $form->new_superior_accept_date = now()->toDateString();
             }
-            if($request->current_status == 4){
+            if($request->current_status == 4 && $form->to_manager != 'ACSI-200634'){
                 $form->new_manager_accept_date = now()->toDateString();
             }
             if($request->current_status == 5){
@@ -78,10 +117,11 @@ class MovementRecordController extends Controller
                 $form->manager_accept_date = now()->toDateString();
                 $form->new_manager_accept_date = now()->toDateString();
             }
-            if($request->current_status == 4 && $form->to_manager == $form->to_manager){
+            if($request->current_status == 4 && $form->to_manager == 'ACSI-200634'){
                 $form->new_manager_accept_date = now()->toDateString();
                 $form->cable_head_accept_date = now()->toDateString();
             }
+            
             if($form->save()){
                 return true;
             }else{
@@ -124,7 +164,7 @@ class MovementRecordController extends Controller
         }
     }
     private function choose_approval_process($form){
-        if($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1 && $form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 0 && $form->move_manager == 0){
+        if(($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1) && ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 0 && $form->move_manager == 0)){
             return 1;
         }elseif(($form->move_department == 1 && $form->move_cost_center == 1 && $form->move_immediate_superior == 1 && $form->move_manager == 1) && ($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1)){
             return 2;

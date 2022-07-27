@@ -5669,6 +5669,162 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5684,7 +5840,8 @@ __webpack_require__.r(__webpack_exports__);
       current_manager: [],
       selected_supervisor: [],
       selected_manager: [],
-      current_user: []
+      current_user: [],
+      remarks: null
     };
   },
   methods: {
@@ -5725,6 +5882,36 @@ __webpack_require__.r(__webpack_exports__);
 
         if (response.data == 'success') {
           alert('Movement Approved!');
+          window.location.reload();
+        }
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+    },
+    returned: function returned() {
+      var fd = new FormData();
+      fd.append('request_no', this.$route.params.request_no);
+      fd.append('remarks', this.remarks);
+      axios.post('/acsi_emfs/api/return-emf', fd).then(function (response) {
+        console.log(response.data);
+
+        if (response.data == 'success') {
+          alert('Movement returned!');
+          window.location.reload();
+        }
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+    },
+    cancel: function cancel() {
+      var fd = new FormData();
+      fd.append('request_no', this.$route.params.request_no);
+      fd.append('remarks', this.remarks);
+      axios.post('/acsi_emfs/api/cancel-emf', fd).then(function (response) {
+        console.log(response.data);
+
+        if (response.data == 'success') {
+          alert('Movement cancelled!');
           window.location.reload();
         }
       })["catch"](function (error) {
@@ -6345,14 +6532,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NavbarComponent.vue */ "./resources/js/components/NavbarComponent.vue");
 /* harmony import */ var _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Helpers/AppStorage */ "./resources/js/components/Helpers/AppStorage.js");
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -30958,7 +31137,69 @@ var render = function () {
             _vm._m(1),
             _vm._v(" "),
             _c("div", { staticClass: "row mt-5" }, [
-              _vm._m(2),
+              _c("div", { staticClass: "col-12 mb-2" }, [
+                _vm.form.records[0].remarks != null &&
+                _vm.form.records[0].status_id == 10
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "alert alert-danger alert-dismissible fade show",
+                        attrs: { role: "alert" },
+                      },
+                      [
+                        _c("p", { staticClass: " text-center" }, [
+                          _vm._v("Form cancelled!"),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "p",
+                          { staticClass: "font-weight-bold text-center" },
+                          [
+                            _vm._v(
+                              "Remarks: " + _vm._s(_vm.form.records[0].remarks)
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(2),
+                      ]
+                    )
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-12 mb-2" }, [
+                _vm.form.records[0].remarks != null &&
+                _vm.form.records[0].status_id != 10
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "alert alert-warning alert-dismissible fade show",
+                        attrs: { role: "alert" },
+                      },
+                      [
+                        _c("p", { staticClass: " text-center" }, [
+                          _vm._v("Form returned!"),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "p",
+                          { staticClass: "font-weight-bold text-center" },
+                          [
+                            _vm._v(
+                              "Remarks: " + _vm._s(_vm.form.records[0].remarks)
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(3),
+                      ]
+                    )
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _vm._m(4),
               _vm._v(" "),
               _c("div", { staticClass: "col-12" }, [
                 _c("div", { staticClass: "row" }, [
@@ -31014,7 +31255,7 @@ var render = function () {
                 ]),
               ]),
               _vm._v(" "),
-              _vm._m(3),
+              _vm._m(5),
               _vm._v(" "),
               _c("div", { staticClass: "col-12 col-md-4" }, [
                 _c(
@@ -31024,7 +31265,7 @@ var render = function () {
                   },
                   [
                     _c("tbody", [
-                      _vm._m(4),
+                      _vm._m(6),
                       _vm._v(" "),
                       _c("tr", [
                         _c("td", { staticClass: "font-weight-bold " }, [
@@ -31402,13 +31643,13 @@ var render = function () {
                         ]),
                       ]),
                       _vm._v(" "),
-                      _vm._m(5),
-                      _vm._v(" "),
-                      _vm._m(6),
-                      _vm._v(" "),
                       _vm._m(7),
                       _vm._v(" "),
                       _vm._m(8),
+                      _vm._v(" "),
+                      _vm._m(9),
+                      _vm._v(" "),
+                      _vm._m(10),
                     ]),
                   ]
                 ),
@@ -31425,7 +31666,7 @@ var render = function () {
                       },
                       [
                         _c("tbody", [
-                          _vm._m(9),
+                          _vm._m(11),
                           _vm._v(" "),
                           _c("tr", [
                             _c("td", [_vm._v(_vm._s(_vm.form.from_position))]),
@@ -31570,7 +31811,7 @@ var render = function () {
                       },
                       [
                         _c("tbody", [
-                          _vm._m(10),
+                          _vm._m(12),
                           _vm._v(" "),
                           _c("tr", [
                             _c("td", [
@@ -31708,9 +31949,9 @@ var render = function () {
                             _c("td", [
                               _vm._v(
                                 _vm._s(
-                                  _vm.form._to_others == null
+                                  _vm.form.to_others == null
                                     ? "SAME"
-                                    : _vm.form._to_others
+                                    : _vm.form.to_others
                                 )
                               ),
                             ]),
@@ -31728,7 +31969,7 @@ var render = function () {
                   { staticClass: "table table-borderless table-sm" },
                   [
                     _c("tbody", [
-                      _vm._m(11),
+                      _vm._m(13),
                       _vm._v(" "),
                       _c("tr", [
                         _c(
@@ -31758,18 +31999,41 @@ var render = function () {
                               _vm.form.records[0].status_id == 1 &&
                               _vm.current_user.empno ==
                                 _vm.form.current_superior.empno
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-success w-75",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.approved()
-                                        },
-                                      },
-                                    },
-                                    [_vm._v("Approve")]
-                                  )
+                                ? _c("div", { staticClass: "row" }, [
+                                    _vm._m(14),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "col-12 col-md-4" },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-primary w-100 px-0",
+                                            attrs: {
+                                              "data-toggle": "modal",
+                                              "data-target": "#returnModal",
+                                              disabled:
+                                                _vm.form.records[0].status_id ==
+                                                1
+                                                  ? true
+                                                  : false,
+                                            },
+                                          },
+                                          [
+                                            _vm._v("Return "),
+                                            _c("i", {
+                                              staticClass:
+                                                "fa-solid fa-rotate-left",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _vm._m(15),
+                                  ])
                                 : _vm._e(),
                               _vm._v(" "),
                               _c(
@@ -31832,18 +32096,41 @@ var render = function () {
                               _vm.form.records[0].status_id == 2 &&
                               _vm.current_user.empno ==
                                 _vm.form.current_manager.empno
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-success w-75",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.approved()
-                                        },
-                                      },
-                                    },
-                                    [_vm._v("Approve")]
-                                  )
+                                ? _c("div", { staticClass: "row" }, [
+                                    _vm._m(16),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "col-12 col-md-4" },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-primary w-100 px-0",
+                                            attrs: {
+                                              "data-toggle": "modal",
+                                              "data-target": "#returnModal",
+                                              disabled:
+                                                _vm.form.records[0].status_id ==
+                                                1
+                                                  ? true
+                                                  : false,
+                                            },
+                                          },
+                                          [
+                                            _vm._v("Return "),
+                                            _c("i", {
+                                              staticClass:
+                                                "fa-solid fa-rotate-left",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _vm._m(17),
+                                  ])
                                 : _vm._e(),
                               _vm._v(" "),
                               _c(
@@ -31913,19 +32200,45 @@ var render = function () {
                                         _vm.form.records[0].status_id == 4 &&
                                         _vm.current_user.empno ==
                                           _vm.form.new_manager.empno
-                                          ? _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-success w-75",
-                                                on: {
-                                                  click: function ($event) {
-                                                    return _vm.approved()
-                                                  },
+                                          ? _c("div", { staticClass: "row" }, [
+                                              _vm._m(18),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-12 col-md-4",
                                                 },
-                                              },
-                                              [_vm._v("Approve")]
-                                            )
+                                                [
+                                                  _c(
+                                                    "button",
+                                                    {
+                                                      staticClass:
+                                                        "btn btn-primary w-100 px-0",
+                                                      attrs: {
+                                                        "data-toggle": "modal",
+                                                        "data-target":
+                                                          "#returnModal",
+                                                        disabled:
+                                                          _vm.form.records[0]
+                                                            .status_id == 1
+                                                            ? true
+                                                            : false,
+                                                      },
+                                                    },
+                                                    [
+                                                      _vm._v("Return "),
+                                                      _c("i", {
+                                                        staticClass:
+                                                          "fa-solid fa-rotate-left",
+                                                      }),
+                                                    ]
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _vm._m(19),
+                                            ])
                                           : _vm._e(),
                                         _vm._v(" "),
                                         _c(
@@ -31995,18 +32308,41 @@ var render = function () {
                               _vm._v(" "),
                               _vm.form.records[0].status_id == 5 &&
                               _vm.current_user.empno == "ACSI-200634"
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-success w-75",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.approved()
-                                        },
-                                      },
-                                    },
-                                    [_vm._v("Approve")]
-                                  )
+                                ? _c("div", { staticClass: "row" }, [
+                                    _vm._m(20),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "col-12 col-md-4" },
+                                      [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-primary w-100 px-0",
+                                            attrs: {
+                                              "data-toggle": "modal",
+                                              "data-target": "#returnModal",
+                                              disabled:
+                                                _vm.form.records[0].status_id ==
+                                                1
+                                                  ? true
+                                                  : false,
+                                            },
+                                          },
+                                          [
+                                            _vm._v("Return "),
+                                            _c("i", {
+                                              staticClass:
+                                                "fa-solid fa-rotate-left",
+                                            }),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _vm._m(21),
+                                  ])
                                 : _vm._e(),
                               _vm._v(" "),
                               _c(
@@ -32039,7 +32375,7 @@ var render = function () {
                   { staticClass: "table table-borderless table-sm" },
                   [
                     _c("tbody", [
-                      _vm._m(12),
+                      _vm._m(22),
                       _vm._v(" "),
                       _c("tr", [
                         _c(
@@ -32183,12 +32519,345 @@ var render = function () {
                 ),
               ]),
               _vm._v(" "),
-              _vm._m(13),
+              _vm._m(23),
               _vm._v(" "),
-              _vm._m(14),
+              _vm._m(24),
             ]),
           ])
         : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "approveModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "approvalConfirmation",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(25),
+                _vm._v(" "),
+                _vm._m(26),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.approved()
+                        },
+                      },
+                    },
+                    [_vm._v("Yes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" },
+                    },
+                    [_vm._v("No")]
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "returnModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "approvalConfirmation",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(27),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("h5", [
+                    _vm._v(
+                      "Do you really want to return to previous approver?"
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "remarks" } }, [
+                      _vm._v("Remarks:"),
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.remarks,
+                          expression: "remarks",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        name: "remarks",
+                        id: "remarks",
+                        cols: "30",
+                        rows: "10",
+                      },
+                      domProps: { value: _vm.remarks },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.remarks = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.remarks == null ? true : false,
+                      },
+                      on: {
+                        click: function ($event) {
+                          return _vm.returned()
+                        },
+                      },
+                    },
+                    [_vm._v("Yes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" },
+                    },
+                    [_vm._v("No")]
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "returnModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "approvalConfirmation",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(28),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("h5", [
+                    _vm._v(
+                      "Do you really want to return to previous approver?"
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "remarks" } }, [
+                      _vm._v("Remarks:"),
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.remarks,
+                          expression: "remarks",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        name: "remarks",
+                        id: "remarks",
+                        cols: "30",
+                        rows: "10",
+                      },
+                      domProps: { value: _vm.remarks },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.remarks = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { disabled: _vm.remarks == null ? true : false },
+                      on: {
+                        click: function ($event) {
+                          return _vm.returned()
+                        },
+                      },
+                    },
+                    [_vm._v("Yes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { "data-dismiss": "modal" },
+                    },
+                    [_vm._v("No")]
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "cancelModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "approvalConfirmation",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(29),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("h5", [_vm._v("Do you really want to cancel this form?")]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "remarks" } }, [
+                      _vm._v("Remarks:"),
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.remarks,
+                          expression: "remarks",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        name: "remarks",
+                        id: "remarks",
+                        cols: "30",
+                        rows: "10",
+                      },
+                      domProps: { value: _vm.remarks },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.remarks = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.remarks == null ? true : false,
+                      },
+                      on: {
+                        click: function ($event) {
+                          return _vm.cancel()
+                        },
+                      },
+                    },
+                    [_vm._v("Yes")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" },
+                    },
+                    [_vm._v("No")]
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
     ],
     1
   )
@@ -32277,6 +32946,40 @@ var staticRenderFns = [
         ]),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
   function () {
     var _vm = this
@@ -32404,6 +33107,126 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success w-100",
+          attrs: { "data-toggle": "modal", "data-target": "#approveModal" },
+        },
+        [_vm._v("Approve "), _c("i", { staticClass: "fa-solid fa-check" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger w-100",
+          attrs: { "data-toggle": "modal", "data-target": "#cancelModal" },
+        },
+        [_vm._v("Cancel "), _c("i", { staticClass: "fa-solid fa-xmark" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success w-100",
+          attrs: { "data-toggle": "modal", "data-target": "#approveModal" },
+        },
+        [_vm._v("Approve "), _c("i", { staticClass: "fa-solid fa-check" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger w-100",
+          attrs: { "data-toggle": "modal", "data-target": "#cancelModal" },
+        },
+        [_vm._v("Cancel "), _c("i", { staticClass: "fa-solid fa-xmark" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success w-100",
+          attrs: { "data-toggle": "modal", "data-target": "#approveModal" },
+        },
+        [_vm._v("Approve "), _c("i", { staticClass: "fa-solid fa-check" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger w-100",
+          attrs: { "data-toggle": "modal", "data-target": "#cancelModal" },
+        },
+        [_vm._v("Cancel "), _c("i", { staticClass: "fa-solid fa-xmark" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success w-100",
+          attrs: { "data-toggle": "modal", "data-target": "#approveModal" },
+        },
+        [_vm._v("Approve "), _c("i", { staticClass: "fa-solid fa-check" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger w-100",
+          attrs: { "data-toggle": "modal", "data-target": "#cancelModal" },
+        },
+        [_vm._v("Cancel "), _c("i", { staticClass: "fa-solid fa-xmark" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("tr", { staticStyle: { border: "5px solid black" } }, [
       _c("td", { staticClass: "font-weight-bold ", attrs: { colspan: "2" } }, [
         _vm._v("ACKNOWLEDGED"),
@@ -32442,6 +33265,114 @@ var staticRenderFns = [
         ),
       ]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "approvalConfirmation" } },
+        [_vm._v("Confirmation")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close",
+          },
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("h5", [_vm._v("Do you really want to approve?")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "approvalConfirmation" } },
+        [_vm._v("Confirmation")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close",
+          },
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "approvalConfirmation" } },
+        [_vm._v("Confirmation")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close",
+          },
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "approvalConfirmation" } },
+        [_vm._v("Confirmation")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close",
+          },
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+    ])
   },
 ]
 render._withStripped = true
@@ -35850,37 +36781,6 @@ var render = function () {
                             ]
                           )
                         : _vm._e(),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        {
-                          staticClass: "border-0 w-50",
-                          staticStyle: { "font-weight": "bold" },
-                        },
-                        [
-                          _c("br"),
-                          _vm._v(" "),
-                          _c("br"),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-center mt-5" }, [
-                            _c(
-                              "h6",
-                              { staticClass: "align-middle font-weight-bold" },
-                              [
-                                _vm._v(
-                                  _vm._s(new Date().toLocaleDateString("en-US"))
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "h6",
-                              { staticClass: "align-middle font-weight-bold" },
-                              [_vm._v("DATE")]
-                            ),
-                          ]),
-                        ]
-                      ),
                     ])
                   : _vm._e(),
               ]),
@@ -36041,7 +36941,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", { staticClass: " d-print-none" }, [
       _c("td", { staticClass: "text-center font-weight-bold" }, [
-        _vm._v("Reason for transfer:"),
+        _vm._v("Reason for movement:"),
       ]),
     ])
   },
@@ -36137,7 +37037,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("div", { staticClass: "text-center mt-5" }, [
           _c("h6", { staticClass: "align-middle font-weight-bold" }, [
-            _vm._v("Sunshine Cunanan"),
+            _vm._v("___________________"),
           ]),
           _vm._v(" "),
           _c("h6", { staticClass: "align-middle font-weight-bold" }, [

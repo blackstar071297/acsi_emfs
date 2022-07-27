@@ -34,6 +34,24 @@
                 </div>
             </div>
             <div class="row mt-5">
+                <div class="col-12 mb-2" >
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="form.records[0].remarks != null && form.records[0].status_id == 10">
+                        <p class=" text-center">Form cancelled!</p>
+                        <p class="font-weight-bold text-center">Remarks: {{form.records[0].remarks}}</p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 mb-2" >
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="form.records[0].remarks != null && form.records[0].status_id != 10">
+                        <p class=" text-center">Form returned!</p>
+                        <p class="font-weight-bold text-center">Remarks: {{form.records[0].remarks}}</p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="col-12">
                     <table class="table table-bordered table-sm" style="border: 5px solid black">
                         <tbody>
@@ -291,7 +309,7 @@
                                         <td>{{form.to_contract == null ? 'SAME' : form.to_contract}}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{form._to_others == null ? 'SAME' : form._to_others}}</td>
+                                        <td>{{form.to_others == null ? 'SAME' : form.to_others}}</td>
                                     </tr>
                                     
                                 </tbody>
@@ -311,7 +329,18 @@
                                     <br>
                                     <div class="text-center mt-5">
                                         <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.superior_accept_date != null">
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 1 && current_user.empno == form.current_superior.empno">Approve</button>
+                                        <div v-if="form.records[0].status_id == 1 && current_user.empno == form.current_superior.empno" class="row">
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#approveModal" class="btn btn-success w-100" >Approve <i class="fa-solid fa-check"></i></button>
+                                            </div>
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#returnModal" class="btn btn-primary w-100 px-0" :disabled="form.records[0].status_id == 1 ? true : false">Return <i class="fa-solid fa-rotate-left"></i></button>
+                                            </div>
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger w-100" >Cancel <i class="fa-solid fa-xmark"></i></button>
+                                            </div>
+                                        </div>
+                                        
                                         <h6 class="align-middle font-weight-bold">{{form.current_superior.firstname}}  {{form.current_superior.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ form.current_superior.info1.eposition }}</h6>
                                     </div>
@@ -321,7 +350,17 @@
                                     <br>
                                     <div class="text-center mt-5">
                                         <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.manager_accept_date != null">
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 2 && current_user.empno == form.current_manager.empno">Approve</button>
+                                        <div v-if="form.records[0].status_id == 2 && current_user.empno == form.current_manager.empno" class="row">
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#approveModal" class="btn btn-success w-100" >Approve <i class="fa-solid fa-check"></i></button>
+                                            </div>
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#returnModal" class="btn btn-primary w-100 px-0" :disabled="form.records[0].status_id == 1 ? true : false">Return <i class="fa-solid fa-rotate-left"></i></button>
+                                            </div>
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger w-100" >Cancel <i class="fa-solid fa-xmark"></i></button>
+                                            </div>
+                                        </div>
                                         <h6 class="align-middle font-weight-bold">{{form.current_manager.firstname}}  {{form.current_manager.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ form.current_manager.info1.eposition }}</h6>
                                     </div>
@@ -333,7 +372,17 @@
                                     <br>
                                     <div class="text-center mt-5" v-if="form.from_manager != form.to_manager && form.to_manager != 'ACSI-200634'">
                                         <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.new_manager_accept_date != null">
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 4 && current_user.empno == form.new_manager.empno">Approve</button>
+                                        <div v-if="form.records[0].status_id == 4 && current_user.empno == form.new_manager.empno" class="row">
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#approveModal" class="btn btn-success w-100" >Approve <i class="fa-solid fa-check"></i></button>
+                                            </div>
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#returnModal" class="btn btn-primary w-100 px-0" :disabled="form.records[0].status_id == 1 ? true : false">Return <i class="fa-solid fa-rotate-left"></i></button>
+                                            </div>
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger w-100" >Cancel <i class="fa-solid fa-xmark"></i></button>
+                                            </div>
+                                        </div>
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.firstname }} {{ form.new_manager.lastname }}</h6>
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.info1.eposition }}</h6>
                                     </div>
@@ -343,7 +392,17 @@
                                     <br>
                                     <div class="text-center mt-5">
                                         <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.cable_head_accept_date != null">
-                                        <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 5 && current_user.empno == 'ACSI-200634'">Approve</button>
+                                        <div v-if="form.records[0].status_id == 5 && current_user.empno == 'ACSI-200634'" class="row">
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#approveModal" class="btn btn-success w-100" >Approve <i class="fa-solid fa-check"></i></button>
+                                            </div>
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#returnModal" class="btn btn-primary w-100 px-0" :disabled="form.records[0].status_id == 1 ? true : false">Return <i class="fa-solid fa-rotate-left"></i></button>
+                                            </div>
+                                            <div class="col-12 col-md-4">
+                                                <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger w-100" >Cancel <i class="fa-solid fa-xmark"></i></button>
+                                            </div>
+                                        </div>
                                         <h6 class="align-middle font-weight-bold">Oliver Angeles</h6>
                                         <h6 class="align-middle font-weight-bold">Head, Cable Operations</h6>
                                     </div>
@@ -385,6 +444,7 @@
                         </tbody>
                     </table>
                 </div>
+                
                 <div class="col-12 ">
                     <br>
                     <br>
@@ -396,6 +456,102 @@
                 </div>
             </div>
         </div>
+        <!-- Approval Modal -->
+        <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approvalConfirmation" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="approvalConfirmation">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Do you really want to approve?</h5> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="approved()">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Return Modal -->
+        <div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="approvalConfirmation" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="approvalConfirmation">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Do you really want to return to previous approver?</h5>
+                        <br>
+                        <div class="form-group">
+                            <label for="remarks">Remarks:</label>
+                            <textarea name="remarks" id="remarks" cols="30" rows="10" class="form-control" v-model="remarks"></textarea>
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="returned()" :disabled="remarks == null ? true : false">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Return Modal -->
+        <div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="approvalConfirmation" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="approvalConfirmation">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Do you really want to return to previous approver?</h5>
+                        <br>
+                        <div class="form-group">
+                            <label for="remarks">Remarks:</label>
+                            <textarea name="remarks" id="remarks" cols="30" rows="10" class="form-control" v-model="remarks"></textarea>
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" @click="returned()" :disabled="remarks == null ? true : false">Yes</button>
+                        <button class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- cancel Modal -->
+        <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="approvalConfirmation" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="approvalConfirmation">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Do you really want to cancel this form?</h5>
+                        <br>
+                        <div class="form-group">
+                            <label for="remarks">Remarks:</label>
+                            <textarea name="remarks" id="remarks" cols="30" rows="10" class="form-control" v-model="remarks"></textarea>
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="cancel()" :disabled="remarks == null ? true : false">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </template>
 
@@ -413,7 +569,8 @@ export default {
             current_manager:[],
             selected_supervisor: [],
             selected_manager: [],
-            current_user: []
+            current_user: [],
+            remarks: null
         }
     },
     methods:{
@@ -423,6 +580,7 @@ export default {
                 this.form = response.data
                 this.getUser(response.data.emp_no)
             })
+            
             
         },
         getUser(emp_no){
@@ -451,6 +609,30 @@ export default {
                     window.location.reload()
                 }
             }).catch(error => console.log(error.response.data))
+        },
+        returned(){
+            const fd = new FormData()
+            fd.append('request_no',this.$route.params.request_no)
+            fd.append('remarks',this.remarks)
+            axios.post('/acsi_emfs/api/return-emf',fd).then(response => {
+                console.log(response.data)
+                if(response.data == 'success'){
+                    alert('Movement returned!')
+                    window.location.reload()
+                }
+            }).catch(error => console.log(error.response.data))
+        },
+        cancel(){
+            const fd = new FormData()
+            fd.append('request_no',this.$route.params.request_no)
+            fd.append('remarks',this.remarks)
+            axios.post('/acsi_emfs/api/cancel-emf',fd).then(response => {
+                console.log(response.data)
+                if(response.data == 'success'){
+                    alert('Movement cancelled!')
+                    window.location.reload()
+                }
+            }).catch(error => console.log(error.response.data))
         }
     },
     created(){
@@ -459,6 +641,7 @@ export default {
         }
         this.getForm()
         this.getCurrentUser()
+
     }
 }
 </script>
