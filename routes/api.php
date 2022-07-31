@@ -35,6 +35,7 @@ Route::post('/fst/employee-movement-form',[EmployeeMovementFormController::class
 
 Route::post('/register',[RegisterController::class,'store']);
 Route::post('generate-user',[EmployeeController::class,'generateUser']);
+Route::post('/check-user',[LoginController::class,'checkUser']);
 
 Route::post('/return-emf',[MovementRecordController::class,'returned'])->middleware('auth:employee');
 Route::post('/cancel-emf',[MovementRecordController::class,'cancelled'])->middleware('auth:employee');

@@ -6260,7 +6260,42 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
+    },
+    getCookie: function getCookie(name) {
+      function escape(s) {
+        return s.replace(/([.*+?\^$(){}|\[\]\/\\])/g, '\\$1');
+      }
+
+      var match = document.cookie.match(RegExp('(?:^|;\\s*)' + escape(name) + '=([^;]*)'));
+      return match ? match[1] : null;
+    },
+    checkUser: function checkUser() {
+      var _this2 = this;
+
+      if (this.getCookie("ID_my_site") != null) {
+        var username = this.getCookie("ID_my_site");
+        var fd = new FormData();
+        fd.append('emp_no', username);
+        axios.post('/acsi_emfs/api/check-user', fd).then(function (response) {
+          console.log(response.data);
+
+          if (Object.keys(response.data).length > 0) {
+            _this2.form.username = _this2.getCookie("ID_my_site");
+            _this2.form.password = 'password';
+
+            _this2.login();
+          } else {
+            _this2.alerts.push({
+              message: 'User not found!',
+              type: 'danger'
+            });
+          }
+        });
+      }
     }
+  },
+  created: function created() {
+    this.checkUser();
   }
 });
 
