@@ -26,7 +26,7 @@
                         <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
                         <td>{{form.reason_for_movement == null ? 'N/A' : form.reason_for_movement}}</td>
                         <td>{{form.effectivity_date}}</td>
-                        <td>{{form.records[0].status.status}}</td>
+                        <td class="text-capitalize" >{{form.records[0].status.status}}</td>
                         <td>
                             <a :href="'/acsi_emfs/approvals/'+form.request_no" class="btn btn-primary mb-1"><i class="fa-solid fa-eye"></i></a>
                             <a :href="'/acsi_emfs/approvals/'+form.request_no" class="btn btn-success mb-1" v-if="checkUser(form)"><i class="fa-solid fa-check"></i></a>

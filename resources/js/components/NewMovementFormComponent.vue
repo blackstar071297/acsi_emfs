@@ -383,7 +383,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-primary w-100" @click.prevent="submit()" :disabled="Object.keys(selected_employee).length > 0 ? false : true">Submit</button>
+                                            <button class="btn btn-primary w-100" data-toggle="modal" data-target="#submitModal" :disabled="Object.keys(selected_employee).length > 0 ? false : true">Submit</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -473,6 +473,26 @@
                 </div>
                 <div class="fixed-bottom d-flex justify-content-center">
                     <a href="/acsi_emfs" class="btn btn-danger mb-3" >BACK <i class="fa-solid fa-circle-arrow-left"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- submit Modal -->
+        <div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="approvalConfirmation" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="approvalConfirmation">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Do you really want to submit this form?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="submit()">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -701,6 +721,7 @@ export default {
                     this.clearField()
                     $("#searchbox").val('')
                     alert('Movement request done !')
+                    location.reload()
                 }else if(response.data.errors){
                     alert('Fill up all required field!')
                     this.errors = response.data.errors

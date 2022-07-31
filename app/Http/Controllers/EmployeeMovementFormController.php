@@ -154,7 +154,7 @@ class EmployeeMovementFormController extends Controller
                 $emf->move_others = true;
                 $emf->to_others = $request->to_others;
             }
-            $emf->hr_account_officer = $this->search_account_officer($emf);
+            return $emf->hr_account_officer = $this->search_account_officer($emf);
             $emf->reason_for_movement = $request->reason_for_movement;
             $emf->effectivity_date = $request->effectivity_date;
             try{

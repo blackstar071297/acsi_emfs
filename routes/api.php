@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EmployeeMovementFormController;
 use App\Http\Controllers\MovementRecordController;
+use App\Http\Controllers\MailerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,6 +38,9 @@ Route::post('generate-user',[EmployeeController::class,'generateUser']);
 
 Route::post('/return-emf',[MovementRecordController::class,'returned'])->middleware('auth:employee');
 Route::post('/cancel-emf',[MovementRecordController::class,'cancelled'])->middleware('auth:employee');
+
+Route::post('/mailer',[MailerController::class,'composeEmail']);
+
 
 Route::resource('/employee-movement-form',EmployeeMovementFormController::class)->middleware('auth:employee');
 
