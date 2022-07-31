@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmployeeMovementForm;
+use App\Models\EmployeeInfo;
 use Illuminate\Http\Request;
 use App\Models\MovementRecord;
+use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
@@ -65,6 +67,7 @@ class EmployeeMovementFormController extends Controller
      */
     public function store(Request $request)
     {
+        return $this->sendEmail('ACSI-220838','EMF2022-0007');
         //
         $validator = Validator::make($request->all(),[
             'to_position' => ['required_if:move_position,true'],
@@ -154,16 +157,29 @@ class EmployeeMovementFormController extends Controller
                 $emf->move_others = true;
                 $emf->to_others = $request->to_others;
             }
-            return $emf->hr_account_officer = $this->search_account_officer($emf);
+            if($emf->request_by == $emf->from_immediate_superior){
+                $emf->superior_accept_date = now()->toDateString();
+            }
+            $emf->hr_account_officer = $this->search_account_officer($emf);
             $emf->reason_for_movement = $request->reason_for_movement;
             $emf->effectivity_date = $request->effectivity_date;
             try{
                 if($emf->save()){
                     $record = new MovementRecord();
                     $record->request_no = $rpn;
-                    $record->status_id = 1;
+                    if($emf->request_by == $emf->from_immediate_superior){
+                        $record->status_id = 2;
+                    }else{
+                        $record->status_id = 1;
+                    }
+                    
                     try {
                         if($record->save()){
+                            if($emf->request_by == $emf->from_immediate_superior){
+                                $this->sendEmail($emf->from_immediate_superior,$emf->request_no);
+                            }else{
+                                $this->sendEmail($emf->from_manager,$emf->request_no);
+                            }
                             return 'success';
                         }
                     } catch (\Exception $e) {
@@ -196,6 +212,66 @@ class EmployeeMovementFormController extends Controller
         }elseif(($form->from_cost_center == 'Area 6') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170208' && $form->move_immediate_superior == "false")){
             return 'ACSI-190545';
         }
+    }
+
+    private function sendEmail($approver_emp_no,$request_no){
+        $approver = EmployeeInfo::with('info1')->where('empno',$approver_emp_no)->first();
+        if(!is_null($approver) && !is_null($approver->info1->email_add)){
+            require base_path("vendor/autoload.php");
+            $mail = new PHPMailer(true);     // Passing `true` enables exceptions
+
+            try {
+                // Email server settings
+                $mail->SMTPDebug = 2;
+                $mail->isSMTP();
+                $mail->Host = 'tsi-acsi.com.ph';             //  smtp host
+                $mail->SMTPAuth = true;
+                $mail->Username = 'mailer@tsi-acsi.com.ph';   //  sender username
+                $mail->Password = 'Mailertsi2008';       // sender password
+                $mail->SMTPSecure = 'tls';                  // encryption - ssl/tls
+                $mail->Port = 587;                          // port - 587/465
+                $mail->SMTPOptions = array(
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+                
+                $mail->setFrom('mailer@tsi-acsi.com.ph', 'TSI-ACSI Mailer');
+                $mail->addAddress($approver->info1->email_add);
+                // $mail->addCC($request->emailCc);
+                // $mail->addBCC($request->emailBcc);
+
+                $mail->addReplyTo('mailer@tsi-acsi.com.ph', 'TSI-ACSI Mailer');
+
+                if(isset($_FILES['emailAttachments'])) {
+                    for ($i=0; $i < count($_FILES['emailAttachments']['tmp_name']); $i++) {
+                        $mail->addAttachment($_FILES['emailAttachments']['tmp_name'][$i], $_FILES['emailAttachments']['name'][$i]);
+                    }
+                }
+
+
+                $mail->isHTML(true);                // Set email content format to HTML
+
+                $mail->Subject = 'Pending Approval(ACSI EMS)';
+                $mail->Body    = 'You have pending approval. To view details of the movement click : http://tsi-acsi1.webhop.biz:92/acsi_emfs/approvals/'.$request_no;
+
+                // $mail->AltBody = plain text version of email body;
+
+                if( !$mail->send() ) {
+                    return 'Email not sent.';
+                }
+                
+                else {
+                    return "Email has been sent.";
+                }
+
+            } catch (Exception $e) {
+                return 'Message could not be sent.';
+            }
+        }
+        
     }
     /**
      * Display the specified resource.

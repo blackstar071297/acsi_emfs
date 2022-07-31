@@ -45,18 +45,31 @@ class MovementRecordController extends Controller
         
         if($record->save()){
             if($this->updateForm($request)){
+                if($record->status_id == 2){
+                    $this->sendEmail($form->from_manager,$request->request_no,$record->status_id);
+                }elseif($record->status_id == 4){
+                    $this->sendEmail($form->to_immediate_superior,$request->request_no,$record->status_id);
+                }elseif($record->status_id == 5){
+                    $this->sendEmail('ACSI-200634',$request->request_no,$record->status_id);
+                }elseif($record->status_id == 6){
+                    $this->sendEmail($form->hr_account_officer,$request->request_no,$record->status_id);
+                }elseif($record->status_id == 7){
+                    $this->sendEmail($form->emp_no,$request->request_no,$record->status_id);
+                }
                 return 'success';
             }
         }
         return 'error';
     }
     public function cancelled(Request $request){
+        $form = EmployeeMovementForm::where('request_no',$request->request_no)->first();
         $record = new MovementRecord();
         $record->request_no = $request->request_no;
         $approval_process = 0;
         $record->status_id = 10;
         $record->remarks = $request->remarks;
         if($record->save()){
+            $this->sendEmail($form->requested_by,$request->request_no,$record->status_id);
             return 'success';
         }
         return 'error';
@@ -73,6 +86,7 @@ class MovementRecordController extends Controller
             $form->new_manager_accept_date = null;
         }
         if(!$form->save()){
+            
             return 'error 1';
         }
         
@@ -84,6 +98,15 @@ class MovementRecordController extends Controller
         $record->remarks = $request->remarks;
 
         if($record->save()){
+            if($records[0]->status_id == 1){
+                $this->sendEmail($form->requested_by,$request->request_no,11);
+            }elseif($records[0]->status_id == 2){
+                $this->sendEmail($form->from_immediate_superior,$request->request_no,11);
+            }elseif($records[0]->status_id == 4){
+                $this->sendEmail($form->from_manager,$request->request_no,11);
+            }elseif($records[0]->status_id == 5){
+                $this->sendEmail($form->to_manager,$request->request_no,11);
+            }
             return 'success';
         }
 
@@ -171,6 +194,78 @@ class MovementRecordController extends Controller
         }elseif(($form->move_immediate_superior == 1 && $form->move_manager == 1 && $form->move_department == 1 && $form->move_cost_center == 1) && ($form->move_position == 0 && $form->move_job_status == 0 && $form->move_job_level == 0 && $form->move_role == 0 && $form->move_salary == 0 && $form->move_allowance == 0 && $form->move_contract == 0  && $form->move_others == 0)) {
             return 3;
         }
+    }
+    private function sendEmail($approver_emp_no,$request_no,$status_id){
+        $approver = EmployeeInfo::with('info1')->where('empno',$approver_emp_no)->first();
+        if(!is_null($approver) && !is_null($approver->info1->email_add)){
+            require base_path("vendor/autoload.php");
+            $mail = new PHPMailer(true);     // Passing `true` enables exceptions
+
+            try {
+                // Email server settings
+                $mail->SMTPDebug = 2;
+                $mail->isSMTP();
+                $mail->Host = 'tsi-acsi.com.ph';             //  smtp host
+                $mail->SMTPAuth = true;
+                $mail->Username = 'mailer@tsi-acsi.com.ph';   //  sender username
+                $mail->Password = 'Mailertsi2008';       // sender password
+                $mail->SMTPSecure = 'tls';                  // encryption - ssl/tls
+                $mail->Port = 587;                          // port - 587/465
+                $mail->SMTPOptions = array(
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+                
+                $mail->setFrom('mailer@tsi-acsi.com.ph', 'TSI-ACSI Mailer');
+                $mail->addAddress($approver->info1->email_add);
+                // $mail->addCC($request->emailCc);
+                // $mail->addBCC($request->emailBcc);
+
+                $mail->addReplyTo('mailer@tsi-acsi.com.ph', 'TSI-ACSI Mailer');
+
+                if(isset($_FILES['emailAttachments'])) {
+                    for ($i=0; $i < count($_FILES['emailAttachments']['tmp_name']); $i++) {
+                        $mail->addAttachment($_FILES['emailAttachments']['tmp_name'][$i], $_FILES['emailAttachments']['name'][$i]);
+                    }
+                }
+
+
+                $mail->isHTML(true);                // Set email content format to HTML
+
+                if($status_id == 6 || $status_id == 7){
+                    $mail->Subject = 'Pending acknowledgement(ACSI EMS)';
+                    $mail->Body    = 'You have pending acknowledgement. To view details click: http://tsi-acsi1.webhop.biz:92/acsi_emfs/approvals/'.$request_no;
+                }elseif($status_id == 1 || $status_id == 2 || $status_id == 4 || $status_id == 5){
+                    $mail->Subject = 'Pending Approval(ACSI EMS)';
+                    $mail->Body    = 'You have pending approval. To view details click: http://tsi-acsi1.webhop.biz:92/acsi_emfs/approvals/'.$request_no;
+                }elseif($status_id == 10){
+                    $mail->Subject = 'Request cancelled(ACSI EMS)';
+                    $mail->Body    = 'You have pending approval. To view details click: http://tsi-acsi1.webhop.biz:92/acsi_emfs/approvals/'.$request_no;
+                }elseif($status_id == 11){
+                    $mail->Subject = 'Request returned(ACSI EMS)';
+                    $mail->Body    = 'Request returned. To view details click: http://tsi-acsi1.webhop.biz:92/acsi_emfs/approvals/'.$request_no;
+                }
+                
+                
+
+                // $mail->AltBody = plain text version of email body;
+
+                if( !$mail->send() ) {
+                    return 'Email not sent.';
+                }
+                
+                else {
+                    return "Email has been sent.";
+                }
+
+            } catch (Exception $e) {
+                return 'Message could not be sent.';
+            }
+        }
+        
     }
 
     /**
