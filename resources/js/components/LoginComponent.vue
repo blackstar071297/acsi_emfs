@@ -82,21 +82,21 @@ export default {
         checkUser(){
             console.log(document.sessionStorage["empno"])
             console.log(1)
-            // if(this.getCookie("ID_my_site") != null){
-            //     let username = this.getCookie("ID_my_site")
-            //     let fd = new FormData()
-            //     fd.append('emp_no',username)
-            //     axios.post('/acsi_emfs/api/check-user',fd).then(response => {
-            //         console.log(response.data)
-            //         if(Object.keys(response.data).length > 0){
-            //             this.form.username = this.getCookie("ID_my_site")
-            //             this.form.password = 'password'
-            //             this.login()
-            //         }else{
-            //             this.alerts.push({message: 'User not found!',type: 'danger' })
-            //         }
-            //     })
-            // }
+            if(document.sessionStorage["empno"] != null){
+                let username = document.sessionStorage["empno"]
+                let fd = new FormData()
+                fd.append('emp_no',username)
+                axios.post('/acsi_emfs/api/check-user',fd).then(response => {
+                    console.log(response.data)
+                    if(Object.keys(response.data).length > 0){
+                        this.form.username = document.sessionStorage["empno"]
+                        this.form.password = 'password'
+                        this.login()
+                    }else{
+                        this.alerts.push({message: 'User not found!',type: 'danger' })
+                    }
+                })
+            }
             
             
         }

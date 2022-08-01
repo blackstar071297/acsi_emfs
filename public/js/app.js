@@ -6270,22 +6270,31 @@ __webpack_require__.r(__webpack_exports__);
       return match ? match[1] : null;
     },
     checkUser: function checkUser() {
+      var _this2 = this;
+
       console.log(document.sessionStorage["empno"]);
-      console.log(1); // if(this.getCookie("ID_my_site") != null){
-      //     let username = this.getCookie("ID_my_site")
-      //     let fd = new FormData()
-      //     fd.append('emp_no',username)
-      //     axios.post('/acsi_emfs/api/check-user',fd).then(response => {
-      //         console.log(response.data)
-      //         if(Object.keys(response.data).length > 0){
-      //             this.form.username = this.getCookie("ID_my_site")
-      //             this.form.password = 'password'
-      //             this.login()
-      //         }else{
-      //             this.alerts.push({message: 'User not found!',type: 'danger' })
-      //         }
-      //     })
-      // }
+      console.log(1);
+
+      if (document.sessionStorage["empno"] != null) {
+        var username = document.sessionStorage["empno"];
+        var fd = new FormData();
+        fd.append('emp_no', username);
+        axios.post('/acsi_emfs/api/check-user', fd).then(function (response) {
+          console.log(response.data);
+
+          if (Object.keys(response.data).length > 0) {
+            _this2.form.username = document.sessionStorage["empno"];
+            _this2.form.password = 'password';
+
+            _this2.login();
+          } else {
+            _this2.alerts.push({
+              message: 'User not found!',
+              type: 'danger'
+            });
+          }
+        });
+      }
     }
   },
   created: function created() {
