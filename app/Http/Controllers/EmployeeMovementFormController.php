@@ -174,11 +174,11 @@ class EmployeeMovementFormController extends Controller
                     
                     try {
                         if($record->save()){
-                            if($emf->request_by == $emf->from_immediate_superior){
-                                $this->sendEmail($emf->from_immediate_superior,$emf->request_no);
-                            }else{
-                                $this->sendEmail($emf->from_manager,$emf->request_no);
-                            }
+                            // if($emf->request_by == $emf->from_immediate_superior){
+                            //     $this->sendEmail($emf->from_immediate_superior,$emf->request_no);
+                            // }else{
+                            //     $this->sendEmail($emf->from_manager,$emf->request_no);
+                            // }
                             return 'success';
                         }
                     } catch (\Exception $e) {
