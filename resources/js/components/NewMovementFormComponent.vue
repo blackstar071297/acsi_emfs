@@ -723,6 +723,7 @@ export default {
                     alert('Movement request done !')
                     location.reload()
                 }else if(response.data.errors){
+                    $('#submitModal').modal('hide');
                     alert('Fill up all required field!')
                     this.errors = response.data.errors
                 }
