@@ -67,7 +67,6 @@ class EmployeeMovementFormController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->sendEmail('ACSI-220838','EMF2022-0007');
         //
         $validator = Validator::make($request->all(),[
             'to_position' => ['required_if:move_position,true'],
@@ -203,6 +202,8 @@ class EmployeeMovementFormController extends Controller
             return 'ACSI-200761';
         }elseif(($form->to_cost_center == 'Area 6') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170208' && $form->move_immediate_superior == "true")){
             return 'ACSI-190545';
+        }else{
+            return 'ACSI-200761';
         }
 
         if(($form->from_cost_center == 'Area 3') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170010' && $form->move_immediate_superior == "false")){
@@ -211,6 +212,8 @@ class EmployeeMovementFormController extends Controller
             return 'ACSI-200761';
         }elseif(($form->from_cost_center == 'Area 6') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170208' && $form->move_immediate_superior == "false")){
             return 'ACSI-190545';
+        }else{
+            return 'ACSI-200761';
         }
     }
 
