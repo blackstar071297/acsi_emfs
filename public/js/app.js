@@ -7176,6 +7176,8 @@ __webpack_require__.r(__webpack_exports__);
         role_name: 'Team leader'
       }, {
         role_name: 'Buddy'
+      }, {
+        role_name: 'DA-TL'
       }],
       managers: [],
       departments: [],
@@ -7409,6 +7411,7 @@ __webpack_require__.r(__webpack_exports__);
           alert('Movement request done !');
           location.reload();
         } else if (response.data.errors) {
+          $('#submitModal').hide();
           alert('Fill up all required field!');
           _this10.errors = response.data.errors;
         }

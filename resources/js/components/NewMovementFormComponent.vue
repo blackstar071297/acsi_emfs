@@ -529,7 +529,7 @@ export default {
             
             job_level:[{job_name:'Managerial'},{job_name:'Supervisor'},{job_name:'Technical Specialist'},{job_name:'Assistant Manager'},{job_name:'Rank & File'}],
             current_user:[],
-            roles: [{role_name:'Team leader'},{role_name:'Buddy'}],
+            roles: [{role_name:'Team leader'},{role_name:'Buddy'},{role_name:'DA-TL'}],
             managers:[],
             departments:[],
             supervisors:[],
