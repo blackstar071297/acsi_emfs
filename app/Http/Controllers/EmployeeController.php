@@ -6,8 +6,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Employee;
 use Hash;
+use Notification;
+use App\Notifications\ApprovalNotification;
 class EmployeeController extends Controller
 {
+    public function test(){
+        $user = Employee::where('email','christianaquino071297@gmail.com')->first();
+        $details = [
+            'subject' => 'Hi Artisan',
+            'body' => 'This is my first notification from Nicesnippests.com',
+            'thanks' => 'Thank you for using Nicesnippests.com tuto!',
+            'actionText' => 'View My Site',
+            'actionURL' => url('/'),
+            'order_id' => 101
+        ];
+        // Notification::send($user, new ApprovalNotification($details));
+        $user->notify(new ApprovalNotification($details));
+    }
     public function generateUser(){
         $managers = DB::table('lmngr')->leftjoin('emp_info','lmngr.empno','=','emp_info.empno')->leftjoin('emp_comp','emp_comp.empid','=','emp_info.empid')->where('lmngr.mngr_enabled',1)->get();
         
@@ -23,9 +38,10 @@ class EmployeeController extends Controller
             $employee->useruniq = $manager->empid;
 
             $employee->empno = $manager->empno;
-            $employee->firstname = $manager->firstname;;
-            $employee->lastname = $manager->lastname;;
+            $employee->firstname = $manager->firstname;
+            $employee->lastname = $manager->lastname;
             $employee->username = $manager->empno;
+            $employee->email = $manager->email_add == null ? null : $manager->email_add;
             $employee->userpass = bcrypt('password');
             $employee->useraccess = 'super_admin';
             $employee->position = 'manager';
@@ -37,9 +53,10 @@ class EmployeeController extends Controller
             $employee->useruniq = $manager->empid;
 
             $employee->empno = $manager->empno;
-            $employee->firstname = $manager->firstname;;
-            $employee->lastname = $manager->lastname;;
+            $employee->firstname = $manager->firstname;
+            $employee->lastname = $manager->lastname;
             $employee->username = $manager->empno;
+            $employee->email = $manager->email_add == null ? null : $manager->email_add;
             $employee->userpass = bcrypt('password');
             $employee->useraccess = 'super_admin';
             $employee->position = 'supervisor';
@@ -52,9 +69,10 @@ class EmployeeController extends Controller
             $employee->useruniq = $manager->empid;
 
             $employee->empno = $manager->empno;
-            $employee->firstname = $manager->firstname;;
-            $employee->lastname = $manager->lastname;;
+            $employee->firstname = $manager->firstname;
+            $employee->lastname = $manager->lastname;
             $employee->username = $manager->empno;
+            $employee->email = $manager->email_add == null ? null : $manager->email_add;
             $employee->userpass = bcrypt('password');
             $employee->useraccess = 'super_admin';
             $employee->position = 'hr_officer';
@@ -68,10 +86,11 @@ class EmployeeController extends Controller
             $employee->useruniq = $manager->empid;
 
             $employee->empno = $manager->empno;
-            $employee->firstname = $manager->firstname;;
-            $employee->lastname = $manager->lastname;;
+            $employee->firstname = $manager->firstname;
+            $employee->lastname = $manager->lastname;
             $employee->username = $manager->empno;
             $employee->userpass = bcrypt('password');
+            $employee->email = $manager->email_add == null ? null : $manager->email_add;
             $employee->useraccess = 'viewer';
             $employee->position = 'fst';
 

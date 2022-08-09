@@ -1,5 +1,8 @@
 <template>
     <div>
+        <loading :active.sync="isLoading" 
+        :can-cancel="false"
+        :is-full-page="fullPage"></loading>
         <navbar></navbar>
         <div class="container mt-4 d-print-none">
             <nav aria-label="breadcrumb ">
@@ -470,7 +473,7 @@
                         <h5>Do you really want to approve?</h5> 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="approved()">Yes</button>
+                        <button type="button" class="btn btn-primary" @click="approved()" data-dismiss="modal">Yes</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -495,7 +498,7 @@
                         </div> 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="returned()" :disabled="remarks == null ? true : false">Yes</button>
+                        <button type="button" class="btn btn-primary" @click="returned()" :disabled="remarks == null ? true : false" data-dismiss="modal">Yes</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -520,7 +523,7 @@
                         </div> 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" @click="returned()" :disabled="remarks == null ? true : false">Yes</button>
+                        <button class="btn btn-primary" @click="returned()" :disabled="remarks == null ? true : false" data-dismiss="modal">Yes</button>
                         <button class="btn btn-secondary" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -545,7 +548,7 @@
                         </div> 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="cancel()" :disabled="remarks == null ? true : false">Yes</button>
+                        <button type="button" class="btn btn-primary" @click="cancel()" :disabled="remarks == null ? true : false" data-dismiss="modal">Yes</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -558,10 +561,17 @@
 <script>
 import navbar from './NavbarComponent.vue'
 import AppStorage from '../components/Helpers/AppStorage'
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 export default {
-    components:{navbar},
+    components:{navbar,Loading},
     data(){
         return{
+            isLoading:false,
+            fullPage: true,
             form:[],
             employees:[],
             selected_employee: [],
@@ -598,37 +608,47 @@ export default {
             })
         },
         approved(){
-
+            this.isLoading = true;
             const fd = new FormData()
             fd.append('request_no',this.$route.params.request_no)
             fd.append('current_status',this.form.records[0].status_id)
             axios.post('/acsi_emfs/api/movement-record',fd).then(response => {
                 console.log(response.data)
                 if(response.data == 'success'){
-                    alert('Movement Approved!')
+                    this.isLoading = false;
+                    if(this.form.records[0].status_id == 6 || this.form.records[0].status_id == 7){
+                        alert('Movement Acknowledged!')
+                    }else{
+                        alert('Movement Approved!')
+                    }
+                    
                     window.location.reload()
                 }
             }).catch(error => console.log(error.response.data))
         },
         returned(){
+            this.isLoading = true;
             const fd = new FormData()
             fd.append('request_no',this.$route.params.request_no)
             fd.append('remarks',this.remarks)
             axios.post('/acsi_emfs/api/return-emf',fd).then(response => {
                 console.log(response.data)
                 if(response.data == 'success'){
+                    this.isLoading = false;
                     alert('Movement returned!')
                     window.location.reload()
                 }
             }).catch(error => console.log(error.response.data))
         },
         cancel(){
+            this.isLoading = true;
             const fd = new FormData()
             fd.append('request_no',this.$route.params.request_no)
             fd.append('remarks',this.remarks)
             axios.post('/acsi_emfs/api/cancel-emf',fd).then(response => {
                 console.log(response.data)
                 if(response.data == 'success'){
+                    this.isLoading = false;
                     alert('Movement cancelled!')
                     window.location.reload()
                 }

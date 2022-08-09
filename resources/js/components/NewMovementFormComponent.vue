@@ -1,6 +1,9 @@
 <template>
     <div>
         <navbar></navbar>
+        <loading :active.sync="isLoading" 
+        :can-cancel="false"
+        :is-full-page="fullPage"></loading>
         <div class="container mt-4 d-print-none">
             <nav aria-label="breadcrumb ">
                 <ol class="breadcrumb">
@@ -490,7 +493,7 @@
                         <h5>Do you really want to submit this form?</h5>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="submit()">Yes</button>
+                        <button type="button" class="btn btn-primary" @click="submit()" data-dismiss="modal">Yes</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -502,10 +505,17 @@
 <script>
 import navbar from './NavbarComponent.vue'
 import AppStorage from '../components/Helpers/AppStorage'
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
-    components:{navbar},
+    components:{navbar,Loading},
     data(){
         return{
+            isLoading:false,
+            fullPage: true,
+
             employees:[],
             selected_employee: [],
             
@@ -670,6 +680,7 @@ export default {
             })
         },
         submit(){
+            this.isLoading = true
             let fd = new FormData()
             fd.append('emp_no',this.selected_employee.empno)
             fd.append('request_by',this.current_user.empno)
@@ -715,7 +726,7 @@ export default {
             fd.append('reason_for_movement',this.reason)
             fd.append('effectivity_date',this.effectivity_date)
             axios.post('/acsi_emfs/api/employee-movement-form',fd).then(response => {
-                console.log(response)
+                this.isLoading = false
                 this.errors = []
                 if(response.data == 'success'){
                     this.clearField()

@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('lastname')->nullable();
             $table->string('empno')->nullable();
             $table->foreign('empno')->references('empno')->on('emp_info');
-            $table->string('email')->nullable()->unique();
+            $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });

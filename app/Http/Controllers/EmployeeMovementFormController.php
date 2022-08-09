@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmployeeMovementForm;
+use App\Models\Employee;
+use App\Notifications\ApprovalNotification;
 use App\Models\EmployeeInfo;
+use App\Models\EmployeeInfo1;
 use Illuminate\Http\Request;
 use App\Models\MovementRecord;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -14,6 +17,7 @@ use Validator;
 
 class EmployeeMovementFormController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -171,18 +175,19 @@ class EmployeeMovementFormController extends Controller
                     }else{
                         $record->status_id = 1;
                     }
-                    
-                    try {
-                        if($record->save()){
-                            // if($emf->request_by == $emf->from_immediate_superior){
-                            //     $this->sendEmail($emf->from_immediate_superior,$emf->request_no);
-                            // }else{
-                            //     $this->sendEmail($emf->from_manager,$emf->request_no);
-                            // }
-                            return 'success';
+                    if($record->save()){
+                        $user = Employee::where('username',$emf->from_immediate_superior)->first();
+                        $details = [
+                            'subject' => 'Pending Approval',
+                            'body' => 'You have pending approval',
+                            'action' => 'http://tsi-acsi1.webhop.biz:92/acsi_emfs/approvals/'.$rpn
+                        ];
+                        // Notification::send($user, new ApprovalNotification($details));
+                        if(!is_null($user)){
+                            $user->notify(new ApprovalNotification($details));
                         }
-                    } catch (\Exception $e) {
-                        return $e->getMessage();   // insert query
+                        
+                        return 'success';
                     }
                 }
             }
