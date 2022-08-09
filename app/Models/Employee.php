@@ -12,6 +12,7 @@ class Employee extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
+    protected $guard = 'employee';
     protected $table = 'users';
 
     protected $primaryKey = 'userid';
@@ -33,5 +34,14 @@ class Employee extends Authenticatable
         'lastname',
         'empno',
     ];
+    
+    public function username()
+    {
+        return 'username';
+    }
+    public function getAuthPassword()
+    {
+        return $this->userpass;
+    }
 
 }

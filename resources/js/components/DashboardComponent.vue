@@ -8,7 +8,6 @@
                 </ol>
             </nav>
             <a href="/acsi_emfs/new-movement-form" class="btn btn-success mb-2">New movement form <i class="fa-solid fa-plus"></i></a>
-            
             <table class="table table-bordered table-striped">
                 <thead>
                     <th scope="col">Request no.</th>

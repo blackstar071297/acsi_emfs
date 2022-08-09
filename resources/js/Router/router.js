@@ -11,6 +11,8 @@ import NewEmployeeComponent from '../components/NewEmployeeComponent'
 import ApprovalComponent from '../components/ApprovalComponent'
 import FSTComponent from '../components/FSTDashboardComponent'
 import MailerComponent from '../components/MailerComponent'
+import AutoLogin from '../components/AutoLoginComponent'
+
 import axios from 'axios'
 
 Vue.use(VueRouter)
@@ -28,6 +30,7 @@ const guard = (to,from,next) => {
 }
 
 let routes = [
+    {path:'/acsi_emfs/auto-login/:empno',component:AutoLogin,meta:{title: 'Auto login'}},
     {path:'/acsi_emfs/',component:DashboardComponent,beforeEnter: guard, meta:{title: 'Dashboard'}},
     {path:'/acsi_emfs/new-movement-form',component:NewMovementFormComponent,beforeEnter: guard,meta:{title: 'Movement form'}},
     {path:'/acsi_emfs/login',component:loginComponent},

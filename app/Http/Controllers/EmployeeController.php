@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Employee;
+use Hash;
 class EmployeeController extends Controller
 {
     public function generateUser(){
@@ -25,7 +26,7 @@ class EmployeeController extends Controller
             $employee->firstname = $manager->firstname;;
             $employee->lastname = $manager->lastname;;
             $employee->username = $manager->empno;
-            $employee->userpass = hash('sha256','password') ;
+            $employee->userpass = bcrypt('password');
             $employee->useraccess = 'super_admin';
             $employee->position = 'manager';
 
@@ -39,7 +40,7 @@ class EmployeeController extends Controller
             $employee->firstname = $manager->firstname;;
             $employee->lastname = $manager->lastname;;
             $employee->username = $manager->empno;
-            $employee->userpass = hash('sha256','password') ;
+            $employee->userpass = bcrypt('password');
             $employee->useraccess = 'super_admin';
             $employee->position = 'supervisor';
 
@@ -54,7 +55,7 @@ class EmployeeController extends Controller
             $employee->firstname = $manager->firstname;;
             $employee->lastname = $manager->lastname;;
             $employee->username = $manager->empno;
-            $employee->userpass = hash('sha256','password') ;
+            $employee->userpass = bcrypt('password');
             $employee->useraccess = 'super_admin';
             $employee->position = 'hr_officer';
 
@@ -70,7 +71,7 @@ class EmployeeController extends Controller
             $employee->firstname = $manager->firstname;;
             $employee->lastname = $manager->lastname;;
             $employee->username = $manager->empno;
-            $employee->userpass = hash('sha256','password') ;
+            $employee->userpass = bcrypt('password');
             $employee->useraccess = 'viewer';
             $employee->position = 'fst';
 

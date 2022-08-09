@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Validator;
@@ -12,6 +12,8 @@ use Hash;
 use Carbon\Carbon;
 use File;
 use Crypt;
+use Auth;
+
 use Illuminate\Support\Facades\DB;
 class LoginController extends Controller
 {
@@ -19,26 +21,41 @@ class LoginController extends Controller
     // public function __construct(){
     //     $this->middleware(['auth:employee','auth:sanctum'])->except('logout','login','isAdmin');
     // }
+    public function checkToken(){
+        if(Auth('sanctum')->check()){
+            return 'true';
+        }else{
+            $user = Employee::where('username', Auth::guard('employee')->user()->empno)->first();
+            $token = $user->createToken('employee_auth_token')->plainTextToken;
+            $token = explode('|',$token);
+            $token = $token[1];
+            return response()->json(['token'=>$token],200);
+        }
+        return Auth('sanctum')->check();
+    }
+    public function autoLogin(Request $request){
+        return redirect()->to('/auto-login/'.$request->empno);
+    }
     public function login(Request $request){
+
         $validator = Validator::make($request->all(),[
-            'username' => 'required|exists:users,username',
+            'username' => 'required',
             'password' => 'required',
         ]);
         if($validator->fails()){
             return response()->json(['errors'=>$validator->errors()]);
         }else{
-            $user = Employee::where('username', $request->get('username'))->first();
-            $bcrypt = '';
-            if(hash('sha256',$request->get('password')) == $user->userpass){
-                $bcrypt = bcrypt($request->get('password'));
+            $user = Employee::where('username', $request->username)->first();
+            if(count((array)$user) == 0){
+                return response()->json(['errors'=>['invalid'=>['user not found!']]]);
             }
-            // return hash('sha256',$request->get('password'));
-            if (! $user || ! Hash::check($request->get('password'), $bcrypt)) {
+            if(!Auth::guard('employee')->attempt($request->all())){
                 return response()->json(['errors'=>['username'=>['username and password not match']]]);
+                // return response()->json(["errors"=>'username and password not match',]401);
             }
+            
             
             $token = $user->createToken('employee_auth_token')->plainTextToken;
-            
             $token = explode('|',$token);
             $token = $token[1];
             return response()->json(['token'=>$token],200);
@@ -47,16 +64,23 @@ class LoginController extends Controller
     public function isLoggedIn(Request $request){
         
         if(Auth::guard('employee')->check()){
-            return 'true';
+            return true;
         }
-        return 'false';
+        auth('sanctum')->user()->currentAccessToken()->delete();
+        return false;
     }
     public function logout(Request $request){
-        if($request->user()->currentAccessToken()->delete()){
-            return "true";
+        
+        if(Auth::guard('employee')->logout() == null && auth('sanctum')->user()->currentAccessToken()->delete()){
+            return 'true';
         }else{
-            return "false";
+            return 'false';
         }
+        // if($request->user()->currentAccessToken()->delete()){
+        //     return "true";
+        // }else{
+        //     return "false";
+        // }
     }
     
     public function getCurrentUser(){

@@ -62,15 +62,29 @@ export default {
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
             }
             axios.post('/acsi_emfs/api/logout').then(response => {
+                // console.log(response.data)
                 if(response.data == true){
                     this.$router.push({path:'/acsi_emfs/login'})
                     AppStorage.clear()
                 }
             }).catch(error => console.log(error.response))
+        },
+        checkToken(){
+            axios.post('/acsi_emfs/api/check-token').then(response => {
+                console.log(response.data)
+                
+                if(response.data.token){
+                    let token = response.data.token
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+                    AppStorage.storeToken(token)
+                }
+                
+            })
         }
     },
     created(){
         this.checkUser()
+        this.checkToken()
     }
 }
 </script>

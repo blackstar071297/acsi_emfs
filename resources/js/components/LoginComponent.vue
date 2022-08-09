@@ -44,7 +44,10 @@ export default {
     components:{navbar},
     data(){
         return {
-            form:[],
+            form:{
+                username: null,
+                password: null
+            },
             alerts:[]
         }
     },
@@ -52,27 +55,31 @@ export default {
         login(){
             this.alerts = []
             const fd = new FormData()
-            fd.append('username',this.form.username)
-            fd.append('password',this.form.password)
-            axios.post('/acsi_emfs/api/login',fd).then(response => {
-                if(response.data.errors){
-                    for(let error in response.data.errors){
-                        this.alerts.push({message: response.data.errors[error][0],type: 'danger' })
-                    } 
-                }else{
-                    console.log(response)
-                    let token = response.data.token
-                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
-                    AppStorage.storeToken(token)
-                    axios.post('/acsi_emfs/api/get-current-user').then(response =>{
-                        if(response.data.position == 'fst'){
-                            this.$router.push({path:'/acsi_emfs/fst/'})
-                        }else{
-                            this.$router.push({path:'/acsi_emfs/'})
-                        }
-                    })
-                }
-            }).catch(error => console.log(error.response.data))
+            axios.get('/acsi_emfs/sanctum/csrf-cookie').then(response => {
+                // Login...
+                fd.append('username',this.form.username == undefined ? '' : this.form.username)
+                fd.append('password',this.form.password == undefined ? '' : this.form.password)
+                axios.post('/acsi_emfs/api/login',fd).then(response => {
+                    if(response.data.errors){
+                        for(let error in response.data.errors){
+                            this.alerts.push({message: response.data.errors[error][0],type: 'danger' })
+                        } 
+                    }else{
+                        console.log(response)
+                        let token = response.data.token
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+                        AppStorage.storeToken(token)
+                        axios.post('/acsi_emfs/api/get-current-user').then(response =>{
+                            if(response.data.position == 'fst'){
+                                this.$router.push({path:'/acsi_emfs/fst/'})
+                            }else{
+                                this.$router.push({path:'/acsi_emfs/'})
+                            }
+                        })
+                    }
+                }).catch(error => console.log(error.response.data))
+            });
+            
         },
         getCookie(name) {
             function escape(s) { return s.replace(/([.*+?\^$(){}|\[\]\/\\])/g, '\\$1'); }
@@ -102,7 +109,7 @@ export default {
         }
     },
     created(){
-        this.checkUser()
+        // this.checkUser()
     }
     
 }
