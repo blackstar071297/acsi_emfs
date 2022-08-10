@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Matrix;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\SessionGuard;
@@ -34,7 +35,15 @@ class LoginController extends Controller
         return Auth('sanctum')->check();
     }
     public function autoLogin(Request $request){
-        return redirect()->to('/auto-login/'.$request->empno);
+        $matrix = Matrix::where('tsiempno',$request->empno)->first();
+        $empno;
+
+        if(!is_null($matrix)){
+            $empno = $matrix->acsiempno;
+        }else{
+            $empno = $request->empno;
+        }
+        return redirect()->to('/auto-login/'.$empno);
     }
     public function login(Request $request){
 
