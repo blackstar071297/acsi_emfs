@@ -27,7 +27,7 @@ class EmployeeMovementFormController extends Controller
     {
         //
         if(Auth::guard('employee')->user()->position == 'hr_officer' || Auth::guard('employee')->user()->empno == 'ACSI-200634'){
-            return EmployeeMovementForm::with('employee','requestor','records.status')->where('is_closed',0)->latest()->get();
+            return EmployeeMovementForm::with('employee','requestor','records.status')->latest()->get();
         }else{
             return EmployeeMovementForm::with('employee','requestor','records.status','current_manager','current_superior','new_superior','new_manager','account_officer')
                 ->whereHas('requestor',function($query){
@@ -50,7 +50,7 @@ class EmployeeMovementFormController extends Controller
         //
         return EmployeeMovementForm::with('requestor','records.status','employee')->whereHas('employee',function($query){
             $query->where('empno',Auth::guard('employee')->user()->empno);
-        })->where('is_closed',0)->latest()->get();
+        })->latest()->get();
     }
 
     /**

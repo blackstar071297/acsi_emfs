@@ -9,6 +9,6 @@ class EmployeeInfo1 extends Model
 {
     use HasFactory;
     protected $table = 'emp_comp';
-
+    public $timestamps = false;
     protected $primaryKey = 'empid';
 }

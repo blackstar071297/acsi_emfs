@@ -138,6 +138,9 @@ class MovementRecordController extends Controller
             if($request->current_status == 7){
                 $form->employee_accept_date = now()->toDateString();
             }
+            if($request->current_status == 8){
+                $form->is_closed = true;
+            }
             if($request->current_status == 2 && $form->from_manager == $form->to_manager){
                 $form->manager_accept_date = now()->toDateString();
                 $form->new_manager_accept_date = now()->toDateString();
@@ -159,7 +162,10 @@ class MovementRecordController extends Controller
                 return 5;
             }elseif($current_status == 2 && $form->from_manager == 'ACSI-200634'){
                 return 6;
-            }else{
+            }elseif($current_status == 7 && $form->effectivity_date <= now()->toDateString()){
+                return 9;
+            }
+            else{
                 return (int) $current_status + 1;
             }
         }elseif($approval_process == 2){
@@ -171,7 +177,10 @@ class MovementRecordController extends Controller
                 return 6;
             }elseif($current_status == 4 && $form->to_manager != 'ACSI-200634'){
                 return 5;
-            }else{
+            }elseif($current_status == 7 && $form->effectivity_date <= now()->toDateString()){
+                return 9;
+            }
+            else{
                 return (int) $current_status + 1;
             }
         }elseif($approval_process == 3){
@@ -183,7 +192,10 @@ class MovementRecordController extends Controller
                 return 5;
             }elseif($current_status == 4 && $form->to_manager == 'ACSI-200634'){
                 return 6;
-            }else{
+            }elseif($current_status == 7 && $form->effectivity_date <= now()->toDateString()){
+                return 9;
+            }
+            else{
                 return (int) $current_status + 1;
             }
         }

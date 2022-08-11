@@ -5,23 +5,64 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Employee;
+use App\Models\EmployeeInfo;
+use App\Models\EmployeeInfo1;
+use App\Models\EmployeeMovementForm;
+use App\Models\MovementRecord;
 use Hash;
 use Notification;
 use App\Notifications\ApprovalNotification;
 class EmployeeController extends Controller
 {
     public function test(){
-        $user = Employee::where('email','christianaquino071297@gmail.com')->first();
-        $details = [
-            'subject' => 'Hi Artisan',
-            'body' => 'This is my first notification from Nicesnippests.com',
-            'thanks' => 'Thank you for using Nicesnippests.com tuto!',
-            'actionText' => 'View My Site',
-            'actionURL' => url('/'),
-            'order_id' => 101
-        ];
-        // Notification::send($user, new ApprovalNotification($details));
-        $user->notify(new ApprovalNotification($details));
+        $forms = EmployeeMovementForm::with('employee.info1','requestor.info1','records.status','current_manager.info1','current_superior.info1','new_superior.info1','new_manager.info1','account_officer.info1')
+        ->whereHas('records',function($query){
+            $query->whereBetween('status_id',[6,8]);
+        })
+        ->where('is_closed',0)
+        ->whereDate('effectivity_date', '<=', date('Y-m-d'))->get();
+
+        foreach($forms as $key=>$form){
+            $info = EmployeeInfo::where('empno',$form->emp_no)->first();
+            $info1 = EmployeeInfo1::where('empid',$info->empid)->first();
+            
+            if($form->move_position == true){
+                $info1->eposition = $form->to_position;
+            }
+            if($form->move_job_status == true){
+                $info1->estatus = $form->to_job_status;
+            }
+            if($form->move_job_level == true){
+                $info1->elevel = $form->to_job_level;
+            }
+            if($form->move_role == true){
+                $info1->erole = $form->to_role;
+            }
+            if($form->move_department == true){
+                $info1->ecurrdept = $form->to_department;
+            }
+            if($form->move_cost_center == true){
+                $info1->ecostcenter = $form->to_cost_center;
+                $info->servarea = $form->to_cost_center;
+            }
+            if($form->move_immediate_superior == true){
+                $info1->esup = $form->to_immediate_superior;
+            }
+            if($form->move_manager == true){
+                $info1->emngr = $form->to_manager;
+            }
+            if($form->records[0]->status_id == 8){
+                $record = new MovementRecord();
+                $record->request_no = $form->request_no;
+                $record->status_id = 9;
+                
+                $form->is_closed = true;
+                $form->save();
+                if($record->save()){}
+            }
+            $info1->save();
+            $info->save();
+        }
     }
     public function generateUser(){
         $managers = DB::table('lmngr')->leftjoin('emp_info','lmngr.empno','=','emp_info.empno')->leftjoin('emp_comp','emp_comp.empid','=','emp_info.empid')->where('lmngr.mngr_enabled',1)->get();

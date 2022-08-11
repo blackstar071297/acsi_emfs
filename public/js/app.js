@@ -6191,7 +6191,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.forms.forEach(function (form) {
           if (form.records[0].status_id == 10) {
             _this.cancelled.push(form);
-          } else if (form.records[0].status_id == 10 && form.isClosed == 1) {
+          } else if (form.records[0].status_id == 9 && form.is_closed == 1) {
             _this.completed.push(form);
           } else {
             _this.pending.push(form);

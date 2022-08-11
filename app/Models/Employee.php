@@ -13,7 +13,7 @@ class Employee extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens;
 
     protected $guard = 'employee';
-    protected $table = 'users';
+    protected $table = 'emf_users';
 
     protected $primaryKey = 'userid';
     public $timestamps = false;
