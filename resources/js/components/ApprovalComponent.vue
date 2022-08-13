@@ -332,14 +332,12 @@
                                     <br>
                                     <div class="text-center mt-5">
                                         <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.superior_accept_date != null">
+                                        <h6  v-if="form.superior_accept_date != null" class="align-middle">Date approved: {{form.superior_accept_date}}</h6>
                                         <div v-if="form.records[0].status_id == 1 && current_user.empno == form.current_superior.empno" class="row">
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-6">
                                                 <button data-toggle="modal" data-target="#approveModal" class="btn btn-success w-100" >Approve <i class="fa-solid fa-check"></i></button>
                                             </div>
-                                            <div class="col-12 col-md-4">
-                                                <button data-toggle="modal" data-target="#returnModal" class="btn btn-primary w-100 px-0" :disabled="form.records[0].status_id == 1 ? true : false">Return <i class="fa-solid fa-rotate-left"></i></button>
-                                            </div>
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-6">
                                                 <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger w-100" >Cancel <i class="fa-solid fa-xmark"></i></button>
                                             </div>
                                         </div>
@@ -353,14 +351,12 @@
                                     <br>
                                     <div class="text-center mt-5">
                                         <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.manager_accept_date != null">
+                                        <h6  v-if="form.manager_accept_date != null" class="align-middle">Date approved: {{form.manager_accept_date}}</h6>
                                         <div v-if="form.records[0].status_id == 2 && current_user.empno == form.current_manager.empno" class="row">
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-6">
                                                 <button data-toggle="modal" data-target="#approveModal" class="btn btn-success w-100" >Approve <i class="fa-solid fa-check"></i></button>
                                             </div>
-                                            <div class="col-12 col-md-4">
-                                                <button data-toggle="modal" data-target="#returnModal" class="btn btn-primary w-100 px-0" :disabled="form.records[0].status_id == 1 ? true : false">Return <i class="fa-solid fa-rotate-left"></i></button>
-                                            </div>
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-6">
                                                 <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger w-100" >Cancel <i class="fa-solid fa-xmark"></i></button>
                                             </div>
                                         </div>
@@ -375,14 +371,12 @@
                                     <br>
                                     <div class="text-center mt-5" v-if="form.from_manager != form.to_manager && form.to_manager != 'ACSI-200634'">
                                         <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.new_manager_accept_date != null">
+                                        <h6  v-if="form.new_manager_accept_date != null" class="align-middle">Date approved: {{form.new_manager_accept_date}}</h6>
                                         <div v-if="form.records[0].status_id == 4 && current_user.empno == form.new_manager.empno" class="row">
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-6">
                                                 <button data-toggle="modal" data-target="#approveModal" class="btn btn-success w-100" >Approve <i class="fa-solid fa-check"></i></button>
                                             </div>
-                                            <div class="col-12 col-md-4">
-                                                <button data-toggle="modal" data-target="#returnModal" class="btn btn-primary w-100 px-0" :disabled="form.records[0].status_id == 1 ? true : false">Return <i class="fa-solid fa-rotate-left"></i></button>
-                                            </div>
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-6">
                                                 <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger w-100" >Cancel <i class="fa-solid fa-xmark"></i></button>
                                             </div>
                                         </div>
@@ -395,14 +389,12 @@
                                     <br>
                                     <div class="text-center mt-5">
                                         <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.cable_head_accept_date != null">
+                                        <h6 v-if="form.cable_head_accept_date != null" class="align-middle">Date approved: {{form.cable_head_accept_date}}</h6>
                                         <div v-if="form.records[0].status_id == 5 && current_user.empno == 'ACSI-200634'" class="row">
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-6">
                                                 <button data-toggle="modal" data-target="#approveModal" class="btn btn-success w-100" >Approve <i class="fa-solid fa-check"></i></button>
                                             </div>
-                                            <div class="col-12 col-md-4">
-                                                <button data-toggle="modal" data-target="#returnModal" class="btn btn-primary w-100 px-0" :disabled="form.records[0].status_id == 1 ? true : false">Return <i class="fa-solid fa-rotate-left"></i></button>
-                                            </div>
-                                            <div class="col-12 col-md-4">
+                                            <div class="col-12 col-md-6">
                                                 <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger w-100" >Cancel <i class="fa-solid fa-xmark"></i></button>
                                             </div>
                                         </div>

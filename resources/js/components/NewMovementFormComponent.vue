@@ -14,7 +14,7 @@
             <div class="input-group ">
                 <input placeholder="Type employee name here ..." class="form-control" @change="search($event.target)" id="searchbox" list="" @keyup="searchUpdate()" @keyup.enter="searchUpdate()">
                 <datalist id="employees">
-                    <option v-for="(employee,index) in employees" :key="index"  :value="employee.empno">{{employee.firstname}} {{employee.middlename != null ? employee.middlename : ''}}  {{employee.lastname}} {{employee.servarea != 'N/A' ? 'of ' + employee.servarea : ''}}</option>
+                    <option v-for="(employee,index) in employees" :key="index"  :value="employee.empno">{{employee.firstname}} {{employee.lastname}} {{employee.servarea != 'N/A' ? 'of ' + employee.servarea : ''}}</option>
                 </datalist>
                 <div class="input-group-append">
                     <button class="btn btn-outline-primary" type="button" id="button-addon2" @click="search(selected_employee)" :disabled="selected_employee.length == 0 ? true : false"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -726,6 +726,7 @@ export default {
             fd.append('reason_for_movement',this.reason)
             fd.append('effectivity_date',this.effectivity_date)
             axios.post('/acsi_emfs/api/employee-movement-form',fd).then(response => {
+                // console.log(response.data)
                 this.isLoading = false
                 this.errors = []
                 if(response.data == 'success'){

@@ -42,9 +42,11 @@ class ApprovalNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+                    ->greeting("Good day!")
                     ->subject($this->details['subject'])
                     ->line($this->details['body'])
-                    ->action('Request link', url($this->details['action']));
+                    ->salutation('Thank you!')
+                    ->action('Click to open', url($this->details['action']));
     }
 
     /**

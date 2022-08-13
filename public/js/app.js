@@ -5823,14 +5823,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
  // Import component
 
@@ -6046,6 +6038,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/NavbarComponent.vue */ "./resources/js/components/NavbarComponent.vue");
 /* harmony import */ var _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Helpers/AppStorage */ "./resources/js/components/Helpers/AppStorage.js");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7635,6 +7633,7 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('reason_for_movement', this.reason);
       fd.append('effectivity_date', this.effectivity_date);
       axios.post('/acsi_emfs/api/employee-movement-form', fd).then(function (response) {
+        console.log(response.data);
         _this10.isLoading = false;
         _this10.errors = [];
 
@@ -32567,41 +32566,20 @@ var render = function () {
                                   })
                                 : _vm._e(),
                               _vm._v(" "),
+                              _vm.form.superior_accept_date != null
+                                ? _c("h6", { staticClass: "align-middle" }, [
+                                    _vm._v(
+                                      "Date approved: " +
+                                        _vm._s(_vm.form.superior_accept_date)
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
                               _vm.form.records[0].status_id == 1 &&
                               _vm.current_user.empno ==
                                 _vm.form.current_superior.empno
                                 ? _c("div", { staticClass: "row" }, [
                                     _vm._m(14),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "col-12 col-md-4" },
-                                      [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-primary w-100 px-0",
-                                            attrs: {
-                                              "data-toggle": "modal",
-                                              "data-target": "#returnModal",
-                                              disabled:
-                                                _vm.form.records[0].status_id ==
-                                                1
-                                                  ? true
-                                                  : false,
-                                            },
-                                          },
-                                          [
-                                            _vm._v("Return "),
-                                            _c("i", {
-                                              staticClass:
-                                                "fa-solid fa-rotate-left",
-                                            }),
-                                          ]
-                                        ),
-                                      ]
-                                    ),
                                     _vm._v(" "),
                                     _vm._m(15),
                                   ])
@@ -32664,41 +32642,20 @@ var render = function () {
                                   })
                                 : _vm._e(),
                               _vm._v(" "),
+                              _vm.form.manager_accept_date != null
+                                ? _c("h6", { staticClass: "align-middle" }, [
+                                    _vm._v(
+                                      "Date approved: " +
+                                        _vm._s(_vm.form.manager_accept_date)
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
                               _vm.form.records[0].status_id == 2 &&
                               _vm.current_user.empno ==
                                 _vm.form.current_manager.empno
                                 ? _c("div", { staticClass: "row" }, [
                                     _vm._m(16),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "col-12 col-md-4" },
-                                      [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-primary w-100 px-0",
-                                            attrs: {
-                                              "data-toggle": "modal",
-                                              "data-target": "#returnModal",
-                                              disabled:
-                                                _vm.form.records[0].status_id ==
-                                                1
-                                                  ? true
-                                                  : false,
-                                            },
-                                          },
-                                          [
-                                            _vm._v("Return "),
-                                            _c("i", {
-                                              staticClass:
-                                                "fa-solid fa-rotate-left",
-                                            }),
-                                          ]
-                                        ),
-                                      ]
-                                    ),
                                     _vm._v(" "),
                                     _vm._m(17),
                                   ])
@@ -32768,45 +32725,27 @@ var render = function () {
                                             })
                                           : _vm._e(),
                                         _vm._v(" "),
+                                        _vm.form.new_manager_accept_date != null
+                                          ? _c(
+                                              "h6",
+                                              { staticClass: "align-middle" },
+                                              [
+                                                _vm._v(
+                                                  "Date approved: " +
+                                                    _vm._s(
+                                                      _vm.form
+                                                        .new_manager_accept_date
+                                                    )
+                                                ),
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
                                         _vm.form.records[0].status_id == 4 &&
                                         _vm.current_user.empno ==
                                           _vm.form.new_manager.empno
                                           ? _c("div", { staticClass: "row" }, [
                                               _vm._m(18),
-                                              _vm._v(" "),
-                                              _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "col-12 col-md-4",
-                                                },
-                                                [
-                                                  _c(
-                                                    "button",
-                                                    {
-                                                      staticClass:
-                                                        "btn btn-primary w-100 px-0",
-                                                      attrs: {
-                                                        "data-toggle": "modal",
-                                                        "data-target":
-                                                          "#returnModal",
-                                                        disabled:
-                                                          _vm.form.records[0]
-                                                            .status_id == 1
-                                                            ? true
-                                                            : false,
-                                                      },
-                                                    },
-                                                    [
-                                                      _vm._v("Return "),
-                                                      _c("i", {
-                                                        staticClass:
-                                                          "fa-solid fa-rotate-left",
-                                                      }),
-                                                    ]
-                                                  ),
-                                                ]
-                                              ),
                                               _vm._v(" "),
                                               _vm._m(19),
                                             ])
@@ -32877,40 +32816,19 @@ var render = function () {
                                   })
                                 : _vm._e(),
                               _vm._v(" "),
+                              _vm.form.cable_head_accept_date != null
+                                ? _c("h6", { staticClass: "align-middle" }, [
+                                    _vm._v(
+                                      "Date approved: " +
+                                        _vm._s(_vm.form.cable_head_accept_date)
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
                               _vm.form.records[0].status_id == 5 &&
                               _vm.current_user.empno == "ACSI-200634"
                                 ? _c("div", { staticClass: "row" }, [
                                     _vm._m(20),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "col-12 col-md-4" },
-                                      [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-primary w-100 px-0",
-                                            attrs: {
-                                              "data-toggle": "modal",
-                                              "data-target": "#returnModal",
-                                              disabled:
-                                                _vm.form.records[0].status_id ==
-                                                1
-                                                  ? true
-                                                  : false,
-                                            },
-                                          },
-                                          [
-                                            _vm._v("Return "),
-                                            _c("i", {
-                                              staticClass:
-                                                "fa-solid fa-rotate-left",
-                                            }),
-                                          ]
-                                        ),
-                                      ]
-                                    ),
                                     _vm._v(" "),
                                     _vm._m(21),
                                   ])
@@ -33683,7 +33601,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
+    return _c("div", { staticClass: "col-12 col-md-6" }, [
       _c(
         "button",
         {
@@ -33698,7 +33616,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
+    return _c("div", { staticClass: "col-12 col-md-6" }, [
       _c(
         "button",
         {
@@ -33713,7 +33631,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
+    return _c("div", { staticClass: "col-12 col-md-6" }, [
       _c(
         "button",
         {
@@ -33728,7 +33646,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
+    return _c("div", { staticClass: "col-12 col-md-6" }, [
       _c(
         "button",
         {
@@ -33743,7 +33661,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
+    return _c("div", { staticClass: "col-12 col-md-6" }, [
       _c(
         "button",
         {
@@ -33758,7 +33676,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
+    return _c("div", { staticClass: "col-12 col-md-6" }, [
       _c(
         "button",
         {
@@ -33773,7 +33691,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
+    return _c("div", { staticClass: "col-12 col-md-6" }, [
       _c(
         "button",
         {
@@ -33788,7 +33706,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
+    return _c("div", { staticClass: "col-12 col-md-6" }, [
       _c(
         "button",
         {
@@ -34036,6 +33954,8 @@ var render = function () {
                           "tbody",
                           _vm._l(_vm.pending, function (form, index) {
                             return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(index + 1))]),
+                              _vm._v(" "),
                               _c("td", [
                                 _c(
                                   "a",
@@ -34151,6 +34071,8 @@ var render = function () {
                           "tbody",
                           _vm._l(_vm.completed, function (form, index) {
                             return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(index + 1))]),
+                              _vm._v(" "),
                               _c("td", [
                                 _c(
                                   "a",
@@ -34266,6 +34188,8 @@ var render = function () {
                           "tbody",
                           _vm._l(_vm.cancelled, function (form, index) {
                             return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(index + 1))]),
+                              _vm._v(" "),
                               _c("td", [
                                 _c(
                                   "a",
@@ -34471,7 +34395,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", { attrs: { scope: "col" } }, [_vm._v("Request no.")]),
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Request no.")]),
       _vm._v(" "),
       _c("th", [_vm._v("Employee name")]),
       _vm._v(" "),
@@ -34491,7 +34417,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", { attrs: { scope: "col" } }, [_vm._v("Request no.")]),
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Request no.")]),
       _vm._v(" "),
       _c("th", [_vm._v("Employee name")]),
       _vm._v(" "),
@@ -34511,7 +34439,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", { attrs: { scope: "col" } }, [_vm._v("Request no.")]),
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Request no.")]),
       _vm._v(" "),
       _c("th", [_vm._v("Employee name")]),
       _vm._v(" "),
@@ -35617,10 +35547,6 @@ var render = function () {
                   _vm._v(
                     _vm._s(employee.firstname) +
                       " " +
-                      _vm._s(
-                        employee.middlename != null ? employee.middlename : ""
-                      ) +
-                      "  " +
                       _vm._s(employee.lastname) +
                       " " +
                       _vm._s(

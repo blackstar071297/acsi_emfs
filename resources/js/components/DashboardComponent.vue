@@ -23,7 +23,8 @@
                 <div class="tab-pane fade show active" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
                     <table class="table table-bordered table-striped" v-if="Object.keys(pending).length > 0">
                         <thead>
-                            <th scope="col">Request no.</th>
+                            <th scope="col">#</th>
+                            <th >Request no.</th>
                             <th>Employee name</th>
                             <th>Requestor</th>
                             <th>Reason of transfer</th>
@@ -33,6 +34,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(form,index) in pending" :key="index">
+                                <td>{{index+1}}</td>
                                 <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
@@ -53,7 +55,8 @@
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <table class="table table-bordered table-striped" v-if="Object.keys(completed).length > 0">
                         <thead>
-                            <th scope="col">Request no.</th>
+                            <th scope="col">#</th>
+                            <th >Request no.</th>
                             <th>Employee name</th>
                             <th>Requestor</th>
                             <th>Reason of transfer</th>
@@ -63,6 +66,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(form,index) in completed" :key="index">
+                                <td>{{index+1}}</td>
                                 <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
@@ -83,7 +87,8 @@
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <table class="table table-bordered table-striped" v-if="Object.keys(pending).length > 0">
                         <thead>
-                            <th scope="col">Request no.</th>
+                            <th scope="col">#</th>
+                            <th>Request no.</th>
                             <th>Employee name</th>
                             <th>Requestor</th>
                             <th>Reason of transfer</th>
@@ -93,6 +98,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(form,index) in cancelled" :key="index">
+                                <td>{{index+1}}</td>
                                 <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>

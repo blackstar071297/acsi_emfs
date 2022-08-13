@@ -170,17 +170,20 @@ class EmployeeMovementFormController extends Controller
                 if($emf->save()){
                     $record = new MovementRecord();
                     $record->request_no = $rpn;
+                    $user;
                     if($emf->request_by == $emf->from_immediate_superior){
+                        $user = Employee::where('username',$emf->from_manager)->first();
                         $record->status_id = 2;
                     }else{
+                        $user = Employee::where('username',$emf->from_immediate_superior)->first();
                         $record->status_id = 1;
                     }
                     if($record->save()){
-                        $user = Employee::where('username',$emf->from_immediate_superior)->first();
+                        
                         $details = [
                             'subject' => 'Pending Approval',
-                            'body' => 'You have pending approval',
-                            'action' => 'http://tsi-acsi1.webhop.biz:92/acsi_emfs/approvals/'.$rpn
+                            'body' => 'You have pending approval,Kindly go to your Dashboard and Click the EMS icon to approve',
+                            'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                         ];
                         // Notification::send($user, new ApprovalNotification($details));
                         if(!is_null($user)){
