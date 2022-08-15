@@ -51,15 +51,17 @@ class EmployeeController extends Controller
             if($form->move_manager == true){
                 $info1->emngr = $form->to_manager;
             }
+            $form->is_closed = 1;
             if($form->records[0]->status_id == 8){
                 $record = new MovementRecord();
                 $record->request_no = $form->request_no;
                 $record->status_id = 9;
                 
-                $form->is_closed = true;
+                $form->is_closed = 1;
                 $form->save();
                 if($record->save()){}
             }
+            $form->save();
             $info1->save();
             $info->save();
         }
