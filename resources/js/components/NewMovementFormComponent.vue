@@ -320,7 +320,7 @@
                                         <td v-if="role_toggler == false">SAME</td>
                                         <td v-if="role_toggler == true">
                                             <select name="role" id="role" class="border-0 w-100 text-center" v-model="selected_role" >
-                                                <option value="">N/A</option>
+                                                <option value="N/A">N/A</option>
                                                 <option v-for="(role,index) in roles" :key="index" :value="role.role_name">{{role.role_name}}</option>
                                             </select>
                                             <small class="text-danger" v-if="errors.to_role">*This field is required!</small>

@@ -7633,7 +7633,7 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('reason_for_movement', this.reason);
       fd.append('effectivity_date', this.effectivity_date);
       axios.post('/acsi_emfs/api/employee-movement-form', fd).then(function (response) {
-        console.log(response.data);
+        // console.log(response.data)
         _this10.isLoading = false;
         _this10.errors = [];
 
@@ -37034,7 +37034,7 @@ var render = function () {
                                   },
                                 },
                                 [
-                                  _c("option", { attrs: { value: "" } }, [
+                                  _c("option", { attrs: { value: "N/A" } }, [
                                     _vm._v("N/A"),
                                   ]),
                                   _vm._v(" "),
