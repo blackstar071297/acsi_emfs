@@ -32569,8 +32569,9 @@ var render = function () {
                               _vm._v(" "),
                               _vm.form.superior_accept_date != null
                                 ? _c("h6", { staticClass: "align-middle" }, [
+                                    _c("strong", [_vm._v("Date approved:")]),
                                     _vm._v(
-                                      "Date approved: " +
+                                      " " +
                                         _vm._s(_vm.form.superior_accept_date)
                                     ),
                                   ])
@@ -32645,9 +32646,9 @@ var render = function () {
                               _vm._v(" "),
                               _vm.form.manager_accept_date != null
                                 ? _c("h6", { staticClass: "align-middle" }, [
+                                    _c("strong", [_vm._v("Date approved:")]),
                                     _vm._v(
-                                      "Date approved: " +
-                                        _vm._s(_vm.form.manager_accept_date)
+                                      " " + _vm._s(_vm.form.manager_accept_date)
                                     ),
                                   ])
                                 : _vm._e(),
@@ -32731,8 +32732,11 @@ var render = function () {
                                               "h6",
                                               { staticClass: "align-middle" },
                                               [
+                                                _c("strong", [
+                                                  _vm._v("Date approved:"),
+                                                ]),
                                                 _vm._v(
-                                                  "Date approved: " +
+                                                  " " +
                                                     _vm._s(
                                                       _vm.form
                                                         .new_manager_accept_date
@@ -32819,8 +32823,9 @@ var render = function () {
                               _vm._v(" "),
                               _vm.form.cable_head_accept_date != null
                                 ? _c("h6", { staticClass: "align-middle" }, [
+                                    _c("strong", [_vm._v("Date approved:")]),
                                     _vm._v(
-                                      "Date approved: " +
+                                      " " +
                                         _vm._s(_vm.form.cable_head_accept_date)
                                     ),
                                   ])

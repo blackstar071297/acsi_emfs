@@ -26,6 +26,13 @@ class EmployeeMovementForm extends Model
         'move_contract' => 'boolean',
         'move_others' => 'boolean',
         'created_at' => 'date:Y-m-d',
+        'superior_accept_date' => 'date:m-d-Y',
+        'new_superior_accept_date' => 'date:m-d-Y',
+        'manager_accept_date' => 'date:m-d-Y',
+        'new_manager_accept_date' => 'date:m-d-Y',
+        'cable_head_accept_date' => 'date:m-d-Y',
+        'employee_accept_date' => 'date:m-d-Y',
+        'hr_accept_date' => 'date:m-d-Y',
     ];
     public function getRouteKeyName(){
         return 'request_no';
