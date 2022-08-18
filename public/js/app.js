@@ -7493,7 +7493,7 @@ __webpack_require__.r(__webpack_exports__);
 
         if (response.date != '') {
           $("#searchbox").attr("list", "");
-          $("#searchbox").val(_this2.selected_employee.firstname + ' ' + _this2.selected_employee.middlename + ' ' + _this2.selected_employee.lastname);
+          $("#searchbox").val(_this2.selected_employee.firstname + ' ' + _this2.selected_employee.lastname);
         }
       })["catch"](function (error) {
         return console.log(error.response.data);
@@ -35611,12 +35611,6 @@ var render = function () {
                                 : _vm.selected_employee.firstname
                             ) +
                               " " +
-                              _vm._s(
-                                _vm.selected_employee.middlename != null
-                                  ? _vm.selected_employee.middlename
-                                  : ""
-                              ) +
-                              "  " +
                               _vm._s(_vm.selected_employee.lastname)
                           ),
                         ]),

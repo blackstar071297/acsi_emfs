@@ -68,7 +68,7 @@
                             <table class="table table-bordered " >
                                 <tbody>
                                     <tr style="border: 2px solid black">
-                                        <td>Name: <strong >{{selected_employee.length == 0 ?  'N/A' : selected_employee.firstname}} {{selected_employee.middlename != null ? selected_employee.middlename : ''}}  {{selected_employee.lastname}}</strong></td>
+                                        <td>Name: <strong >{{selected_employee.length == 0 ?  'N/A' : selected_employee.firstname}} {{selected_employee.lastname}}</strong></td>
                                     </tr>
                                     <tr style="border: 2px solid black">
                                         <td>Employee ID: <strong >{{selected_employee.empno == null ? 'N/A' : selected_employee.empno}}</strong></td>
@@ -609,7 +609,7 @@ export default {
                 this.supervisorUpdate(this.current_user.empno)
                 if(response.date != ''){
                     $("#searchbox").attr("list","")
-                    $("#searchbox").val(this.selected_employee.firstname + ' ' + this.selected_employee.middlename + ' ' + this.selected_employee.lastname ) 
+                    $("#searchbox").val(this.selected_employee.firstname + ' ' + this.selected_employee.lastname ) 
                 }
             }).catch(error => console.log(error.response.data))
         },
