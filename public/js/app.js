@@ -32902,7 +32902,7 @@ var render = function () {
                               _vm.form.hr_accept_date != null
                                 ? _c("small", { staticClass: "align-middle" }, [
                                     _vm._v(
-                                      "Date approved: " +
+                                      "Date acknowledge: " +
                                         _vm._s(_vm.form.hr_accept_date)
                                     ),
                                   ])
@@ -32979,7 +32979,7 @@ var render = function () {
                               _vm.form.employee_accept_date != null
                                 ? _c("small", { staticClass: "align-middle" }, [
                                     _vm._v(
-                                      "Date approved: " +
+                                      "Date acknowledge: " +
                                         _vm._s(_vm.form.employee_accept_date)
                                     ),
                                   ])

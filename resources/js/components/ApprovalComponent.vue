@@ -419,7 +419,7 @@
                                     <br>
                                     <div class="text-center mt-5">
                                         <img src="/acsi_emfs/public/images/acknowledge.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.hr_accept_date != null"><br>
-                                        <small v-if="form.hr_accept_date != null" class="align-middle">Date approved: {{form.hr_accept_date}}</small>
+                                        <small v-if="form.hr_accept_date != null" class="align-middle">Date acknowledge: {{form.hr_accept_date}}</small>
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 6 && current_user.empno == form.hr_account_officer">Acknowledge</button>
                                         <h6 class="align-middle font-weight-bold">{{ form.account_officer.firstname}} {{ form.account_officer.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">HR Account Officer</h6>
@@ -431,7 +431,7 @@
                                     <br>
                                     <div class="text-center mt-5">
                                         <img src="/acsi_emfs/public/images/acknowledge.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.employee_accept_date != null"><br>
-                                        <small v-if="form.employee_accept_date != null" class="align-middle">Date approved: {{form.employee_accept_date}}</small>
+                                        <small v-if="form.employee_accept_date != null" class="align-middle">Date acknowledge: {{form.employee_accept_date}}</small>
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 7 && current_user.empno == form.emp_no">Acknowledge</button>
                                         <h6 class="align-middle font-weight-bold">{{form.employee.firstname}}  {{form.employee.lastname}}</h6>
                                         <h6 class="align-middle font-weight-bold">{{ form.employee.info1.eposition }}</h6>
