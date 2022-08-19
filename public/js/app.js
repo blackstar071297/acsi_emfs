@@ -5823,6 +5823,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
  // Import component
 
@@ -32566,12 +32568,12 @@ var render = function () {
                                     },
                                   })
                                 : _vm._e(),
+                              _c("br"),
                               _vm._v(" "),
                               _vm.form.superior_accept_date != null
-                                ? _c("h6", { staticClass: "align-middle" }, [
-                                    _c("strong", [_vm._v("Date approved:")]),
+                                ? _c("small", { staticClass: "align-middle" }, [
                                     _vm._v(
-                                      " " +
+                                      "Date approved: " +
                                         _vm._s(_vm.form.superior_accept_date)
                                     ),
                                   ])
@@ -32643,12 +32645,13 @@ var render = function () {
                                     },
                                   })
                                 : _vm._e(),
+                              _c("br"),
                               _vm._v(" "),
                               _vm.form.manager_accept_date != null
-                                ? _c("h6", { staticClass: "align-middle" }, [
-                                    _c("strong", [_vm._v("Date approved:")]),
+                                ? _c("small", { staticClass: "align-middle" }, [
                                     _vm._v(
-                                      " " + _vm._s(_vm.form.manager_accept_date)
+                                      "Date approved: " +
+                                        _vm._s(_vm.form.manager_accept_date)
                                     ),
                                   ])
                                 : _vm._e(),
@@ -32726,17 +32729,15 @@ var render = function () {
                                               },
                                             })
                                           : _vm._e(),
+                                        _c("br"),
                                         _vm._v(" "),
                                         _vm.form.new_manager_accept_date != null
                                           ? _c(
-                                              "h6",
+                                              "small",
                                               { staticClass: "align-middle" },
                                               [
-                                                _c("strong", [
-                                                  _vm._v("Date approved:"),
-                                                ]),
                                                 _vm._v(
-                                                  " " +
+                                                  "Date approved: " +
                                                     _vm._s(
                                                       _vm.form
                                                         .new_manager_accept_date
@@ -32820,12 +32821,12 @@ var render = function () {
                                     },
                                   })
                                 : _vm._e(),
+                              _c("br"),
                               _vm._v(" "),
                               _vm.form.cable_head_accept_date != null
-                                ? _c("h6", { staticClass: "align-middle" }, [
-                                    _c("strong", [_vm._v("Date approved:")]),
+                                ? _c("small", { staticClass: "align-middle" }, [
                                     _vm._v(
-                                      " " +
+                                      "Date approved: " +
                                         _vm._s(_vm.form.cable_head_accept_date)
                                     ),
                                   ])
@@ -32896,6 +32897,16 @@ var render = function () {
                                     },
                                   })
                                 : _vm._e(),
+                              _c("br"),
+                              _vm._v(" "),
+                              _vm.form.hr_accept_date != null
+                                ? _c("small", { staticClass: "align-middle" }, [
+                                    _vm._v(
+                                      "Date approved: " +
+                                        _vm._s(_vm.form.hr_accept_date)
+                                    ),
+                                  ])
+                                : _vm._e(),
                               _vm._v(" "),
                               _vm.form.records[0].status_id == 6 &&
                               _vm.current_user.empno ==
@@ -32962,6 +32973,16 @@ var render = function () {
                                       loading: "lazy",
                                     },
                                   })
+                                : _vm._e(),
+                              _c("br"),
+                              _vm._v(" "),
+                              _vm.form.employee_accept_date != null
+                                ? _c("small", { staticClass: "align-middle" }, [
+                                    _vm._v(
+                                      "Date approved: " +
+                                        _vm._s(_vm.form.employee_accept_date)
+                                    ),
+                                  ])
                                 : _vm._e(),
                               _vm._v(" "),
                               _vm.form.records[0].status_id == 7 &&
