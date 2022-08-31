@@ -187,7 +187,7 @@ class EmployeeMovementFormController extends Controller
                         ];
                         // Notification::send($user, new ApprovalNotification($details));
                         if(!is_null($user)){
-                            $user->notify(new ApprovalNotification($details));
+                            // $user->notify(new ApprovalNotification($details));
                         }
                         
                         return 'success';

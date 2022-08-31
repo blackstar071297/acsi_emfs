@@ -47,17 +47,17 @@ class MovementRecordController extends Controller
         
         if($record->save()){
             if($this->updateForm($request)){
-                if($record->status_id == 2){
-                    $this->sendEmail($form->from_manager,$request->request_no,$record->status_id);
-                }elseif($record->status_id == 4){
-                    $this->sendEmail($form->to_immediate_superior,$request->request_no,$record->status_id);
-                }elseif($record->status_id == 5){
-                    $this->sendEmail('ACSI-200634',$request->request_no,$record->status_id);
-                }elseif($record->status_id == 6){
-                    $this->sendEmail($form->hr_account_officer,$request->request_no,$record->status_id);
-                }elseif($record->status_id == 7){
-                    $this->sendEmail($form->emp_no,$request->request_no,$record->status_id);
-                }
+                // if($record->status_id == 2){
+                //     $this->sendEmail($form->from_manager,$request->request_no,$record->status_id);
+                // }elseif($record->status_id == 4){
+                //     $this->sendEmail($form->to_immediate_superior,$request->request_no,$record->status_id);
+                // }elseif($record->status_id == 5){
+                //     $this->sendEmail('ACSI-200634',$request->request_no,$record->status_id);
+                // }elseif($record->status_id == 6){
+                //     $this->sendEmail($form->hr_account_officer,$request->request_no,$record->status_id);
+                // }elseif($record->status_id == 7){
+                //     $this->sendEmail($form->emp_no,$request->request_no,$record->status_id);
+                // }
                 return 'success';
             }
         }
@@ -71,7 +71,7 @@ class MovementRecordController extends Controller
         $record->status_id = 10;
         $record->remarks = $request->remarks;
         if($record->save()){
-            $this->sendEmail($form->requested_by,$request->request_no,$record->status_id);
+            // $this->sendEmail($form->requested_by,$request->request_no,$record->status_id);
             return 'success';
         }
         return 'error';
@@ -100,15 +100,15 @@ class MovementRecordController extends Controller
         $record->remarks = $request->remarks;
 
         if($record->save()){
-            if($records[0]->status_id == 1){
-                $this->sendEmail($form->requested_by,$request->request_no,11);
-            }elseif($records[0]->status_id == 2){
-                $this->sendEmail($form->from_immediate_superior,$request->request_no,11);
-            }elseif($records[0]->status_id == 4){
-                $this->sendEmail($form->from_manager,$request->request_no,11);
-            }elseif($records[0]->status_id == 5){
-                $this->sendEmail($form->to_manager,$request->request_no,11);
-            }
+            // if($records[0]->status_id == 1){
+            //     $this->sendEmail($form->requested_by,$request->request_no,11);
+            // }elseif($records[0]->status_id == 2){
+            //     $this->sendEmail($form->from_immediate_superior,$request->request_no,11);
+            // }elseif($records[0]->status_id == 4){
+            //     $this->sendEmail($form->from_manager,$request->request_no,11);
+            // }elseif($records[0]->status_id == 5){
+            //     $this->sendEmail($form->to_manager,$request->request_no,11);
+            // }
             return 'success';
         }
 
