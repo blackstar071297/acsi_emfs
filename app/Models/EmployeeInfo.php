@@ -11,7 +11,8 @@ class EmployeeInfo extends Model
     protected $table = 'emp_info';
 
     protected $primaryKey = 'empid';
-
+    public $timestamps = false;
+    
     public function info1(){
         return $this->hasOne(EmployeeInfo1::class,'empid','empid');
     }
