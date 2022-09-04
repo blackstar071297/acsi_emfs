@@ -173,9 +173,11 @@ class EmployeeMovementFormController extends Controller
                     $user;
                     if($emf->request_by == $emf->from_immediate_superior){
                         $user = Employee::where('username',$emf->from_manager)->first();
+                        // $user = Employee::where('username','ACSI-220838')->first();
                         $record->status_id = 2;
                     }else{
                         $user = Employee::where('username',$emf->from_immediate_superior)->first();
+                        // $user = Employee::where('username','ACSI-220838')->first();
                         $record->status_id = 1;
                     }
                     if($record->save()){
@@ -187,7 +189,7 @@ class EmployeeMovementFormController extends Controller
                         ];
                         // Notification::send($user, new ApprovalNotification($details));
                         if(!is_null($user)){
-                            // $user->notify(new ApprovalNotification($details));
+                            $user->notify(new ApprovalNotification($details));
                         }
                         
                         return 'success';
