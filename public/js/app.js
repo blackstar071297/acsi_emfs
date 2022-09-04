@@ -6165,6 +6165,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -6185,7 +6191,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/acsi_emfs/api/employee-movement-form').then(function (response) {
-        // console.log(response.data)
+        console.log(response.data);
         _this.forms = response.data;
 
         _this.forms.forEach(function (form) {
@@ -6197,8 +6203,6 @@ __webpack_require__.r(__webpack_exports__);
             _this.pending.push(form);
           }
         });
-
-        console.log(_this.pending);
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
@@ -6303,6 +6307,96 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -6312,7 +6406,10 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       forms: [],
-      current_user: []
+      current_user: [],
+      completed: [],
+      pending: [],
+      cancelled: []
     };
   },
   methods: {
@@ -6320,8 +6417,18 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/acsi_emfs/api/fst/employee-movement-form').then(function (response) {
-        console.log(response.data);
+        // console.log(response.data)
         _this.forms = response.data;
+
+        _this.forms.forEach(function (form) {
+          if (form.records[0].status_id == 10) {
+            _this.cancelled.push(form);
+          } else if (form.records[0].status_id == 9 && form.is_closed == 1) {
+            _this.completed.push(form);
+          } else {
+            _this.pending.push(form);
+          }
+        });
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
@@ -7757,7 +7864,7 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].use(vue_router__WEBPACK_IMPORTED_MO
 
 var guard = function guard(to, from, next) {
   var current_path = to.fullPath.split('/');
-  document.title = "ACSI EMFS" + ' | ' + to.meta.title;
+  document.title = "ACSI RFPS" + ' | ' + to.meta.title;
 
   if (_components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken()) {
     (axios__WEBPACK_IMPORTED_MODULE_9___default().defaults.headers.common.Authorization) = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken();
@@ -33948,7 +34055,7 @@ var render = function () {
     [
       _c("navbar"),
       _vm._v(" "),
-      _c("div", { staticClass: "container mt-4" }, [
+      _c("div", { staticClass: "container-fluid mt-4" }, [
         _vm._m(0),
         _vm._v(" "),
         _vm._m(1),
@@ -33973,7 +34080,10 @@ var render = function () {
                 Object.keys(_vm.pending).length > 0
                   ? _c(
                       "table",
-                      { staticClass: "table table-bordered table-striped" },
+                      {
+                        staticClass:
+                          "table table-bordered table-striped table-sm",
+                      },
                       [
                         _vm._m(3),
                         _vm._v(" "),
@@ -34012,6 +34122,8 @@ var render = function () {
                                     _vm._s(form.requestor.lastname)
                                 ),
                               ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.created_at))]),
                               _vm._v(" "),
                               _c("td", [
                                 _vm._v(
@@ -34090,7 +34202,10 @@ var render = function () {
                 Object.keys(_vm.completed).length > 0
                   ? _c(
                       "table",
-                      { staticClass: "table table-bordered table-striped" },
+                      {
+                        staticClass:
+                          "table table-bordered table-striped table-sm",
+                      },
                       [
                         _vm._m(4),
                         _vm._v(" "),
@@ -34129,6 +34244,8 @@ var render = function () {
                                     _vm._s(form.requestor.lastname)
                                 ),
                               ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.created_at))]),
                               _vm._v(" "),
                               _c("td", [
                                 _vm._v(
@@ -34207,7 +34324,10 @@ var render = function () {
                 Object.keys(_vm.pending).length > 0
                   ? _c(
                       "table",
-                      { staticClass: "table table-bordered table-striped" },
+                      {
+                        staticClass:
+                          "table table-bordered table-striped table-sm",
+                      },
                       [
                         _vm._m(5),
                         _vm._v(" "),
@@ -34246,6 +34366,8 @@ var render = function () {
                                     _vm._s(form.requestor.lastname)
                                 ),
                               ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.created_at))]),
                               _vm._v(" "),
                               _c("td", [
                                 _vm._v(
@@ -34430,27 +34552,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Requestor")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Reason of transfer")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Effectivity date")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Status")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Action")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Request no.")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Employee name")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Requestor")]),
+      _c("th", [_vm._v("Date created")]),
       _vm._v(" "),
       _c("th", [_vm._v("Reason of transfer")]),
       _vm._v(" "),
@@ -34473,6 +34575,32 @@ var staticRenderFns = [
       _c("th", [_vm._v("Employee name")]),
       _vm._v(" "),
       _c("th", [_vm._v("Requestor")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Date created")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Reason of transfer")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Effectivity date")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Request no.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Employee name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Requestor")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Date created")]),
       _vm._v(" "),
       _c("th", [_vm._v("Reason of transfer")]),
       _vm._v(" "),
@@ -34511,88 +34639,382 @@ var render = function () {
     [
       _c("navbar"),
       _vm._v(" "),
-      _c("div", { staticClass: "container mt-4" }, [
+      _c("div", { staticClass: "container-fluid mt-4" }, [
         _c("h1", [_vm._v("FST Dashboard")]),
         _vm._v(" "),
-        _c("table", { staticClass: "table table-bordered table-striped" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "tbody",
-            _vm._l(_vm.forms, function (form, index) {
-              return _c("tr", { key: index }, [
-                _c("td", [
-                  _c(
-                    "a",
-                    {
-                      attrs: {
-                        href: "/acsi_emfs/approvals/" + form.request_no,
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "tab-content", attrs: { id: "pills-tabContent" } },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade show active",
+                attrs: {
+                  id: "pills-pending",
+                  role: "tabpanel",
+                  "aria-labelledby": "pills-pending-tab",
+                },
+              },
+              [
+                Object.keys(_vm.pending).length > 0
+                  ? _c(
+                      "table",
+                      {
+                        staticClass:
+                          "table table-bordered table-striped table-sm",
                       },
-                    },
-                    [_vm._v(_vm._s(form.request_no))]
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    _vm._s(form.employee.firstname) +
-                      " " +
-                      _vm._s(form.employee.lastname)
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    _vm._s(form.requestor.firstname) +
-                      " " +
-                      _vm._s(form.requestor.lastname)
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    _vm._s(
-                      form.reason_for_movement == null
-                        ? "N/A"
-                        : form.reason_for_movement
+                      [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.pending, function (form, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(index + 1))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: {
+                                      href:
+                                        "/acsi_emfs/approvals/" +
+                                        form.request_no,
+                                    },
+                                  },
+                                  [_vm._v(_vm._s(form.request_no))]
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(form.employee.firstname) +
+                                    " " +
+                                    _vm._s(form.employee.lastname)
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(form.requestor.firstname) +
+                                    " " +
+                                    _vm._s(form.requestor.lastname)
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.created_at))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    form.reason_for_movement == null
+                                      ? "N/A"
+                                      : form.reason_for_movement
+                                  )
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.effectivity_date))]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-capitalize" }, [
+                                _vm._v(_vm._s(form.records[0].status.status)),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "btn btn-primary mb-1",
+                                    attrs: {
+                                      href:
+                                        "/acsi_emfs/approvals/" +
+                                        form.request_no,
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fa-solid fa-eye" })]
+                                ),
+                                _vm._v(" "),
+                                _vm.checkUser(form)
+                                  ? _c(
+                                      "a",
+                                      {
+                                        staticClass: "btn btn-success mb-1",
+                                        attrs: {
+                                          href:
+                                            "/acsi_emfs/approvals/" +
+                                            form.request_no,
+                                        },
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa-solid fa-check",
+                                        }),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                              ]),
+                            ])
+                          }),
+                          0
+                        ),
+                      ]
                     )
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(form.effectivity_date))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(form.records[0].status.status))]),
-                _vm._v(" "),
-                _c("td", [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-primary mb-1",
-                      attrs: {
-                        href: "/acsi_emfs/approvals/" + form.request_no,
+                  : _c("div", [
+                      _c("h5", { staticClass: "text-center" }, [
+                        _vm._v("NOTHING TO DISPLAY"),
+                      ]),
+                    ]),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade",
+                attrs: {
+                  id: "pills-profile",
+                  role: "tabpanel",
+                  "aria-labelledby": "pills-profile-tab",
+                },
+              },
+              [
+                Object.keys(_vm.completed).length > 0
+                  ? _c(
+                      "table",
+                      {
+                        staticClass:
+                          "table table-bordered table-striped table-sm",
                       },
-                    },
-                    [_c("i", { staticClass: "fa-solid fa-eye" })]
-                  ),
-                  _vm._v(" "),
-                  _vm.checkUser(form)
-                    ? _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-success mb-1",
-                          attrs: {
-                            href: "/acsi_emfs/approvals/" + form.request_no,
-                          },
-                        },
-                        [_c("i", { staticClass: "fa-solid fa-check" })]
-                      )
-                    : _vm._e(),
-                ]),
-              ])
-            }),
-            0
-          ),
-        ]),
+                      [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.completed, function (form, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(index + 1))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: {
+                                      href:
+                                        "/acsi_emfs/approvals/" +
+                                        form.request_no,
+                                    },
+                                  },
+                                  [_vm._v(_vm._s(form.request_no))]
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(form.employee.firstname) +
+                                    " " +
+                                    _vm._s(form.employee.lastname)
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(form.requestor.firstname) +
+                                    " " +
+                                    _vm._s(form.requestor.lastname)
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.created_at))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    form.reason_for_movement == null
+                                      ? "N/A"
+                                      : form.reason_for_movement
+                                  )
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.effectivity_date))]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-capitalize" }, [
+                                _vm._v(_vm._s(form.records[0].status.status)),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "btn btn-primary mb-1",
+                                    attrs: {
+                                      href:
+                                        "/acsi_emfs/approvals/" +
+                                        form.request_no,
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fa-solid fa-eye" })]
+                                ),
+                                _vm._v(" "),
+                                _vm.checkUser(form)
+                                  ? _c(
+                                      "a",
+                                      {
+                                        staticClass: "btn btn-success mb-1",
+                                        attrs: {
+                                          href:
+                                            "/acsi_emfs/approvals/" +
+                                            form.request_no,
+                                        },
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa-solid fa-check",
+                                        }),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                              ]),
+                            ])
+                          }),
+                          0
+                        ),
+                      ]
+                    )
+                  : _c("div", [
+                      _c("h5", { staticClass: "text-center" }, [
+                        _vm._v("NOTHING TO DISPLAY"),
+                      ]),
+                    ]),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade",
+                attrs: {
+                  id: "pills-contact",
+                  role: "tabpanel",
+                  "aria-labelledby": "pills-contact-tab",
+                },
+              },
+              [
+                Object.keys(_vm.pending).length > 0
+                  ? _c(
+                      "table",
+                      {
+                        staticClass:
+                          "table table-bordered table-striped table-sm",
+                      },
+                      [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.cancelled, function (form, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(index + 1))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: {
+                                      href:
+                                        "/acsi_emfs/approvals/" +
+                                        form.request_no,
+                                    },
+                                  },
+                                  [_vm._v(_vm._s(form.request_no))]
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(form.employee.firstname) +
+                                    " " +
+                                    _vm._s(form.employee.lastname)
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(form.requestor.firstname) +
+                                    " " +
+                                    _vm._s(form.requestor.lastname)
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.created_at))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    form.reason_for_movement == null
+                                      ? "N/A"
+                                      : form.reason_for_movement
+                                  )
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(form.effectivity_date))]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-capitalize" }, [
+                                _vm._v(_vm._s(form.records[0].status.status)),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "btn btn-primary mb-1",
+                                    attrs: {
+                                      href:
+                                        "/acsi_emfs/approvals/" +
+                                        form.request_no,
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fa-solid fa-eye" })]
+                                ),
+                                _vm._v(" "),
+                                _vm.checkUser(form)
+                                  ? _c(
+                                      "a",
+                                      {
+                                        staticClass: "btn btn-success mb-1",
+                                        attrs: {
+                                          href:
+                                            "/acsi_emfs/approvals/" +
+                                            form.request_no,
+                                        },
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa-solid fa-check",
+                                        }),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                              ]),
+                            ])
+                          }),
+                          0
+                        ),
+                      ]
+                    )
+                  : _c("div", [
+                      _c("h5", { staticClass: "text-center" }, [
+                        _vm._v("NOTHING TO DISPLAY"),
+                      ]),
+                    ]),
+              ]
+            ),
+          ]
+        ),
       ]),
     ],
     1
@@ -34603,12 +35025,131 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      {
+        staticClass: "nav nav-pills mb-3",
+        attrs: { id: "pills-tab", role: "tablist" },
+      },
+      [
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: {
+                id: "pills-pending-tab",
+                "data-toggle": "pill",
+                href: "#pills-pending",
+                role: "tab",
+                "aria-controls": "pills-home",
+                "aria-selected": "true",
+              },
+            },
+            [_vm._v("Pending")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "pills-profile-tab",
+                "data-toggle": "pill",
+                href: "#pills-profile",
+                role: "tab",
+                "aria-controls": "pills-profile",
+                "aria-selected": "false",
+              },
+            },
+            [_vm._v("Completed")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "pills-contact-tab",
+                "data-toggle": "pill",
+                href: "#pills-contact",
+                role: "tab",
+                "aria-controls": "pills-contact",
+                "aria-selected": "false",
+              },
+            },
+            [_vm._v("Cancelled")]
+          ),
+        ]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", { attrs: { scope: "col" } }, [_vm._v("Request no.")]),
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Request no.")]),
       _vm._v(" "),
       _c("th", [_vm._v("Employee name")]),
       _vm._v(" "),
       _c("th", [_vm._v("Requestor")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Date created")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Reason of transfer")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Effectivity date")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Request no.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Employee name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Requestor")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Date created")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Reason of transfer")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Effectivity date")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Request no.")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Employee name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Requestor")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Date created")]),
       _vm._v(" "),
       _c("th", [_vm._v("Reason of transfer")]),
       _vm._v(" "),

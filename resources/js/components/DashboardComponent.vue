@@ -1,7 +1,7 @@
 <template>
     <div>
         <navbar></navbar>
-        <div class="container mt-4">
+        <div class="container-fluid mt-4">
             <nav aria-label="breadcrumb ">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">Home</li>
@@ -21,12 +21,13 @@
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
-                    <table class="table table-bordered table-striped" v-if="Object.keys(pending).length > 0">
+                    <table class="table table-bordered table-striped table-sm" v-if="Object.keys(pending).length > 0">
                         <thead>
                             <th scope="col">#</th>
                             <th >Request no.</th>
                             <th>Employee name</th>
                             <th>Requestor</th>
+                            <th>Date created</th>
                             <th>Reason of transfer</th>
                             <th>Effectivity date</th>
                             <th>Status</th>
@@ -38,6 +39,7 @@
                                 <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
+                                <td>{{form.created_at}}</td>
                                 <td>{{form.reason_for_movement == null ? 'N/A' : form.reason_for_movement}}</td>
                                 <td>{{form.effectivity_date}}</td>
                                 <td class="text-capitalize" >{{form.records[0].status.status}}</td>
@@ -53,12 +55,13 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <table class="table table-bordered table-striped" v-if="Object.keys(completed).length > 0">
+                    <table class="table table-bordered table-striped table-sm" v-if="Object.keys(completed).length > 0">
                         <thead>
                             <th scope="col">#</th>
                             <th >Request no.</th>
                             <th>Employee name</th>
                             <th>Requestor</th>
+                            <th>Date created</th>
                             <th>Reason of transfer</th>
                             <th>Effectivity date</th>
                             <th>Status</th>
@@ -70,6 +73,7 @@
                                 <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
+                                <td>{{form.created_at}}</td>
                                 <td>{{form.reason_for_movement == null ? 'N/A' : form.reason_for_movement}}</td>
                                 <td>{{form.effectivity_date}}</td>
                                 <td class="text-capitalize" >{{form.records[0].status.status}}</td>
@@ -85,12 +89,13 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                    <table class="table table-bordered table-striped" v-if="Object.keys(pending).length > 0">
+                    <table class="table table-bordered table-striped table-sm" v-if="Object.keys(pending).length > 0">
                         <thead>
                             <th scope="col">#</th>
                             <th>Request no.</th>
                             <th>Employee name</th>
                             <th>Requestor</th>
+                            <th>Date created</th>
                             <th>Reason of transfer</th>
                             <th>Effectivity date</th>
                             <th>Status</th>
@@ -102,6 +107,7 @@
                                 <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
+                                <td>{{form.created_at}}</td>
                                 <td>{{form.reason_for_movement == null ? 'N/A' : form.reason_for_movement}}</td>
                                 <td>{{form.effectivity_date}}</td>
                                 <td class="text-capitalize" >{{form.records[0].status.status}}</td>
@@ -140,7 +146,7 @@ export default {
     methods:{
         getForms(){
             axios.get('/acsi_emfs/api/employee-movement-form').then(response => {
-                // console.log(response.data)
+                console.log(response.data)
                 this.forms = response.data
                 this.forms.forEach((form) =>{
                     if(form.records[0].status_id == 10){
@@ -151,7 +157,6 @@ export default {
                         this.pending.push(form)
                     }
                 })
-                console.log(this.pending)
             }).catch(error => console.log(error.response.data))
         },
         getCurrentUser(){
