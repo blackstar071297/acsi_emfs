@@ -44,7 +44,7 @@ class EmployeeController extends Controller
             if($form->move_cost_center == true){
                 $info1->ecostcenter = $form->to_cost_center;
                 $servarea = ['N/A','Others','Area 3','Area 4','Area 6','Destiny','Special Projects','Tier 2','Quality Assurance','Strike force','Trainee']; 
-                $info->servarea = array_search($form->to_cost_center,$servarea,true) != null || array_search($form->to_cost_center,$servarea,true) == '' ? 'N/A' : $form->to_cost_center ;
+                $info->servarea = array_search($form->to_cost_center,$servarea,true) == null || array_search($form->to_cost_center,$servarea,true) == '' ? 'N/A' : $form->to_cost_center ;
             }
             if($form->move_immediate_superior == true){
                 $info1->esup = $form->to_immediate_superior;

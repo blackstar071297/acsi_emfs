@@ -7,7 +7,7 @@
         <title>Employee Movement Form</title>
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
-        
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
         <!-- Styles -->
         <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
         
