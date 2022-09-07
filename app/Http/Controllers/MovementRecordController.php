@@ -217,7 +217,7 @@ class MovementRecordController extends Controller
             if($status_id == 6 || $status_id == 7){
                 $details = [
                     'subject' => 'Pending acknowledgement(ACSI EMS)',
-                    'body' => 'You have pending acknowledgement,Kindly go to your Dashboard and Click the EMS icon to approve',
+                    'body' => 'You have pending acknowledgement,Kindly go to your Dashboard and Click the EMS icon to acknowledge',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
             }elseif($status_id == 1 || $status_id == 2 || $status_id == 4 || $status_id == 5){

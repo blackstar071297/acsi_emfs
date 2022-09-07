@@ -12,6 +12,7 @@ import ApprovalComponent from '../components/ApprovalComponent'
 import FSTComponent from '../components/FSTDashboardComponent'
 import MailerComponent from '../components/MailerComponent'
 import AutoLogin from '../components/AutoLoginComponent'
+import AutoUpdate from '../components/AutoUpdateComponent'
 
 import axios from 'axios'
 
@@ -31,6 +32,7 @@ const guard = (to,from,next) => {
 
 let routes = [
     {path:'/acsi_emfs/auto-login/:empno',component:AutoLogin,meta:{title: 'Auto login'}},
+    {path:'/acsi_emfs/auto-update',component:AutoUpdate,meta:{title: 'Auto update'}},
     {path:'/acsi_emfs/',component:DashboardComponent,beforeEnter: guard, meta:{title: 'Dashboard'}},
     {path:'/acsi_emfs/new-movement-form',component:NewMovementFormComponent,beforeEnter: guard,meta:{title: 'Movement form'}},
     {path:'/acsi_emfs/login',component:loginComponent},

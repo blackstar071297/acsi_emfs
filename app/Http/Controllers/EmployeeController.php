@@ -65,7 +65,10 @@ class EmployeeController extends Controller
             $form->save();
             $info1->save();
             $info->save();
+
+            
         }
+        return 'success';
     }
     public function generateUser(){
         $managers = DB::table('lmngr')->leftjoin('emp_info','lmngr.empno','=','emp_info.empno')->leftjoin('emp_comp','emp_comp.empid','=','emp_info.empid')->where('lmngr.mngr_enabled',1)->get();
