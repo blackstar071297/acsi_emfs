@@ -58,6 +58,9 @@ class EmployeeMovementForm extends Model
     public function account_officer(){
         return $this->hasOne(EmployeeInfo::class,'empno','hr_account_officer');
     }
+    public function canceled_by(){
+        return $this->hasOne(EmployeeInfo::class,'empno','canceled_by');
+    }
     public function records(){
         return $this->hasMany(MovementRecord::class,'request_no','request_no')->latest();
     }

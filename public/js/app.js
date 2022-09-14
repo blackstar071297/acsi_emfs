@@ -5825,6 +5825,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
  // Import component
 
@@ -32800,11 +32808,35 @@ var render = function () {
                                 : _vm._e(),
                               _c("br"),
                               _vm._v(" "),
+                              _vm.form.date_canceled != null &&
+                              _vm.form.records[1].status_id == 1
+                                ? _c("img", {
+                                    staticClass: "d-inline-block align-top",
+                                    attrs: {
+                                      src: "/acsi_emfs/public/images/canceled.png",
+                                      height: "50",
+                                      alt: "approve image",
+                                      loading: "lazy",
+                                    },
+                                  })
+                                : _vm._e(),
+                              _c("br"),
+                              _vm._v(" "),
                               _vm.form.superior_accept_date != null
                                 ? _c("small", { staticClass: "align-middle" }, [
                                     _vm._v(
                                       "Date approved: " +
                                         _vm._s(_vm.form.superior_accept_date)
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.form.date_canceled != null &&
+                              _vm.form.records[1].status_id == 1
+                                ? _c("small", { staticClass: "align-middle" }, [
+                                    _vm._v(
+                                      "Date cancelled: " +
+                                        _vm._s(_vm.form.date_canceled)
                                     ),
                                   ])
                                 : _vm._e(),
@@ -32877,11 +32909,35 @@ var render = function () {
                                 : _vm._e(),
                               _c("br"),
                               _vm._v(" "),
+                              _vm.form.date_canceled != null &&
+                              _vm.form.records[1].status_id == 2
+                                ? _c("img", {
+                                    staticClass: "d-inline-block align-top",
+                                    attrs: {
+                                      src: "/acsi_emfs/public/images/canceled.png",
+                                      height: "50",
+                                      alt: "approve image",
+                                      loading: "lazy",
+                                    },
+                                  })
+                                : _vm._e(),
+                              _c("br"),
+                              _vm._v(" "),
                               _vm.form.manager_accept_date != null
                                 ? _c("small", { staticClass: "align-middle" }, [
                                     _vm._v(
                                       "Date approved: " +
                                         _vm._s(_vm.form.manager_accept_date)
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.form.date_canceled != null &&
+                              _vm.form.records[1].status_id == 2
+                                ? _c("small", { staticClass: "align-middle" }, [
+                                    _vm._v(
+                                      "Date cancelled: " +
+                                        _vm._s(_vm.form.date_canceled)
                                     ),
                                   ])
                                 : _vm._e(),
@@ -32961,6 +33017,21 @@ var render = function () {
                                           : _vm._e(),
                                         _c("br"),
                                         _vm._v(" "),
+                                        _vm.form.date_canceled != null &&
+                                        _vm.form.records[1].status_id == 4
+                                          ? _c("img", {
+                                              staticClass:
+                                                "d-inline-block align-top",
+                                              attrs: {
+                                                src: "/acsi_emfs/public/images/canceled.png",
+                                                height: "50",
+                                                alt: "approve image",
+                                                loading: "lazy",
+                                              },
+                                            })
+                                          : _vm._e(),
+                                        _c("br"),
+                                        _vm._v(" "),
                                         _vm.form.new_manager_accept_date != null
                                           ? _c(
                                               "small",
@@ -32971,6 +33042,22 @@ var render = function () {
                                                     _vm._s(
                                                       _vm.form
                                                         .new_manager_accept_date
+                                                    )
+                                                ),
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _vm.form.date_canceled != null &&
+                                        _vm.form.records[1].status_id == 4
+                                          ? _c(
+                                              "small",
+                                              { staticClass: "align-middle" },
+                                              [
+                                                _vm._v(
+                                                  "Date cancelled: " +
+                                                    _vm._s(
+                                                      _vm.form.date_canceled
                                                     )
                                                 ),
                                               ]
@@ -33053,11 +33140,35 @@ var render = function () {
                                 : _vm._e(),
                               _c("br"),
                               _vm._v(" "),
+                              _vm.form.date_canceled != null &&
+                              _vm.form.records[1].status_id == 5
+                                ? _c("img", {
+                                    staticClass: "d-inline-block align-top",
+                                    attrs: {
+                                      src: "/acsi_emfs/public/images/canceled.png",
+                                      height: "50",
+                                      alt: "approve image",
+                                      loading: "lazy",
+                                    },
+                                  })
+                                : _vm._e(),
+                              _c("br"),
+                              _vm._v(" "),
                               _vm.form.cable_head_accept_date != null
                                 ? _c("small", { staticClass: "align-middle" }, [
                                     _vm._v(
                                       "Date approved: " +
                                         _vm._s(_vm.form.cable_head_accept_date)
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.form.date_canceled != null &&
+                              _vm.form.records[1].status_id == 5
+                                ? _c("small", { staticClass: "align-middle" }, [
+                                    _vm._v(
+                                      "Date cancelled: " +
+                                        _vm._s(_vm.form.date_canceled)
                                     ),
                                   ])
                                 : _vm._e(),

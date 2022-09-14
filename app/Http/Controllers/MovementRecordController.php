@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\EmployeeMovementForm;
 use App\Models\Employee;
 use App\Notifications\ApprovalNotification;
+use Auth;
 
 class MovementRecordController extends Controller
 {
@@ -65,12 +66,15 @@ class MovementRecordController extends Controller
     }
     public function cancelled(Request $request){
         $form = EmployeeMovementForm::where('request_no',$request->request_no)->first();
+        $form->canceled_by = Auth::guard('employee')->user()->empno;
+        $form->date_canceled = now()->toDateString();
+
         $record = new MovementRecord();
         $record->request_no = $request->request_no;
         $approval_process = 0;
         $record->status_id = 10;
         $record->remarks = $request->remarks;
-        if($record->save()){
+        if($record->save() && $form->save()){
             $this->sendEmail($form->requested_by,$request->request_no,$record->status_id);
             return 'success';
         }
