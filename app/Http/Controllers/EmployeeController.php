@@ -12,15 +12,17 @@ use App\Models\MovementRecord;
 use Hash;
 use Notification;
 use App\Notifications\ApprovalNotification;
+Use \Carbon\Carbon;
 class EmployeeController extends Controller
 {
     public function test(){
+        // return Carbon::now()->addDays(1);
         $forms = EmployeeMovementForm::with('employee.info1','requestor.info1','records.status','current_manager.info1','current_superior.info1','new_superior.info1','new_manager.info1','account_officer.info1')
         ->whereHas('records',function($query){
             $query->whereBetween('status_id',[6,8]);
         })
         ->where('is_closed',0)
-        ->whereDate('effectivity_date', '<=', date('Y-m-d'))->get();
+        ->whereDate('effectivity_date', '<=', Carbon::now()->addDays(1))->get();
 
         foreach($forms as $key=>$form){
             $info = EmployeeInfo::where('empno',$form->emp_no)->first();
