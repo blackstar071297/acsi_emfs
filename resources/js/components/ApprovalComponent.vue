@@ -55,8 +55,11 @@
                         </button>
                     </div>
                 </div>
+                <div class="col-12 d-print-none">
+                    <button class="btn btn-primary mb-2 " @click="print()">Print</button>
+                </div>
                 <div class="col-12">
-                    <table class="table table-bordered table-sm" style="border: 5px solid black">
+                    <table class="table table-bordered table-sm " style="border: 5px solid black">
                         <tbody>
                             <tr>
                                 <td class="font-weight-bold ">PERSONAL INFORMATION</td>
@@ -195,16 +198,16 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr class=" d-print-none">
+                            <tr class="d-print-none">
                                 <td class="text-center font-weight-bold">Reason for transfer:</td>
                             </tr>
-                            <tr>
+                            <tr class="d-print-none">
                                 <td class="text-center font-weight-bold">Effectivity date:</td>
                             </tr>
-                            <tr>
+                            <tr class="d-print-none">
                                 <td class="text-center font-weight-bold">Created By:</td>
                             </tr>
-                            <tr>
+                            <tr class="d-print-none">
                                 <td class="text-center font-weight-bold">Date created:</td>
                             </tr>
                         </tbody>
@@ -257,13 +260,13 @@
                                     <tr class=" d-print-none">
                                         <td>{{form.reason_for_movement == null ? 'N/A' : form.reason_for_movement}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="d-print-none">
                                         <td>{{form.effectivity_date}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="d-print-none">
                                         <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="d-print-none">
                                         <td>{{form.created_at}}</td>
                                     </tr>
                                 </tbody>
@@ -456,7 +459,7 @@
                     <br>
                     <h5>HR Form 011: Employee Movement Formv2</h5>
                 </div>
-                <div class="fixed-bottom d-flex justify-content-center">
+                <div class="fixed-bottom d-flex justify-content-center d-print-none">
                     <a href="/acsi_emfs" class="btn btn-danger mb-3" >BACK <i class="fa-solid fa-circle-arrow-left"></i></a>
                 </div>
             </div>
@@ -568,6 +571,7 @@ import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
 
+
 export default {
     components:{navbar,Loading},
     data(){
@@ -588,12 +592,10 @@ export default {
     methods:{
         getForm(){
             axios.get('/acsi_emfs/api/employee-movement-form/'+this.$route.params.request_no).then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 this.form = response.data
                 this.getUser(response.data.emp_no)
             })
-            
-            
         },
         getUser(emp_no){
             axios.post('/acsi_emfs/api/employees/'+emp_no).then(response => {
@@ -655,6 +657,9 @@ export default {
                     window.location.reload()
                 }
             }).catch(error => console.log(error.response.data))
+        },
+        print(){
+            window.print(); 
         }
     },
     created(){
@@ -671,7 +676,7 @@ export default {
 <style>
     @media print {
         html {
-            zoom: 83%;
+            zoom: 78%;
         }
     }
 </style>

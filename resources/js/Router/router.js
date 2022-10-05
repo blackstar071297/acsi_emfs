@@ -40,7 +40,7 @@ let routes = [
     {path: '/acsi_emfs/new-employee',component: NewEmployeeComponent,beforeEnter: guard,meta:{title: 'New employee'}},
     {path: '/acsi_emfs/approvals/:request_no',component: ApprovalComponent,beforeEnter: guard,meta:{title: 'Approval'}},
     {path: '/acsi_emfs/fst/',component: FSTComponent,beforeEnter: guard,meta:{title: 'FST Dashboard'}},
-]
+]   
 const router = new VueRouter({
     mode: 'history',
     hash: false,

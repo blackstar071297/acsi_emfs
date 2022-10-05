@@ -5833,6 +5833,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
  // Import component
 
@@ -5864,7 +5867,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/acsi_emfs/api/employee-movement-form/' + this.$route.params.request_no).then(function (response) {
-        console.log(response.data);
+        // console.log(response.data)
         _this.form = response.data;
 
         _this.getUser(response.data.emp_no);
@@ -5950,6 +5953,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
+    },
+    print: function print() {
+      window.print();
     }
   },
   created: function created() {
@@ -13190,7 +13196,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media print {\nhtml {\n        zoom: 83%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media print {\nhtml {\n        zoom: 78%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -32010,6 +32016,21 @@ var render = function () {
                   : _vm._e(),
               ]),
               _vm._v(" "),
+              _c("div", { staticClass: "col-12 d-print-none" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary mb-2 ",
+                    on: {
+                      click: function ($event) {
+                        return _vm.print()
+                      },
+                    },
+                  },
+                  [_vm._v("Print")]
+                ),
+              ]),
+              _vm._v(" "),
               _vm._m(4),
               _vm._v(" "),
               _c("div", { staticClass: "col-12" }, [
@@ -32589,13 +32610,13 @@ var render = function () {
                             ]),
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
+                          _c("tr", { staticClass: "d-print-none" }, [
                             _c("td", [
                               _vm._v(_vm._s(_vm.form.effectivity_date)),
                             ]),
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
+                          _c("tr", { staticClass: "d-print-none" }, [
                             _c("td", [
                               _vm._v(
                                 _vm._s(_vm.form.requestor.firstname) +
@@ -32605,7 +32626,7 @@ var render = function () {
                             ]),
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
+                          _c("tr", { staticClass: "d-print-none" }, [
                             _c("td", [_vm._v(_vm._s(_vm.form.created_at))]),
                           ]),
                         ]),
@@ -33851,7 +33872,7 @@ var staticRenderFns = [
       _c(
         "table",
         {
-          staticClass: "table table-bordered table-sm",
+          staticClass: "table table-bordered table-sm ",
           staticStyle: { border: "5px solid black" },
         },
         [
@@ -33903,7 +33924,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", { staticClass: " d-print-none" }, [
+    return _c("tr", { staticClass: "d-print-none" }, [
       _c("td", { staticClass: "text-center font-weight-bold" }, [
         _vm._v("Reason for transfer:"),
       ]),
@@ -33913,7 +33934,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "d-print-none" }, [
       _c("td", { staticClass: "text-center font-weight-bold" }, [
         _vm._v("Effectivity date:"),
       ]),
@@ -33923,7 +33944,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "d-print-none" }, [
       _c("td", { staticClass: "text-center font-weight-bold" }, [
         _vm._v("Created By:"),
       ]),
@@ -33933,7 +33954,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "d-print-none" }, [
       _c("td", { staticClass: "text-center font-weight-bold" }, [
         _vm._v("Date created:"),
       ]),
@@ -34115,7 +34136,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "fixed-bottom d-flex justify-content-center" },
+      {
+        staticClass: "fixed-bottom d-flex justify-content-center d-print-none",
+      },
       [
         _c(
           "a",
