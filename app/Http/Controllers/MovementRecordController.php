@@ -40,7 +40,10 @@ class MovementRecordController extends Controller
     public function store(Request $request)
     {
         //
+        
+        $request->current_status;
         $form = EmployeeMovementForm::where('request_no',$request->request_no)->first();
+        $form;
         $record = new MovementRecord();
         $record->request_no = $request->request_no;
         $approval_process = $this->choose_approval_process($form);
@@ -207,9 +210,9 @@ class MovementRecordController extends Controller
     private function choose_approval_process($form){
         if(($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1) && ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 0 && $form->move_manager == 0)){
             return 1;
-        }elseif(($form->move_department == 1 && $form->move_cost_center == 1 && $form->move_immediate_superior == 1 && $form->move_manager == 1) && ($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1)){
+        }elseif(($form->move_department == 1 && $form->move_cost_center == 1 && $form->move_immediate_superior == 1 && $form->move_manager == 1) || ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 1 && $form->move_manager == 1) && ($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1)){
             return 2;
-        }elseif(($form->move_immediate_superior == 1 && $form->move_manager == 1 && $form->move_department == 1 && $form->move_cost_center == 1) && ($form->move_position == 0 && $form->move_job_status == 0 && $form->move_job_level == 0 && $form->move_role == 0 && $form->move_salary == 0 && $form->move_allowance == 0 && $form->move_contract == 0  && $form->move_others == 0)) {
+        }elseif(($form->move_immediate_superior == 1 && $form->move_manager == 1 && $form->move_department == 1 && $form->move_cost_center == 1) || ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 1 && $form->move_manager == 1) && ($form->move_position == 0 && $form->move_job_status == 0 && $form->move_job_level == 0 && $form->move_role == 0 && $form->move_salary == 0 && $form->move_allowance == 0 && $form->move_contract == 0  && $form->move_others == 0)) {
             return 3;
         }
     }
