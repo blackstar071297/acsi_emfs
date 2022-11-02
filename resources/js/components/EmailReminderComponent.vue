@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h1>Auto update.</h1>
-        <h5 :class="'font-weight-bold text-' + update_color">Status: {{ update_status }}</h5>
+        <h1>Email reminder.</h1>
+        <h5 :class="'font-weight-bold text-' + reminder_color">Status: {{ reminder_status }}</h5>
     </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
         }
     },
     created(){
-        this.update()
+        this.reminder()
     }
 }
 </script>

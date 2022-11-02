@@ -116,9 +116,10 @@ class EmployeeController extends Controller
 
             if($startdate->diffInDays($enddate) % 3 == 0){
                 $user = Employee::where('username',$curr_user)->first();
+                // $user = Employee::where('username','ACSI-220838')->first();
                 $details = [
                     'subject' => 'Pending Approval('.$forms[$x]->request_no.')',
-                    'body' => 'You have pending approval,Kindly go to your Dashboard and Click the EMS icon to approve',
+                    'body' => $forms[$x]->request_no. ' request is pending for ' . $startdate->diffInDays($enddate) . ' days, Kindly check your EMS Approval list',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
                 // Notification::send($user, new ApprovalNotification($details));
