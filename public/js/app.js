@@ -6060,11 +6060,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      status: 'Loading',
-      color: 'primary'
+      update_status: 'Loading',
+      update_color: 'primary',
+      reminder_status: 'Loading',
+      reminder_color: 'primary'
     };
   },
   methods: {
@@ -6072,13 +6076,24 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/acsi_emfs/api/test').then(function (response) {
-        response.data == 'success' ? _this.status = 'Success' : 'Failed';
-        response.data == 'success' ? _this.color = 'success' : 'danger';
+        response.data == 'success' ? _this.update_status = 'Success' : 'Failed';
+        response.data == 'success' ? _this.update_color = 'success' : 'danger';
+      });
+    },
+    reminder: function reminder() {
+      var _this2 = this;
+
+      axios.post('/acsi_emfs/api/email-reminder').then(function (response) {
+        response.data == 'success' ? _this2.reminder_status = 'Success' : 'Failed';
+        response.data == 'success' ? _this2.reminder_color = 'success' : 'danger';
+      })["catch"](function (error) {
+        return console.log(error.response.data);
       });
     }
   },
   created: function created() {
     this.update();
+    this.reminder();
   }
 });
 
@@ -34310,8 +34325,14 @@ var render = function () {
   return _c("div", [
     _c("h1", [_vm._v("Auto update.")]),
     _vm._v(" "),
-    _c("h5", { class: "font-weight-bold text-" + _vm.color }, [
-      _vm._v("Status: " + _vm._s(_vm.status)),
+    _c("h5", { class: "font-weight-bold text-" + _vm.update_color }, [
+      _vm._v("Status: " + _vm._s(_vm.update_status)),
+    ]),
+    _vm._v(" "),
+    _c("h1", [_vm._v("Email reminder.")]),
+    _vm._v(" "),
+    _c("h5", { class: "font-weight-bold text-" + _vm.reminder_color }, [
+      _vm._v("Status: " + _vm._s(_vm.reminder_status)),
     ]),
   ])
 }

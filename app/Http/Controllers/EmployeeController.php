@@ -72,6 +72,63 @@ class EmployeeController extends Controller
         }
         return 'success';
     }
+    public function emailReminder(){
+        $forms = EmployeeMovementForm::with('canceled_by','employee.info1','requestor.info1','records.status','current_manager.info1','current_superior.info1','new_superior.info1','new_manager.info1','account_officer.info1')
+        ->whereDoesntHave('records',function($query){
+            $query->where('status_id',10);
+        })
+        ->whereDoesntHave('records',function($query){
+            $query->where('status_id',9);
+        })->get();
+        
+        for($x=0;$x < count($forms);$x++){
+            $startdate;
+            $enddate = Carbon::parse(Carbon::now()->addDays(1));
+            $curr_user;
+            if($forms[$x]->records[0]->status_id == 1){
+                $startdate = Carbon::parse($forms[$x]->created_at);
+                $curr_user = $forms[$x]->from_immediate_superior;
+            }
+            elseif($forms[$x]->records[0]->status_id == 2){
+                $startdate = Carbon::parse($forms[$x]->superior_accept_date);
+                $curr_user = $forms[$x]->from_manager;
+            }
+            elseif($forms[$x]->records[0]->status_id == 4){
+                $startdate = Carbon::parse($forms[$x]->manager_accept_date);
+                $curr_user = $forms[$x]->to_manager;
+            }
+            elseif($forms[$x]->records[0]->status_id == 5 && $forms[$x]->records[1]->status_id == 4){
+                $startdate = Carbon::parse($forms[$x]->new_manager_accept_date);
+                $curr_user = 'ACSI-200634';
+            }
+            elseif($forms[$x]->records[0]->status_id == 5 && $forms[$x]->records[1]->status_id == 2){
+                $startdate = Carbon::parse($forms[$x]->manager_accept_date);
+                $curr_user = 'ACSI-200634';
+            }
+            elseif($forms[$x]->records[0]->status_id == 6){
+                $startdate = Carbon::parse($forms[$x]->cable_head_accept_date);
+                $curr_user = $forms[$x]->hr_account_officer;
+            }
+            elseif($forms[$x]->records[0]->status_id == 7){
+                $startdate = Carbon::parse($forms[$x]->hr_accept_date);
+                $curr_user = $forms[$x]->emp_no;
+            }
+
+            if($startdate->diffInDays($enddate) % 3 == 0){
+                $user = Employee::where('username',$curr_user)->first();
+                $details = [
+                    'subject' => 'Pending Approval('.$forms[$x]->request_no.')',
+                    'body' => 'You have pending approval,Kindly go to your Dashboard and Click the EMS icon to approve',
+                    'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
+                ];
+                // Notification::send($user, new ApprovalNotification($details));
+                if(!is_null($user) && !is_null($user->email)){
+                    $user->notify(new ApprovalNotification($details));
+                }
+            }
+        }
+        return 'success';
+    }
     public function generateUser(){
         $managers = DB::table('lmngr')->leftjoin('emp_info','lmngr.empno','=','emp_info.empno')->leftjoin('emp_comp','emp_comp.empid','=','emp_info.empid')->where('lmngr.mngr_enabled',1)->get();
         
