@@ -163,7 +163,7 @@ class EmployeeMovementFormController extends Controller
             if($emf->request_by == $emf->from_immediate_superior){
                 $emf->superior_accept_date = now()->toDateString();
             }
-            $emf->hr_account_officer = $this->search_account_officer($emf);
+            return $emf->hr_account_officer = $this->search_account_officer($emf);
             $emf->reason_for_movement = $request->reason_for_movement;
             $emf->effectivity_date = $request->effectivity_date;
             try{
@@ -189,7 +189,7 @@ class EmployeeMovementFormController extends Controller
                         ];
                         // Notification::send($user, new ApprovalNotification($details));
                         if(!is_null($user)){
-                            $user->notify(new ApprovalNotification($details));
+                            // $user->notify(new ApprovalNotification($details));
                         }
                         
                         return 'success';
@@ -206,24 +206,24 @@ class EmployeeMovementFormController extends Controller
         
     }
     private function search_account_officer($form){
-        if(($form->to_cost_center == 'Area 3') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170010' && $form->move_immediate_superior == "true")){
+        if(($form->to_cost_center == 'Area 3' && $form->move_cost_center == 'true') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170010' && $form->move_cost_center == 'true')){
             return 'ACSI-200722';
-        }elseif(($form->to_cost_center == 'Area 4') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170006' && $form->move_immediate_superior == "true")){
+        }elseif(($form->to_cost_center == 'Area 4' && $form->move_cost_center == 'true') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170006' && $form->move_cost_center == 'true')){
             return 'ACSI-200761';
-        }elseif(($form->to_cost_center == 'Area 6') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170208' && $form->move_immediate_superior == "true")){
+        }elseif(($form->to_cost_center == 'Area 6' && $form->move_cost_center == 'true') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170208' && $form->move_cost_center == 'true')){
             return 'ACSI-190545';
         }else{
-            return 'ACSI-200761';
+            return 'ACSI-200639';
         }
 
-        if(($form->from_cost_center == 'Area 3') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170010' && $form->move_immediate_superior == "false")){
+        if(($form->from_cost_center == 'Area 3' && isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170010')){
             return 'ACSI-200722';
-        }elseif(($form->from_cost_center == 'Area 4') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170006' && $form->move_immediate_superior == "false")){
+        }elseif(($form->from_cost_center == 'Area 4' && isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170006')){
             return 'ACSI-200761';
-        }elseif(($form->from_cost_center == 'Area 6') || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170208' && $form->move_immediate_superior == "false")){
+        }elseif(($form->from_cost_center == 'Area 6' && isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170208')){
             return 'ACSI-190545';
         }else{
-            return 'ACSI-200761';
+            return 'ACSI-200639';
         }
     }
 
