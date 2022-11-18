@@ -163,7 +163,7 @@ class EmployeeMovementFormController extends Controller
             if($emf->request_by == $emf->from_immediate_superior){
                 $emf->superior_accept_date = now()->toDateString();
             }
-            return $emf->hr_account_officer = $this->search_account_officer($emf);
+            $emf->hr_account_officer = $this->search_account_officer($emf);
             $emf->reason_for_movement = $request->reason_for_movement;
             $emf->effectivity_date = $request->effectivity_date;
             try{
@@ -183,13 +183,13 @@ class EmployeeMovementFormController extends Controller
                     if($record->save()){
                         
                         $details = [
-                            'subject' => 'Pending Approval',
+                            'subject' => 'Pending Approval('. $emf->request_no . ')',
                             'body' => 'You have pending approval,Kindly go to your Dashboard and Click the EMS icon to approve',
                             'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                         ];
                         // Notification::send($user, new ApprovalNotification($details));
                         if(!is_null($user)){
-                            // $user->notify(new ApprovalNotification($details));
+                            $user->notify(new ApprovalNotification($details));
                         }
                         
                         return 'success';
@@ -212,19 +212,20 @@ class EmployeeMovementFormController extends Controller
             return 'ACSI-200761';
         }elseif(($form->to_cost_center == 'Area 6' && $form->move_cost_center == 'true') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170208' && $form->move_cost_center == 'true')){
             return 'ACSI-190545';
-        }else{
+        }elseif($form->from_position != 'Field Service Technician'){
             return 'ACSI-200639';
         }
 
-        if(($form->from_cost_center == 'Area 3' && isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170010')){
+        if(($form->from_cost_center == 'Area 3' && !isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170010')){
             return 'ACSI-200722';
-        }elseif(($form->from_cost_center == 'Area 4' && isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170006')){
+        }elseif(($form->from_cost_center == 'Area 4' && !isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170006')){
             return 'ACSI-200761';
-        }elseif(($form->from_cost_center == 'Area 6' && isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170208')){
+        }elseif(($form->from_cost_center == 'Area 6' && !isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170208')){
             return 'ACSI-190545';
-        }else{
+        }elseif($form->from_position != 'Field Service Technician'){
             return 'ACSI-200639';
         }
+        
     }
 
     private function sendEmail($approver_emp_no,$request_no){

@@ -208,13 +208,20 @@ class MovementRecordController extends Controller
         }
     }
     private function choose_approval_process($form){
-        if(($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1) && ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 0 && $form->move_manager == 0)){
-            return 1;
-        }elseif(($form->move_department == 1 && $form->move_cost_center == 1 && $form->move_immediate_superior == 1 && $form->move_manager == 1) || ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 1 && $form->move_manager == 1) && ($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1)){
+        // if(($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1) && ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 0 && $form->move_manager == 0)){
+        //     return 1;
+        // }elseif(($form->move_department == 1 && $form->move_cost_center == 1 && $form->move_immediate_superior == 1 && $form->move_manager == 1) || ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 1 && $form->move_manager == 1) && ($form->move_position == 1 || $form->move_job_status == 1 || $form->move_job_level == 1 || $form->move_role == 1 || $form->move_salary == 1 || $form->move_allowance == 1 || $form->move_contract == 1  || $form->move_others == 1)){
+        //     return 2;
+        // }elseif(($form->move_immediate_superior == 1 && $form->move_manager == 1 && $form->move_department == 1 && $form->move_cost_center == 1) || ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 1 && $form->move_manager == 1) && ($form->move_position == 0 && $form->move_job_status == 0 && $form->move_job_level == 0 && $form->move_role == 0 && $form->move_salary == 0 && $form->move_allowance == 0 && $form->move_contract == 0  && $form->move_others == 0)) {
+        //     return 3;
+        // }
+        if(($form->move_immediate_superior == 1 || $form->move_manager == 1 || $form->move_department == 1 || $form->move_cost_center == 1)){
             return 2;
-        }elseif(($form->move_immediate_superior == 1 && $form->move_manager == 1 && $form->move_department == 1 && $form->move_cost_center == 1) || ($form->move_department == 0 && $form->move_cost_center == 0 && $form->move_immediate_superior == 1 && $form->move_manager == 1) && ($form->move_position == 0 && $form->move_job_status == 0 && $form->move_job_level == 0 && $form->move_role == 0 && $form->move_salary == 0 && $form->move_allowance == 0 && $form->move_contract == 0  && $form->move_others == 0)) {
-            return 3;
+        }else{
+            return 1;
         }
+        // 1 if one of the field is check except major fields
+        // 2 if one of major fields are check and  
     }
     private function sendEmail($approver_emp_no,$request_no,$status_id){
         $approver = Employee::where('username',$approver_emp_no)->first();
@@ -223,25 +230,25 @@ class MovementRecordController extends Controller
         if(!is_null($approver) && !is_null($approver->email)){
             if($status_id == 6 || $status_id == 7){
                 $details = [
-                    'subject' => 'Pending acknowledgement(ACSI EMS)',
+                    'subject' => 'Pending acknowledgement('. $emf->request_no . ')',
                     'body' => 'You have pending acknowledgement,Kindly go to your Dashboard and Click the EMS icon to acknowledge',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
             }elseif($status_id == 1 || $status_id == 2 || $status_id == 4 || $status_id == 5){
                 $details = [
-                    'subject' => 'Pending Approval(ACSI EMS)',
+                    'subject' => 'Pending Approval('. $emf->request_no . ')',
                     'body' => 'You have pending approval,Kindly go to your Dashboard and Click the EMS icon to approve',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
             }elseif($status_id == 10){
                 $details = [
-                    'subject' => 'Request cancelled(ACSI EMS)',
+                    'subject' => 'Request cancelled('. $emf->request_no . ')',
                     'body' => 'Your request has been cancelled,,Kindly go to your Dashboard and Click the EMS icon to view',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
             }elseif($status_id == 11){
                 $details = [
-                    'subject' => 'Request returned(ACSI EMS)',
+                    'subject' => 'Request returned('. $emf->request_no . ')',
                     'body' => 'Request returned.',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
