@@ -230,25 +230,25 @@ class MovementRecordController extends Controller
         if(!is_null($approver) && !is_null($approver->email)){
             if($status_id == 6 || $status_id == 7){
                 $details = [
-                    'subject' => 'Pending acknowledgement('. $emf->request_no . ')',
+                    'subject' => 'Pending acknowledgement('. $request_no . ')',
                     'body' => 'You have pending acknowledgement,Kindly go to your Dashboard and Click the EMS icon to acknowledge',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
             }elseif($status_id == 1 || $status_id == 2 || $status_id == 4 || $status_id == 5){
                 $details = [
-                    'subject' => 'Pending Approval('. $emf->request_no . ')',
+                    'subject' => 'Pending Approval('. $request_no . ')',
                     'body' => 'You have pending approval,Kindly go to your Dashboard and Click the EMS icon to approve',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
             }elseif($status_id == 10){
                 $details = [
-                    'subject' => 'Request cancelled('. $emf->request_no . ')',
+                    'subject' => 'Request cancelled('. $request_no . ')',
                     'body' => 'Your request has been cancelled,,Kindly go to your Dashboard and Click the EMS icon to view',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
             }elseif($status_id == 11){
                 $details = [
-                    'subject' => 'Request returned('. $emf->request_no . ')',
+                    'subject' => 'Request returned('. $request_no . ')',
                     'body' => 'Request returned.',
                     'action' => 'http://tsi-acsi1.webhop.biz/acsi/dashboards/home'
                 ];
