@@ -143,6 +143,7 @@ class EmployeeMovementFormController extends Controller
             if($request->move_allowance == "true"){
                 $emf->move_allowance  = true;
                 $emf->to_allowance = $request->to_allowance;
+                $emf->from_allowance = $request->from_allowance;
             }
             if($request->move_immediate_superior == "true"){
                 $emf->move_immediate_superior = true;
@@ -163,6 +164,7 @@ class EmployeeMovementFormController extends Controller
             if($emf->request_by == $emf->from_immediate_superior){
                 $emf->superior_accept_date = now()->toDateString();
             }
+            
             $emf->hr_account_officer = $this->search_account_officer($emf);
             $emf->reason_for_movement = $request->reason_for_movement;
             $emf->effectivity_date = $request->effectivity_date;
