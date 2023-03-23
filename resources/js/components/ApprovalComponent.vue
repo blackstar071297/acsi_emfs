@@ -243,7 +243,7 @@
                                         <td>{{ form.from_salary == null ? 0 :  form.from_salary}}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{form.allowance == null ? 0 :  form.allowance}}</td>
+                                        <td>{{form.from_allowance == null ? 0 :  form.from_allowance}}</td>
                                     </tr>
                                     <tr>
                                         <td>{{ form.current_superior.firstname}} {{ form.current_superior.lastname}}</td>
