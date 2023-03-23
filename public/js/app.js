@@ -32691,9 +32691,9 @@ var render = function () {
                             _c("td", [
                               _vm._v(
                                 _vm._s(
-                                  _vm.form.allowance == null
+                                  _vm.form.from_allowance == null
                                     ? 0
-                                    : _vm.form.allowance
+                                    : _vm.form.from_allowance
                                 )
                               ),
                             ]),

@@ -19,3 +19,4 @@ composer.json
 package-lock.json
 .rnd
 
+public/js/app.js
