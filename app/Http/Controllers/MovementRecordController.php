@@ -51,17 +51,17 @@ class MovementRecordController extends Controller
         
         if($record->save()){
             if($this->updateForm($request)){
-                if($record->status_id == 2){
-                    $this->sendEmail($form->from_manager,$request->request_no,$record->status_id);
-                }elseif($record->status_id == 4){
-                    $this->sendEmail($form->to_immediate_superior,$request->request_no,$record->status_id);
-                }elseif($record->status_id == 5){
-                    $this->sendEmail('ACSI-200634',$request->request_no,$record->status_id);
-                }elseif($record->status_id == 6){
-                    $this->sendEmail($form->hr_account_officer,$request->request_no,$record->status_id);
-                }elseif($record->status_id == 7){
-                    $this->sendEmail($form->emp_no,$request->request_no,$record->status_id);
-                }
+                // if($record->status_id == 2){
+                //     $this->sendEmail($form->from_manager,$request->request_no,$record->status_id);
+                // }elseif($record->status_id == 4){
+                //     $this->sendEmail($form->to_immediate_superior,$request->request_no,$record->status_id);
+                // }elseif($record->status_id == 5){
+                //     $this->sendEmail('ACSI-200634',$request->request_no,$record->status_id);
+                // }elseif($record->status_id == 6){
+                //     $this->sendEmail($form->hr_account_officer,$request->request_no,$record->status_id);
+                // }elseif($record->status_id == 7){
+                //     $this->sendEmail($form->emp_no,$request->request_no,$record->status_id);
+                // }
                 return 'success';
             }
         }
@@ -127,6 +127,10 @@ class MovementRecordController extends Controller
             if($request->current_status == 1){
                 $form->superior_accept_date = now()->toDateString();
             }
+            if($request->current_status == 1 && $form->from_immediate_superior == 'ACSI-200634'){
+                $form->superior_accept_date = now()->toDateString();
+                $form->cable_head_accept_date = now()->toDateString();
+            }
             if($request->current_status == 2 && $form->from_manager != $form->to_manager){
                 $form->manager_accept_date = now()->toDateString();
             }
@@ -165,7 +169,11 @@ class MovementRecordController extends Controller
     }
     private function choose_status($approval_process,$current_status,$form){
         if($approval_process == 1){
-            if($current_status == 2 && $form->from_manager != 'ACSI-200634' ){
+            if($current_status == 1 && ($form->from_manager == 'ACSI-170001' || $form->from_manager == 'ACSI-200634')){
+                return 6;
+            }elseif($current_status == 1 && $form->from_manager == 'ACSI-170001'){
+                return 5;
+            }elseif($current_status == 2 && $form->from_manager != 'ACSI-200634'){
                 return 5;
             }elseif($current_status == 2 && $form->from_manager == 'ACSI-200634'){
                 return 6;
@@ -176,7 +184,11 @@ class MovementRecordController extends Controller
                 return (int) $current_status + 1;
             }
         }elseif($approval_process == 2){
-            if($current_status == 2 && $form->from_manager == $form->to_manager){
+            if($current_status == 1 && ($form->from_manager == 'ACSI-170001' || $form->from_manager == 'ACSI-200634')){
+                return 6;
+            }elseif($current_status == 1 && $form->from_manager == 'ACSI-170001'){
+                return 5;
+            }elseif($current_status == 2 && $form->from_manager == $form->to_manager){
                 return 5;
             }elseif($current_status == 2 && $form->from_manager != $form->to_manager){
                 return 4;
@@ -191,7 +203,11 @@ class MovementRecordController extends Controller
                 return (int) $current_status + 1;
             }
         }elseif($approval_process == 3){
-            if((int) $current_status == 2 && $form->from_manager != $form->to_manager){
+            if($current_status == 1 && ($form->from_manager == 'ACSI-170001' || $form->from_manager == 'ACSI-200634')){
+                return 6;
+            }elseif($current_status == 1 && $form->from_manager == 'ACSI-170001'){
+                return 5;
+            }elseif((int) $current_status == 2 && $form->from_manager != $form->to_manager){
                 return 4;
             }elseif($current_status == 2 && $form->from_manager == $form->to_manager){
                 return 5;

@@ -5867,7 +5867,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/acsi_emfs/api/employee-movement-form/' + this.$route.params.request_no).then(function (response) {
-        // console.log(response.data)
+        console.log(response.data);
         _this.form = response.data;
 
         _this.getUser(response.data.emp_no);
@@ -33050,108 +33050,130 @@ var render = function () {
                           ]
                         ),
                         _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticClass: "border-0 w-50",
-                            staticStyle: { "font-weight": "bold" },
-                          },
-                          [
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "text-center mt-5" }, [
-                              _vm.form.manager_accept_date != null
-                                ? _c("img", {
-                                    staticClass: "d-inline-block align-top",
-                                    attrs: {
-                                      src: "/acsi_emfs/public/images/approved.png",
-                                      height: "50",
-                                      alt: "",
-                                      loading: "lazy",
+                        _vm.form.current_manager.empno != "ACSI-170001" ||
+                        _vm.form.current_manager.empno != "ACSI-170001"
+                          ? _c(
+                              "td",
+                              {
+                                staticClass: "border-0 w-50",
+                                staticStyle: { "font-weight": "bold" },
+                              },
+                              [
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "text-center mt-5" }, [
+                                  _vm.form.manager_accept_date != null
+                                    ? _c("img", {
+                                        staticClass: "d-inline-block align-top",
+                                        attrs: {
+                                          src: "/acsi_emfs/public/images/approved.png",
+                                          height: "50",
+                                          alt: "",
+                                          loading: "lazy",
+                                        },
+                                      })
+                                    : _vm._e(),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _vm.form.date_canceled != null &&
+                                  _vm.form.records[1].status_id == 2
+                                    ? _c("img", {
+                                        staticClass: "d-inline-block align-top",
+                                        attrs: {
+                                          src: "/acsi_emfs/public/images/canceled.png",
+                                          height: "50",
+                                          alt: "approve image",
+                                          loading: "lazy",
+                                        },
+                                      })
+                                    : _vm._e(),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _vm.form.manager_accept_date != null
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "align-middle" },
+                                        [
+                                          _vm._v(
+                                            "Date approved: " +
+                                              _vm._s(
+                                                _vm.form.manager_accept_date
+                                              )
+                                          ),
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.form.date_canceled != null &&
+                                  _vm.form.records[1].status_id == 2
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "align-middle" },
+                                        [
+                                          _vm._v(
+                                            "Date cancelled: " +
+                                              _vm._s(_vm.form.date_canceled)
+                                          ),
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.form.records[0].status_id == 2 &&
+                                  _vm.current_user.empno ==
+                                    _vm.form.current_manager.empno
+                                    ? _c("div", { staticClass: "row" }, [
+                                        _vm._m(16),
+                                        _vm._v(" "),
+                                        _vm._m(17),
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c(
+                                    "h6",
+                                    {
+                                      staticClass:
+                                        "align-middle font-weight-bold",
                                     },
-                                  })
-                                : _vm._e(),
-                              _c("br"),
-                              _vm._v(" "),
-                              _vm.form.date_canceled != null &&
-                              _vm.form.records[1].status_id == 2
-                                ? _c("img", {
-                                    staticClass: "d-inline-block align-top",
-                                    attrs: {
-                                      src: "/acsi_emfs/public/images/canceled.png",
-                                      height: "50",
-                                      alt: "approve image",
-                                      loading: "lazy",
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.form.current_manager.firstname
+                                        ) +
+                                          "  " +
+                                          _vm._s(
+                                            _vm.form.current_manager.lastname
+                                          )
+                                      ),
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "h6",
+                                    {
+                                      staticClass:
+                                        "align-middle font-weight-bold",
                                     },
-                                  })
-                                : _vm._e(),
-                              _c("br"),
-                              _vm._v(" "),
-                              _vm.form.manager_accept_date != null
-                                ? _c("small", { staticClass: "align-middle" }, [
-                                    _vm._v(
-                                      "Date approved: " +
-                                        _vm._s(_vm.form.manager_accept_date)
-                                    ),
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.form.date_canceled != null &&
-                              _vm.form.records[1].status_id == 2
-                                ? _c("small", { staticClass: "align-middle" }, [
-                                    _vm._v(
-                                      "Date cancelled: " +
-                                        _vm._s(_vm.form.date_canceled)
-                                    ),
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.form.records[0].status_id == 2 &&
-                              _vm.current_user.empno ==
-                                _vm.form.current_manager.empno
-                                ? _c("div", { staticClass: "row" }, [
-                                    _vm._m(16),
-                                    _vm._v(" "),
-                                    _vm._m(17),
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _c(
-                                "h6",
-                                {
-                                  staticClass: "align-middle font-weight-bold",
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(_vm.form.current_manager.firstname) +
-                                      "  " +
-                                      _vm._s(_vm.form.current_manager.lastname)
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.form.current_manager.info1
+                                            .eposition
+                                        )
+                                      ),
+                                    ]
                                   ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "h6",
-                                {
-                                  staticClass: "align-middle font-weight-bold",
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.form.current_manager.info1.eposition
-                                    )
-                                  ),
-                                ]
-                              ),
-                            ]),
-                          ]
-                        ),
+                                ]),
+                              ]
+                            )
+                          : _vm._e(),
                       ]),
                       _vm._v(" "),
                       _c("tr", [
-                        _vm.form.to_manager != null
+                        _vm.form.to_manager != null &&
+                        (_vm.form.to_manager.empno != "ACSI-170001" ||
+                          _vm.form.to_manager.empno != "ACSI-170001")
                           ? _c(
                               "td",
                               {
@@ -33281,91 +33303,107 @@ var render = function () {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticClass: "border-0",
-                            staticStyle: { "font-weight": "bold" },
-                          },
-                          [
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "text-center mt-5" }, [
-                              _vm.form.cable_head_accept_date != null
-                                ? _c("img", {
-                                    staticClass: "d-inline-block align-top",
-                                    attrs: {
-                                      src: "/acsi_emfs/public/images/approved.png",
-                                      height: "50",
-                                      alt: "approve image",
-                                      loading: "lazy",
+                        _vm.form.to_manager != null &&
+                        (_vm.form.to_manager.empno != "ACSI-170001" ||
+                          _vm.form.to_manager.empno != "ACSI-170001")
+                          ? _c(
+                              "td",
+                              {
+                                staticClass: "border-0",
+                                staticStyle: { "font-weight": "bold" },
+                              },
+                              [
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "text-center mt-5" }, [
+                                  _vm.form.cable_head_accept_date != null
+                                    ? _c("img", {
+                                        staticClass: "d-inline-block align-top",
+                                        attrs: {
+                                          src: "/acsi_emfs/public/images/approved.png",
+                                          height: "50",
+                                          alt: "approve image",
+                                          loading: "lazy",
+                                        },
+                                      })
+                                    : _vm._e(),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _vm.form.date_canceled != null &&
+                                  _vm.form.records[1].status_id == 5
+                                    ? _c("img", {
+                                        staticClass: "d-inline-block align-top",
+                                        attrs: {
+                                          src: "/acsi_emfs/public/images/canceled.png",
+                                          height: "50",
+                                          alt: "approve image",
+                                          loading: "lazy",
+                                        },
+                                      })
+                                    : _vm._e(),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _vm.form.cable_head_accept_date != null
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "align-middle" },
+                                        [
+                                          _vm._v(
+                                            "Date approved: " +
+                                              _vm._s(
+                                                _vm.form.cable_head_accept_date
+                                              )
+                                          ),
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.form.date_canceled != null &&
+                                  _vm.form.records[1].status_id == 5
+                                    ? _c(
+                                        "small",
+                                        { staticClass: "align-middle" },
+                                        [
+                                          _vm._v(
+                                            "Date cancelled: " +
+                                              _vm._s(_vm.form.date_canceled)
+                                          ),
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.form.records[0].status_id == 5 &&
+                                  _vm.current_user.empno == "ACSI-200634"
+                                    ? _c("div", { staticClass: "row" }, [
+                                        _vm._m(20),
+                                        _vm._v(" "),
+                                        _vm._m(21),
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c(
+                                    "h6",
+                                    {
+                                      staticClass:
+                                        "align-middle font-weight-bold",
                                     },
-                                  })
-                                : _vm._e(),
-                              _c("br"),
-                              _vm._v(" "),
-                              _vm.form.date_canceled != null &&
-                              _vm.form.records[1].status_id == 5
-                                ? _c("img", {
-                                    staticClass: "d-inline-block align-top",
-                                    attrs: {
-                                      src: "/acsi_emfs/public/images/canceled.png",
-                                      height: "50",
-                                      alt: "approve image",
-                                      loading: "lazy",
+                                    [_vm._v("Oliver Angeles")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "h6",
+                                    {
+                                      staticClass:
+                                        "align-middle font-weight-bold",
                                     },
-                                  })
-                                : _vm._e(),
-                              _c("br"),
-                              _vm._v(" "),
-                              _vm.form.cable_head_accept_date != null
-                                ? _c("small", { staticClass: "align-middle" }, [
-                                    _vm._v(
-                                      "Date approved: " +
-                                        _vm._s(_vm.form.cable_head_accept_date)
-                                    ),
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.form.date_canceled != null &&
-                              _vm.form.records[1].status_id == 5
-                                ? _c("small", { staticClass: "align-middle" }, [
-                                    _vm._v(
-                                      "Date cancelled: " +
-                                        _vm._s(_vm.form.date_canceled)
-                                    ),
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.form.records[0].status_id == 5 &&
-                              _vm.current_user.empno == "ACSI-200634"
-                                ? _c("div", { staticClass: "row" }, [
-                                    _vm._m(20),
-                                    _vm._v(" "),
-                                    _vm._m(21),
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _c(
-                                "h6",
-                                {
-                                  staticClass: "align-middle font-weight-bold",
-                                },
-                                [_vm._v("Oliver Angeles")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "h6",
-                                {
-                                  staticClass: "align-middle font-weight-bold",
-                                },
-                                [_vm._v("Head, Cable Operations")]
-                              ),
-                            ]),
-                          ]
-                        ),
+                                    [_vm._v("Head, Cable Operations")]
+                                  ),
+                                ]),
+                              ]
+                            )
+                          : _vm._e(),
                       ]),
                     ]),
                   ]

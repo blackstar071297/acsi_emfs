@@ -351,7 +351,7 @@
                                         <h6 class="align-middle font-weight-bold">{{ form.current_superior.info1.eposition }}</h6>
                                     </div>
                                 </td>
-                                <td style='font-weight: bold;' class="border-0 w-50">
+                                <td style='font-weight: bold;' class="border-0 w-50" v-if="form.current_manager.empno != 'ACSI-170001' || form.current_manager.empno != 'ACSI-170001'">
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
@@ -373,7 +373,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style='font-weight: bold;' class="border-0 w-50" v-if="form.to_manager != null">
+                                <td style='font-weight: bold;' class="border-0 w-50" v-if="form.to_manager != null && (form.to_manager.empno != 'ACSI-170001' || form.to_manager.empno != 'ACSI-170001')">
                                     <br>
                                     <br>
                                     <div class="text-center mt-5" v-if="form.from_manager != form.to_manager && form.to_manager != 'ACSI-200634'">
@@ -393,7 +393,7 @@
                                         <h6 class="align-middle font-weight-bold" >{{ form.new_manager.info1.eposition }}</h6>
                                     </div>
                                 </td>
-                                <td style='font-weight: bold;' class="border-0">
+                                <td style='font-weight: bold;' class="border-0" v-if="form.to_manager != null && (form.to_manager.empno != 'ACSI-170001' || form.to_manager.empno != 'ACSI-170001')">
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
@@ -592,7 +592,7 @@ export default {
     methods:{
         getForm(){
             axios.get('/acsi_emfs/api/employee-movement-form/'+this.$route.params.request_no).then(response => {
-                // console.log(response.data)
+                console.log(response.data)
                 this.form = response.data
                 this.getUser(response.data.emp_no)
             })
