@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acsi_emfs_container
+    ports:
+      - "5555:80"  # Map port 8000 on the host to port 9000 on the container
+    volumes:
+      - .:/var/www/html/acsi_emfs
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: acsi_emfs_db
+    environment:
+      MYSQL_ROOT_PASSWORD: txpertz4ever
+      MYSQL_DATABASE: acsi_ems
+      MYSQL_USER: 192.168.100.12
+      MYSQL_PASSWORD: txpertz4ever
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

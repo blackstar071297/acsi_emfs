@@ -4,7 +4,7 @@
 #RewriteRule (.*) public/$1 [L]
 
 RewriteEngine On
-RewriteBase /acsi_emfs/
+RewriteBase /
 
 # Handle Authorization Header
 RewriteCond %{HTTP:Authorization} .

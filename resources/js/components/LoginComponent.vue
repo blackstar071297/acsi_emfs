@@ -55,11 +55,11 @@ export default {
         login(){
             this.alerts = []
             const fd = new FormData()
-            axios.get('/acsi_emfs/sanctum/csrf-cookie').then(response => {
+            axios.get('/sanctum/csrf-cookie').then(response => {
                 // Login...
                 fd.append('username',this.form.username == undefined ? '' : this.form.username)
                 fd.append('password',this.form.password == undefined ? '' : this.form.password)
-                axios.post('/acsi_emfs/api/login',fd).then(response => {
+                axios.post('/api/login',fd).then(response => {
                     if(response.data.errors){
                         for(let error in response.data.errors){
                             this.alerts.push({message: response.data.errors[error][0],type: 'danger' })
@@ -69,11 +69,11 @@ export default {
                         let token = response.data.token
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                         AppStorage.storeToken(token)
-                        axios.post('/acsi_emfs/api/get-current-user').then(response =>{
+                        axios.post('/api/get-current-user').then(response =>{
                             if(response.data.position == 'fst'){
-                                this.$router.push({path:'/acsi_emfs/fst/'})
+                                this.$router.push({path:'/fst/'})
                             }else{
-                                this.$router.push({path:'/acsi_emfs/'})
+                                this.$router.push({path:'/'})
                             }
                         })
                     }
@@ -93,7 +93,7 @@ export default {
                 let username = document.sessionStorage["empno"]
                 let fd = new FormData()
                 fd.append('emp_no',username)
-                axios.post('/acsi_emfs/api/check-user',fd).then(response => {
+                axios.post('/api/check-user',fd).then(response => {
                     console.log(response.data)
                     if(Object.keys(response.data).length > 0){
                         this.form.username = document.sessionStorage["empno"]

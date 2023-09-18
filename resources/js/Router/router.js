@@ -26,22 +26,22 @@ const guard = (to,from,next) => {
     if(AppStorage.getToken()){
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
     }
-    axios.post('/acsi_emfs/api/is-logged-in').then(response => {  
-        response.data == false ? next({path : '/acsi_emfs/login'}) : next()
-    }).catch(error => error.response.status == 401 ? next({path : '/acsi_emfs/login'}) : console.log(error.response.data))
+    axios.post('/api/is-logged-in').then(response => {  
+        response.data == false ? next({path : '/login'}) : next()
+    }).catch(error => error.response.status == 401 ? next({path : '/login'}) : console.log(error.response.data))
 }
 
 let routes = [
-    {path:'/acsi_emfs/auto-login/:empno',component:AutoLogin,meta:{title: 'Auto login'}},
-    {path:'/acsi_emfs/auto-update',component:AutoUpdate,meta:{title: 'Auto update'}},
-    {path:'/acsi_emfs/email-reminder',component:EmailReminder,meta:{title: 'Email reminder'}},
-    {path:'/acsi_emfs/',component:DashboardComponent,beforeEnter: guard, meta:{title: 'Dashboard'}},
-    {path:'/acsi_emfs/new-movement-form',component:NewMovementFormComponent,beforeEnter: guard,meta:{title: 'Movement form'}},
-    {path:'/acsi_emfs/login',component:loginComponent},
-    {path:'/acsi_emfs/mailer',component:MailerComponent},
-    {path: '/acsi_emfs/new-employee',component: NewEmployeeComponent,beforeEnter: guard,meta:{title: 'New employee'}},
-    {path: '/acsi_emfs/approvals/:request_no',component: ApprovalComponent,beforeEnter: guard,meta:{title: 'Approval'}},
-    {path: '/acsi_emfs/fst/',component: FSTComponent,beforeEnter: guard,meta:{title: 'FST Dashboard'}},
+    {path:'/auto-login/:empno',component:AutoLogin,meta:{title: 'Auto login'}},
+    {path:'/auto-update',component:AutoUpdate,meta:{title: 'Auto update'}},
+    {path:'/email-reminder',component:EmailReminder,meta:{title: 'Email reminder'}},
+    {path:'/',component:DashboardComponent,beforeEnter: guard, meta:{title: 'Dashboard'}},
+    {path:'/new-movement-form',component:NewMovementFormComponent,beforeEnter: guard,meta:{title: 'Movement form'}},
+    {path:'/login',component:loginComponent},
+    {path:'/mailer',component:MailerComponent},
+    {path: '/new-employee',component: NewEmployeeComponent,beforeEnter: guard,meta:{title: 'New employee'}},
+    {path: '/approvals/:request_no',component: ApprovalComponent,beforeEnter: guard,meta:{title: 'Approval'}},
+    {path: '/fst/',component: FSTComponent,beforeEnter: guard,meta:{title: 'FST Dashboard'}},
 ]   
 const router = new VueRouter({
     mode: 'history',

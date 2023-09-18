@@ -33,7 +33,7 @@
                         <tbody>
                             <tr v-for="(form,index) in pending" :key="index">
                                 <td>{{index+1}}</td>
-                                <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
+                                <td><a :href="'/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
                                 <td>{{form.created_at}}</td>
@@ -41,8 +41,8 @@
                                 <td>{{form.effectivity_date}}</td>
                                 <td class="text-capitalize" >{{form.records[0].status.status}}</td>
                                 <td>
-                                    <a :href="'/acsi_emfs/approvals/'+form.request_no" class="btn btn-primary mb-1"><i class="fa-solid fa-eye"></i></a>
-                                    <a :href="'/acsi_emfs/approvals/'+form.request_no" class="btn btn-success mb-1" v-if="checkUser(form)"><i class="fa-solid fa-check"></i></a>
+                                    <a :href="'/approvals/'+form.request_no" class="btn btn-primary mb-1"><i class="fa-solid fa-eye"></i></a>
+                                    <a :href="'/approvals/'+form.request_no" class="btn btn-success mb-1" v-if="checkUser(form)"><i class="fa-solid fa-check"></i></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -67,7 +67,7 @@
                         <tbody>
                             <tr v-for="(form,index) in completed" :key="index">
                                 <td>{{index+1}}</td>
-                                <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
+                                <td><a :href="'/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
                                 <td>{{form.created_at}}</td>
@@ -75,8 +75,8 @@
                                 <td>{{form.effectivity_date}}</td>
                                 <td class="text-capitalize" >{{form.records[0].status.status}}</td>
                                 <td>
-                                    <a :href="'/acsi_emfs/approvals/'+form.request_no" class="btn btn-primary mb-1"><i class="fa-solid fa-eye"></i></a>
-                                    <a :href="'/acsi_emfs/approvals/'+form.request_no" class="btn btn-success mb-1" v-if="checkUser(form)"><i class="fa-solid fa-check"></i></a>
+                                    <a :href="'/approvals/'+form.request_no" class="btn btn-primary mb-1"><i class="fa-solid fa-eye"></i></a>
+                                    <a :href="'/approvals/'+form.request_no" class="btn btn-success mb-1" v-if="checkUser(form)"><i class="fa-solid fa-check"></i></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -101,7 +101,7 @@
                         <tbody>
                             <tr v-for="(form,index) in cancelled" :key="index">
                                 <td>{{index+1}}</td>
-                                <td><a :href="'/acsi_emfs/approvals/'+form.request_no">{{form.request_no}}</a></td>
+                                <td><a :href="'/approvals/'+form.request_no">{{form.request_no}}</a></td>
                                 <td>{{form.employee.firstname}} {{form.employee.lastname}}</td>
                                 <td>{{form.requestor.firstname}} {{form.requestor.lastname}}</td>
                                 <td>{{form.created_at}}</td>
@@ -109,8 +109,8 @@
                                 <td>{{form.effectivity_date}}</td>
                                 <td class="text-capitalize" >{{form.records[0].status.status}}</td>
                                 <td>
-                                    <a :href="'/acsi_emfs/approvals/'+form.request_no" class="btn btn-primary mb-1"><i class="fa-solid fa-eye"></i></a>
-                                    <a :href="'/acsi_emfs/approvals/'+form.request_no" class="btn btn-success mb-1" v-if="checkUser(form)"><i class="fa-solid fa-check"></i></a>
+                                    <a :href="'/approvals/'+form.request_no" class="btn btn-primary mb-1"><i class="fa-solid fa-eye"></i></a>
+                                    <a :href="'/approvals/'+form.request_no" class="btn btn-success mb-1" v-if="checkUser(form)"><i class="fa-solid fa-check"></i></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -141,7 +141,7 @@ export default {
     },
     methods:{
         getForms(){
-            axios.post('/acsi_emfs/api/fst/employee-movement-form').then(response => {
+            axios.post('/api/fst/employee-movement-form').then(response => {
                 // console.log(response.data)
                 this.forms = response.data
                 this.forms.forEach((form) =>{
@@ -156,7 +156,7 @@ export default {
             }).catch(error => console.log(error.response.data))
         },
         getCurrentUser(){
-            axios.post('/acsi_emfs/api/get-current-user').then(response => {this.current_user = response.data})
+            axios.post('/api/get-current-user').then(response => {this.current_user = response.data})
         },
         checkUser(form){
             if(form.records[0].status_id == 1 && form.from_immediate_superior == this.current_user.empno){

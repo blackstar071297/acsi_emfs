@@ -17,13 +17,13 @@ export default {
     },
     methods:{
         update(){
-            axios.post('/acsi_emfs/api/test').then(response => {
+            axios.post('/api/test').then(response => {
                 response.data == 'success' ? this.update_status = 'Success' : 'Failed'
                 response.data == 'success' ? this.update_color = 'success' : 'danger'
             })
         },
         reminder(){
-            axios.post('/acsi_emfs/api/email-reminder').then(response => {
+            axios.post('/api/email-reminder').then(response => {
                 response.data == 'success' ? this.reminder_status = 'Success' : 'Failed'
                 response.data == 'success' ? this.reminder_color = 'success' : 'danger'
             }).catch(error => console.log(error.response.data))

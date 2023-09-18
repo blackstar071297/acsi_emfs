@@ -28,7 +28,7 @@ export default {
             fd.append('emailBody',this.emailBody)
             fd.append('emailCc',this.emailCc)
             fd.append('emailBcc',this.emailBcc)
-            axios.post('/acsi_emfs/api/mailer',fd).then(response => console.log(response.data)).catch(error => console.log(error.response.data))
+            axios.post('/api/mailer',fd).then(response => console.log(response.data)).catch(error => console.log(error.response.data))
         }
     }
 }

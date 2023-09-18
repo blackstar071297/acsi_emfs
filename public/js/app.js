@@ -5866,7 +5866,7 @@ __webpack_require__.r(__webpack_exports__);
     getForm: function getForm() {
       var _this = this;
 
-      axios.get('/acsi_emfs/api/employee-movement-form/' + this.$route.params.request_no).then(function (response) {
+      axios.get('/api/employee-movement-form/' + this.$route.params.request_no).then(function (response) {
         console.log(response.data);
         _this.form = response.data;
 
@@ -5876,7 +5876,7 @@ __webpack_require__.r(__webpack_exports__);
     getUser: function getUser(emp_no) {
       var _this2 = this;
 
-      axios.post('/acsi_emfs/api/employees/' + emp_no).then(function (response) {
+      axios.post('/api/employees/' + emp_no).then(function (response) {
         // console.log(response.data)
         _this2.selected_employee = response.data;
       })["catch"](function (error) {
@@ -5886,7 +5886,7 @@ __webpack_require__.r(__webpack_exports__);
     getCurrentUser: function getCurrentUser() {
       var _this3 = this;
 
-      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+      axios.post('/api/get-current-user').then(function (response) {
         // console.log(response.data)
         _this3.current_user = response.data;
       });
@@ -5898,7 +5898,7 @@ __webpack_require__.r(__webpack_exports__);
       var fd = new FormData();
       fd.append('request_no', this.$route.params.request_no);
       fd.append('current_status', this.form.records[0].status_id);
-      axios.post('/acsi_emfs/api/movement-record', fd).then(function (response) {
+      axios.post('/api/movement-record', fd).then(function (response) {
         console.log(response.data);
 
         if (response.data == 'success') {
@@ -5923,7 +5923,7 @@ __webpack_require__.r(__webpack_exports__);
       var fd = new FormData();
       fd.append('request_no', this.$route.params.request_no);
       fd.append('remarks', this.remarks);
-      axios.post('/acsi_emfs/api/return-emf', fd).then(function (response) {
+      axios.post('/api/return-emf', fd).then(function (response) {
         console.log(response.data);
 
         if (response.data == 'success') {
@@ -5942,7 +5942,7 @@ __webpack_require__.r(__webpack_exports__);
       var fd = new FormData();
       fd.append('request_no', this.$route.params.request_no);
       fd.append('remarks', this.remarks);
-      axios.post('/acsi_emfs/api/cancel-emf', fd).then(function (response) {
+      axios.post('/api/cancel-emf', fd).then(function (response) {
         console.log(response.data);
 
         if (response.data == 'success') {
@@ -5994,7 +5994,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
       _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].storeToken(token);
       this.$router.push({
-        path: '/acsi_emfs/'
+        path: '/'
       });
     },
     login: function login() {
@@ -6002,28 +6002,28 @@ __webpack_require__.r(__webpack_exports__);
 
       this.alerts = [];
       var fd = new FormData();
-      axios.get('/acsi_emfs/sanctum/csrf-cookie').then(function (response) {
+      axios.get('/sanctum/csrf-cookie').then(function (response) {
         // Login...
         fd.append('username', _this.$route.params.empno);
         fd.append('password', 'password');
-        axios.post('/acsi_emfs/api/login', fd).then(function (response) {
+        axios.post('/api/login', fd).then(function (response) {
           if (response.data.errors) {
             _this.$router.push({
-              path: '/acsi_emfs/login/'
+              path: '/login/'
             });
           } else {
             console.log(response);
             var token = response.data.token;
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].storeToken(token);
-            axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+            axios.post('/api/get-current-user').then(function (response) {
               if (response.data.position == 'fst') {
                 _this.$router.push({
-                  path: '/acsi_emfs/fst/'
+                  path: '/fst/'
                 });
               } else {
                 _this.$router.push({
-                  path: '/acsi_emfs/'
+                  path: '/'
                 });
               }
             });
@@ -6072,7 +6072,7 @@ __webpack_require__.r(__webpack_exports__);
     update: function update() {
       var _this = this;
 
-      axios.post('/acsi_emfs/api/test').then(function (response) {
+      axios.post('/api/test').then(function (response) {
         response.data == 'success' ? _this.update_status = 'Success' : 'Failed';
         response.data == 'success' ? _this.update_color = 'success' : 'danger';
       });
@@ -6080,7 +6080,7 @@ __webpack_require__.r(__webpack_exports__);
     reminder: function reminder() {
       var _this2 = this;
 
-      axios.post('/acsi_emfs/api/email-reminder').then(function (response) {
+      axios.post('/api/email-reminder').then(function (response) {
         response.data == 'success' ? _this2.reminder_status = 'Success' : 'Failed';
         response.data == 'success' ? _this2.reminder_color = 'success' : 'danger';
       })["catch"](function (error) {
@@ -6258,7 +6258,7 @@ __webpack_require__.r(__webpack_exports__);
     getForms: function getForms() {
       var _this = this;
 
-      axios.get('/acsi_emfs/api/employee-movement-form').then(function (response) {
+      axios.get('/api/employee-movement-form').then(function (response) {
         console.log(response.data);
         _this.forms = response.data;
 
@@ -6278,12 +6278,12 @@ __webpack_require__.r(__webpack_exports__);
     getCurrentUser: function getCurrentUser() {
       var _this2 = this;
 
-      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+      axios.post('/api/get-current-user').then(function (response) {
         _this2.current_user = response.data;
 
         if (response.data.position == 'fst') {
           _this2.$router.push({
-            path: '/acsi_emfs/fst/'
+            path: '/fst/'
           });
         }
       });
@@ -6306,7 +6306,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     test: function test() {
-      axios.post('/acsi_emfs/api/test').then(function (response) {
+      axios.post('/api/test').then(function (response) {
         return console.log(response.data);
       })["catch"](function (error) {
         return console.log(error.response.data);
@@ -6356,7 +6356,7 @@ __webpack_require__.r(__webpack_exports__);
     update: function update() {
       var _this = this;
 
-      axios.post('/acsi_emfs/api/test').then(function (response) {
+      axios.post('/api/test').then(function (response) {
         response.data == 'success' ? _this.update_status = 'Success' : 'Failed';
         response.data == 'success' ? _this.update_color = 'success' : 'danger';
       });
@@ -6364,7 +6364,7 @@ __webpack_require__.r(__webpack_exports__);
     reminder: function reminder() {
       var _this2 = this;
 
-      axios.post('/acsi_emfs/api/email-reminder').then(function (response) {
+      axios.post('/api/email-reminder').then(function (response) {
         response.data == 'success' ? _this2.reminder_status = 'Success' : 'Failed';
         response.data == 'success' ? _this2.reminder_color = 'success' : 'danger';
       })["catch"](function (error) {
@@ -6538,7 +6538,7 @@ __webpack_require__.r(__webpack_exports__);
     getForms: function getForms() {
       var _this = this;
 
-      axios.post('/acsi_emfs/api/fst/employee-movement-form').then(function (response) {
+      axios.post('/api/fst/employee-movement-form').then(function (response) {
         // console.log(response.data)
         _this.forms = response.data;
 
@@ -6558,7 +6558,7 @@ __webpack_require__.r(__webpack_exports__);
     getCurrentUser: function getCurrentUser() {
       var _this2 = this;
 
-      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+      axios.post('/api/get-current-user').then(function (response) {
         _this2.current_user = response.data;
       });
     },
@@ -6664,11 +6664,11 @@ __webpack_require__.r(__webpack_exports__);
 
       this.alerts = [];
       var fd = new FormData();
-      axios.get('/acsi_emfs/sanctum/csrf-cookie').then(function (response) {
+      axios.get('/sanctum/csrf-cookie').then(function (response) {
         // Login...
         fd.append('username', _this.form.username == undefined ? '' : _this.form.username);
         fd.append('password', _this.form.password == undefined ? '' : _this.form.password);
-        axios.post('/acsi_emfs/api/login', fd).then(function (response) {
+        axios.post('/api/login', fd).then(function (response) {
           if (response.data.errors) {
             for (var error in response.data.errors) {
               _this.alerts.push({
@@ -6681,14 +6681,14 @@ __webpack_require__.r(__webpack_exports__);
             var token = response.data.token;
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].storeToken(token);
-            axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+            axios.post('/api/get-current-user').then(function (response) {
               if (response.data.position == 'fst') {
                 _this.$router.push({
-                  path: '/acsi_emfs/fst/'
+                  path: '/fst/'
                 });
               } else {
                 _this.$router.push({
-                  path: '/acsi_emfs/'
+                  path: '/'
                 });
               }
             });
@@ -6716,7 +6716,7 @@ __webpack_require__.r(__webpack_exports__);
         var username = document.sessionStorage["empno"];
         var fd = new FormData();
         fd.append('emp_no', username);
-        axios.post('/acsi_emfs/api/check-user', fd).then(function (response) {
+        axios.post('/api/check-user', fd).then(function (response) {
           console.log(response.data);
 
           if (Object.keys(response.data).length > 0) {
@@ -6780,7 +6780,7 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('emailBody', this.emailBody);
       fd.append('emailCc', this.emailCc);
       fd.append('emailBcc', this.emailBcc);
-      axios.post('/acsi_emfs/api/mailer', fd).then(function (response) {
+      axios.post('/api/mailer', fd).then(function (response) {
         return console.log(response.data);
       })["catch"](function (error) {
         return console.log(error.response.data);
@@ -6849,7 +6849,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + _Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken();
       }
 
-      axios.post('/acsi_emfs/api/is-logged-in').then(function (response) {
+      axios.post('/api/is-logged-in').then(function (response) {
         if (response.data == true) {
           _this.getCurrentUser();
         }
@@ -6864,7 +6864,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + _Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken();
       }
 
-      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+      axios.post('/api/get-current-user').then(function (response) {
         _this2.current_user = response.data;
       });
     },
@@ -6875,11 +6875,11 @@ __webpack_require__.r(__webpack_exports__);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + _Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken();
       }
 
-      axios.post('/acsi_emfs/api/logout').then(function (response) {
+      axios.post('/api/logout').then(function (response) {
         // console.log(response.data)
         if (response.data == true) {
           _this3.$router.push({
-            path: '/acsi_emfs/login'
+            path: '/login'
           });
 
           _Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].clear();
@@ -6889,7 +6889,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     checkToken: function checkToken() {
-      axios.post('/acsi_emfs/api/check-token').then(function (response) {
+      axios.post('/api/check-token').then(function (response) {
         console.log(response.data);
 
         if (response.data.token) {
@@ -7016,7 +7016,7 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('password', this.form.password);
       fd.append('access_level', this.form.access_level);
       fd.append('position', this.form.position);
-      axios.post('/acsi_emfs/api/register', fd).then(function (response) {
+      axios.post('/api/register', fd).then(function (response) {
         if (response.data.errors) {
           for (var error in response.data.errors) {
             _this.alerts.push({
@@ -7041,12 +7041,12 @@ __webpack_require__.r(__webpack_exports__);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken();
       }
 
-      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+      axios.post('/api/get-current-user').then(function (response) {
         _this2.current_user = response.data;
       });
     },
     generate: function generate() {
-      axios.post('/acsi_emfs/api/generate-user').then(function (response) {
+      axios.post('/api/generate-user').then(function (response) {
         return console.log(response.data);
       })["catch"](function (error) {
         return console.log(error.response);
@@ -7699,7 +7699,7 @@ __webpack_require__.r(__webpack_exports__);
     getUsers: function getUsers() {
       var _this = this;
 
-      axios.post('/acsi_emfs/api/employees').then(function (response) {
+      axios.post('/api/employees').then(function (response) {
         // console.log(response.data)
         _this.employees = response.data;
       })["catch"](function (error) {
@@ -7715,7 +7715,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.clearField();
-      axios.post('/acsi_emfs/api/employees/' + emp_no).then(function (response) {
+      axios.post('/api/employees/' + emp_no).then(function (response) {
         // console.log(response.data)
         _this2.selected_employee = response.data;
         _this2.supervisor_toggler = true;
@@ -7733,28 +7733,28 @@ __webpack_require__.r(__webpack_exports__);
     getPositions: function getPositions() {
       var _this3 = this;
 
-      axios.post('/acsi_emfs/api/positions').then(function (response) {
+      axios.post('/api/positions').then(function (response) {
         return _this3.positions = response.data;
       });
     },
     getDepartments: function getDepartments() {
       var _this4 = this;
 
-      axios.post('/acsi_emfs/api/departments').then(function (response) {
+      axios.post('/api/departments').then(function (response) {
         _this4.departments = response.data;
       });
     },
     getCostCenter: function getCostCenter() {
       var _this5 = this;
 
-      axios.post('/acsi_emfs/api/cost-center').then(function (response) {
+      axios.post('/api/cost-center').then(function (response) {
         return _this5.cost_centers = response.data;
       });
     },
     getSupervisor: function getSupervisor() {
       var _this6 = this;
 
-      axios.post('/acsi_emfs/api/supervisor').then(function (response) {
+      axios.post('/api/supervisor').then(function (response) {
         // console.log(response.data)
         _this6.supervisors = response.data;
       })["catch"](function (error) {
@@ -7764,7 +7764,7 @@ __webpack_require__.r(__webpack_exports__);
     getManager: function getManager() {
       var _this7 = this;
 
-      axios.post('/acsi_emfs/api/manager').then(function (response) {
+      axios.post('/api/manager').then(function (response) {
         _this7.managers = response.data;
       })["catch"](function (error) {
         return console.log(error.response.data);
@@ -7773,7 +7773,7 @@ __webpack_require__.r(__webpack_exports__);
     supervisorUpdate: function supervisorUpdate(e) {
       var _this8 = this;
 
-      axios.post('/acsi_emfs/api/supervisor/' + e).then(function (response) {
+      axios.post('/api/supervisor/' + e).then(function (response) {
         // console.log(response.data)
         _this8.selected_supervisor = response.data;
         _this8.selected_manager = response.data.info1.esup;
@@ -7814,7 +7814,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken();
       }
 
-      axios.post('/acsi_emfs/api/get-current-user').then(function (response) {
+      axios.post('/api/get-current-user').then(function (response) {
         console.log(response.data);
         _this9.current_user = response.data;
       });
@@ -7864,7 +7864,7 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('to_others', this.to_others == null ? '' : this.to_others);
       fd.append('reason_for_movement', this.reason);
       fd.append('effectivity_date', this.effectivity_date);
-      axios.post('/acsi_emfs/api/employee-movement-form', fd).then(function (response) {
+      axios.post('/api/employee-movement-form', fd).then(function (response) {
         console.log(response.data);
         _this10.isLoading = false;
         _this10.errors = [];
@@ -7996,71 +7996,71 @@ var guard = function guard(to, from, next) {
     (axios__WEBPACK_IMPORTED_MODULE_11___default().defaults.headers.common.Authorization) = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getToken();
   }
 
-  axios__WEBPACK_IMPORTED_MODULE_11___default().post('/acsi_emfs/api/is-logged-in').then(function (response) {
+  axios__WEBPACK_IMPORTED_MODULE_11___default().post('/api/is-logged-in').then(function (response) {
     response.data == false ? next({
-      path: '/acsi_emfs/login'
+      path: '/login'
     }) : next();
   })["catch"](function (error) {
     return error.response.status == 401 ? next({
-      path: '/acsi_emfs/login'
+      path: '/login'
     }) : console.log(error.response.data);
   });
 };
 
 var routes = [{
-  path: '/acsi_emfs/auto-login/:empno',
+  path: '/auto-login/:empno',
   component: _components_AutoLoginComponent__WEBPACK_IMPORTED_MODULE_8__["default"],
   meta: {
     title: 'Auto login'
   }
 }, {
-  path: '/acsi_emfs/auto-update',
+  path: '/auto-update',
   component: _components_AutoUpdateComponent__WEBPACK_IMPORTED_MODULE_9__["default"],
   meta: {
     title: 'Auto update'
   }
 }, {
-  path: '/acsi_emfs/email-reminder',
+  path: '/email-reminder',
   component: _components_EmailReminderComponent__WEBPACK_IMPORTED_MODULE_10__["default"],
   meta: {
     title: 'Email reminder'
   }
 }, {
-  path: '/acsi_emfs/',
+  path: '/',
   component: _components_DashboardComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
   beforeEnter: guard,
   meta: {
     title: 'Dashboard'
   }
 }, {
-  path: '/acsi_emfs/new-movement-form',
+  path: '/new-movement-form',
   component: _components_NewMovementFormComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
   beforeEnter: guard,
   meta: {
     title: 'Movement form'
   }
 }, {
-  path: '/acsi_emfs/login',
+  path: '/login',
   component: _components_LoginComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
-  path: '/acsi_emfs/mailer',
+  path: '/mailer',
   component: _components_MailerComponent__WEBPACK_IMPORTED_MODULE_7__["default"]
 }, {
-  path: '/acsi_emfs/new-employee',
+  path: '/new-employee',
   component: _components_NewEmployeeComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
   beforeEnter: guard,
   meta: {
     title: 'New employee'
   }
 }, {
-  path: '/acsi_emfs/approvals/:request_no',
+  path: '/approvals/:request_no',
   component: _components_ApprovalComponent__WEBPACK_IMPORTED_MODULE_5__["default"],
   beforeEnter: guard,
   meta: {
     title: 'Approval'
   }
 }, {
-  path: '/acsi_emfs/fst/',
+  path: '/fst/',
   component: _components_FSTDashboardComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
   beforeEnter: guard,
   meta: {
@@ -32965,7 +32965,7 @@ var render = function () {
                                 ? _c("img", {
                                     staticClass: "d-inline-block align-top",
                                     attrs: {
-                                      src: "/acsi_emfs/public/images/approved.png",
+                                      src: "/public/images/approved.png",
                                       height: "50",
                                       alt: "",
                                       loading: "lazy",
@@ -32979,7 +32979,7 @@ var render = function () {
                                 ? _c("img", {
                                     staticClass: "d-inline-block align-top",
                                     attrs: {
-                                      src: "/acsi_emfs/public/images/canceled.png",
+                                      src: "/public/images/canceled.png",
                                       height: "50",
                                       alt: "approve image",
                                       loading: "lazy",
@@ -33068,7 +33068,7 @@ var render = function () {
                                     ? _c("img", {
                                         staticClass: "d-inline-block align-top",
                                         attrs: {
-                                          src: "/acsi_emfs/public/images/approved.png",
+                                          src: "/public/images/approved.png",
                                           height: "50",
                                           alt: "",
                                           loading: "lazy",
@@ -33082,7 +33082,7 @@ var render = function () {
                                     ? _c("img", {
                                         staticClass: "d-inline-block align-top",
                                         attrs: {
-                                          src: "/acsi_emfs/public/images/canceled.png",
+                                          src: "/public/images/canceled.png",
                                           height: "50",
                                           alt: "approve image",
                                           loading: "lazy",
@@ -33196,7 +33196,7 @@ var render = function () {
                                               staticClass:
                                                 "d-inline-block align-top",
                                               attrs: {
-                                                src: "/acsi_emfs/public/images/approved.png",
+                                                src: "/public/images/approved.png",
                                                 height: "50",
                                                 alt: "approve image",
                                                 loading: "lazy",
@@ -33211,7 +33211,7 @@ var render = function () {
                                               staticClass:
                                                 "d-inline-block align-top",
                                               attrs: {
-                                                src: "/acsi_emfs/public/images/canceled.png",
+                                                src: "/public/images/canceled.png",
                                                 height: "50",
                                                 alt: "approve image",
                                                 loading: "lazy",
@@ -33322,7 +33322,7 @@ var render = function () {
                                     ? _c("img", {
                                         staticClass: "d-inline-block align-top",
                                         attrs: {
-                                          src: "/acsi_emfs/public/images/approved.png",
+                                          src: "/public/images/approved.png",
                                           height: "50",
                                           alt: "approve image",
                                           loading: "lazy",
@@ -33336,7 +33336,7 @@ var render = function () {
                                     ? _c("img", {
                                         staticClass: "d-inline-block align-top",
                                         attrs: {
-                                          src: "/acsi_emfs/public/images/canceled.png",
+                                          src: "/public/images/canceled.png",
                                           height: "50",
                                           alt: "approve image",
                                           loading: "lazy",
@@ -33435,7 +33435,7 @@ var render = function () {
                                 ? _c("img", {
                                     staticClass: "d-inline-block align-top",
                                     attrs: {
-                                      src: "/acsi_emfs/public/images/acknowledge.png",
+                                      src: "/public/images/acknowledge.png",
                                       height: "50",
                                       alt: "",
                                       loading: "lazy",
@@ -33512,7 +33512,7 @@ var render = function () {
                                 ? _c("img", {
                                     staticClass: "d-inline-block align-top",
                                     attrs: {
-                                      src: "/acsi_emfs/public/images/acknowledge.png",
+                                      src: "/public/images/acknowledge.png",
                                       height: "50",
                                       alt: "",
                                       loading: "lazy",
@@ -33937,7 +33937,7 @@ var staticRenderFns = [
       _c("nav", { attrs: { "aria-label": "breadcrumb " } }, [
         _c("ol", { staticClass: "breadcrumb" }, [
           _c("li", { staticClass: "breadcrumb-item" }, [
-            _c("a", { attrs: { href: "/acsi_emfs" } }, [_vm._v("Home")]),
+            _c("a", { attrs: { href: "/" } }, [_vm._v("Home")]),
           ]),
           _vm._v(" "),
           _c(
@@ -33961,10 +33961,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "card mt-4 h-100 border-0" }, [
           _c("img", {
             staticClass: "card-img",
-            attrs: {
-              src: "/acsi_emfs/public/images/tsi_acsi_logo.jpg",
-              alt: "",
-            },
+            attrs: { src: "/public/images/tsi_acsi_logo.jpg", alt: "" },
           }),
         ]),
       ]),
@@ -33992,10 +33989,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "card mt-4 h-100 border-0" }, [
           _c("img", {
             staticClass: "card-img",
-            attrs: {
-              src: "/acsi_emfs/public/images/tsi_acsi_logo.jpg",
-              alt: "",
-            },
+            attrs: { src: "/public/images/tsi_acsi_logo.jpg", alt: "" },
           }),
         ]),
       ]),
@@ -34323,14 +34317,10 @@ var staticRenderFns = [
         staticClass: "fixed-bottom d-flex justify-content-center d-print-none",
       },
       [
-        _c(
-          "a",
-          { staticClass: "btn btn-danger mb-3", attrs: { href: "/acsi_emfs" } },
-          [
-            _vm._v("BACK "),
-            _c("i", { staticClass: "fa-solid fa-circle-arrow-left" }),
-          ]
-        ),
+        _c("a", { staticClass: "btn btn-danger mb-3", attrs: { href: "/" } }, [
+          _vm._v("BACK "),
+          _c("i", { staticClass: "fa-solid fa-circle-arrow-left" }),
+        ]),
       ]
     )
   },
@@ -34569,9 +34559,7 @@ var render = function () {
                                   "a",
                                   {
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_vm._v(_vm._s(form.request_no))]
@@ -34618,9 +34606,7 @@ var render = function () {
                                   {
                                     staticClass: "btn btn-primary mb-1",
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_c("i", { staticClass: "fa-solid fa-eye" })]
@@ -34632,9 +34618,7 @@ var render = function () {
                                       {
                                         staticClass: "btn btn-success mb-1",
                                         attrs: {
-                                          href:
-                                            "/acsi_emfs/approvals/" +
-                                            form.request_no,
+                                          href: "/approvals/" + form.request_no,
                                         },
                                       },
                                       [
@@ -34691,9 +34675,7 @@ var render = function () {
                                   "a",
                                   {
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_vm._v(_vm._s(form.request_no))]
@@ -34740,9 +34722,7 @@ var render = function () {
                                   {
                                     staticClass: "btn btn-primary mb-1",
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_c("i", { staticClass: "fa-solid fa-eye" })]
@@ -34754,9 +34734,7 @@ var render = function () {
                                       {
                                         staticClass: "btn btn-success mb-1",
                                         attrs: {
-                                          href:
-                                            "/acsi_emfs/approvals/" +
-                                            form.request_no,
+                                          href: "/approvals/" + form.request_no,
                                         },
                                       },
                                       [
@@ -34813,9 +34791,7 @@ var render = function () {
                                   "a",
                                   {
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_vm._v(_vm._s(form.request_no))]
@@ -34862,9 +34838,7 @@ var render = function () {
                                   {
                                     staticClass: "btn btn-primary mb-1",
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_c("i", { staticClass: "fa-solid fa-eye" })]
@@ -34876,9 +34850,7 @@ var render = function () {
                                       {
                                         staticClass: "btn btn-success mb-1",
                                         attrs: {
-                                          href:
-                                            "/acsi_emfs/approvals/" +
-                                            form.request_no,
+                                          href: "/approvals/" + form.request_no,
                                         },
                                       },
                                       [
@@ -34935,7 +34907,7 @@ var staticRenderFns = [
       "a",
       {
         staticClass: "btn btn-success mb-2",
-        attrs: { href: "/acsi_emfs/new-movement-form" },
+        attrs: { href: "/new-movement-form" },
       },
       [
         _vm._v("New movement form "),
@@ -35182,9 +35154,7 @@ var render = function () {
                                   "a",
                                   {
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_vm._v(_vm._s(form.request_no))]
@@ -35231,9 +35201,7 @@ var render = function () {
                                   {
                                     staticClass: "btn btn-primary mb-1",
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_c("i", { staticClass: "fa-solid fa-eye" })]
@@ -35245,9 +35213,7 @@ var render = function () {
                                       {
                                         staticClass: "btn btn-success mb-1",
                                         attrs: {
-                                          href:
-                                            "/acsi_emfs/approvals/" +
-                                            form.request_no,
+                                          href: "/approvals/" + form.request_no,
                                         },
                                       },
                                       [
@@ -35304,9 +35270,7 @@ var render = function () {
                                   "a",
                                   {
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_vm._v(_vm._s(form.request_no))]
@@ -35353,9 +35317,7 @@ var render = function () {
                                   {
                                     staticClass: "btn btn-primary mb-1",
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_c("i", { staticClass: "fa-solid fa-eye" })]
@@ -35367,9 +35329,7 @@ var render = function () {
                                       {
                                         staticClass: "btn btn-success mb-1",
                                         attrs: {
-                                          href:
-                                            "/acsi_emfs/approvals/" +
-                                            form.request_no,
+                                          href: "/approvals/" + form.request_no,
                                         },
                                       },
                                       [
@@ -35426,9 +35386,7 @@ var render = function () {
                                   "a",
                                   {
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_vm._v(_vm._s(form.request_no))]
@@ -35475,9 +35433,7 @@ var render = function () {
                                   {
                                     staticClass: "btn btn-primary mb-1",
                                     attrs: {
-                                      href:
-                                        "/acsi_emfs/approvals/" +
-                                        form.request_no,
+                                      href: "/approvals/" + form.request_no,
                                     },
                                   },
                                   [_c("i", { staticClass: "fa-solid fa-eye" })]
@@ -35489,9 +35445,7 @@ var render = function () {
                                       {
                                         staticClass: "btn btn-success mb-1",
                                         attrs: {
-                                          href:
-                                            "/acsi_emfs/approvals/" +
-                                            form.request_no,
+                                          href: "/approvals/" + form.request_no,
                                         },
                                       },
                                       [
@@ -36020,7 +35974,7 @@ var render = function () {
                     "a",
                     {
                       staticClass: "nav-link",
-                      attrs: { href: "/acsi_emfs/new-employee" },
+                      attrs: { href: "/new-employee" },
                     },
                     [_vm._v("New employee")]
                   )
@@ -36091,26 +36045,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticClass: "navbar-brand", attrs: { href: "/acsi_emfs" } },
-      [
-        _c("img", {
-          staticClass: "d-inline-block align-top",
-          attrs: {
-            src: "/acsi_emfs/public/images/tsi_acsi_logo2.png",
-            width: "60",
-            height: "30",
-            alt: "logo",
-            loading: "lazy",
-          },
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "d-xs-none" }, [
-          _vm._v("Employee Movement Form"),
-        ]),
-      ]
-    )
+    return _c("a", { staticClass: "navbar-brand", attrs: { href: "/" } }, [
+      _c("img", {
+        staticClass: "d-inline-block align-top",
+        attrs: {
+          src: "/public/images/tsi_acsi_logo2.png",
+          width: "60",
+          height: "30",
+          alt: "logo",
+          loading: "lazy",
+        },
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "d-xs-none" }, [
+        _vm._v("Employee Movement Form"),
+      ]),
+    ])
   },
   function () {
     var _vm = this
@@ -36502,7 +36452,7 @@ var staticRenderFns = [
     return _c("nav", { attrs: { "aria-label": "breadcrumb " } }, [
       _c("ol", { staticClass: "breadcrumb" }, [
         _c("li", { staticClass: "breadcrumb-item" }, [
-          _c("a", { attrs: { href: "/acsi_emfs" } }, [_vm._v("Home")]),
+          _c("a", { attrs: { href: "/" } }, [_vm._v("Home")]),
         ]),
         _vm._v(" "),
         _c(
@@ -38934,7 +38884,7 @@ var staticRenderFns = [
     return _c("nav", { attrs: { "aria-label": "breadcrumb " } }, [
       _c("ol", { staticClass: "breadcrumb" }, [
         _c("li", { staticClass: "breadcrumb-item" }, [
-          _c("a", { attrs: { href: "/acsi_emfs" } }, [_vm._v("Home")]),
+          _c("a", { attrs: { href: "/" } }, [_vm._v("Home")]),
         ]),
         _vm._v(" "),
         _c(
@@ -38957,10 +38907,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "card mt-4 h-100 border-0" }, [
           _c("img", {
             staticClass: "card-img",
-            attrs: {
-              src: "/acsi_emfs/public/images/tsi_acsi_logo.jpg",
-              alt: "",
-            },
+            attrs: { src: "/public/images/tsi_acsi_logo.jpg", alt: "" },
           }),
         ]),
       ]),
@@ -38988,10 +38935,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "card mt-4 h-100 border-0" }, [
           _c("img", {
             staticClass: "card-img",
-            attrs: {
-              src: "/acsi_emfs/public/images/tsi_acsi_logo.jpg",
-              alt: "",
-            },
+            attrs: { src: "/public/images/tsi_acsi_logo.jpg", alt: "" },
           }),
         ]),
       ]),
@@ -39199,14 +39143,10 @@ var staticRenderFns = [
       "div",
       { staticClass: "fixed-bottom d-flex justify-content-center" },
       [
-        _c(
-          "a",
-          { staticClass: "btn btn-danger mb-3", attrs: { href: "/acsi_emfs" } },
-          [
-            _vm._v("BACK "),
-            _c("i", { staticClass: "fa-solid fa-circle-arrow-left" }),
-          ]
-        ),
+        _c("a", { staticClass: "btn btn-danger mb-3", attrs: { href: "/" } }, [
+          _vm._v("BACK "),
+          _c("i", { staticClass: "fa-solid fa-circle-arrow-left" }),
+        ]),
       ]
     )
   },

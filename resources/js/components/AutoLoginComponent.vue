@@ -10,28 +10,28 @@ export default {
             let token = this.$route.params.token
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
             AppStorage.storeToken(token)
-            this.$router.push({path:'/acsi_emfs/'})
+            this.$router.push({path:'/'})
         },
         login(){
             this.alerts = []
             const fd = new FormData()
-            axios.get('/acsi_emfs/sanctum/csrf-cookie').then(response => {
+            axios.get('/sanctum/csrf-cookie').then(response => {
                 // Login...
                 fd.append('username',this.$route.params.empno)
                 fd.append('password','password')
-                axios.post('/acsi_emfs/api/login',fd).then(response => {
+                axios.post('/api/login',fd).then(response => {
                     if(response.data.errors){
-                        this.$router.push({path:'/acsi_emfs/login/'})
+                        this.$router.push({path:'/login/'})
                     }else{
                         console.log(response)
                         let token = response.data.token
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                         AppStorage.storeToken(token)
-                        axios.post('/acsi_emfs/api/get-current-user').then(response =>{
+                        axios.post('/api/get-current-user').then(response =>{
                             if(response.data.position == 'fst'){
-                                this.$router.push({path:'/acsi_emfs/fst/'})
+                                this.$router.push({path:'/fst/'})
                             }else{
-                                this.$router.push({path:'/acsi_emfs/'})
+                                this.$router.push({path:'/'})
                             }
                         })
                     }

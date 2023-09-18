@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #e3f2fd;">
-        <a class="navbar-brand" href="/acsi_emfs">
-            <img src="/acsi_emfs/public/images/tsi_acsi_logo2.png" width="60" height="30" class="d-inline-block align-top" alt="logo" loading="lazy">
+        <a class="navbar-brand" href="/">
+            <img src="/public/images/tsi_acsi_logo2.png" width="60" height="30" class="d-inline-block align-top" alt="logo" loading="lazy">
             <span class="d-xs-none">Employee Movement Form</span> 
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,7 +13,7 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/acsi_emfs/new-employee" v-if="current_user.useraccess == 'super_admin' && current_user.position == 'system_admin'">New employee</a>
+                    <a class="nav-link" href="/new-employee" v-if="current_user.useraccess == 'super_admin' && current_user.position == 'system_admin'">New employee</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,7 +43,7 @@ export default {
             if(AppStorage.getToken()){
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
             }
-            axios.post('/acsi_emfs/api/is-logged-in').then(response => {
+            axios.post('/api/is-logged-in').then(response => {
                 if(response.data == true){
                     this.getCurrentUser()
                 }
@@ -53,7 +53,7 @@ export default {
             if(AppStorage.getToken()){
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
             }
-            axios.post('/acsi_emfs/api/get-current-user').then(response => {
+            axios.post('/api/get-current-user').then(response => {
                 this.current_user = response.data
             })
         },
@@ -61,16 +61,16 @@ export default {
             if(AppStorage.getToken()){
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
             }
-            axios.post('/acsi_emfs/api/logout').then(response => {
+            axios.post('/api/logout').then(response => {
                 // console.log(response.data)
                 if(response.data == true){
-                    this.$router.push({path:'/acsi_emfs/login'})
+                    this.$router.push({path:'/login'})
                     AppStorage.clear()
                 }
             }).catch(error => console.log(error.response))
         },
         checkToken(){
-            axios.post('/acsi_emfs/api/check-token').then(response => {
+            axios.post('/api/check-token').then(response => {
                 console.log(response.data)
                 
                 if(response.data.token){

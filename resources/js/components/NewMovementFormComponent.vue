@@ -7,7 +7,7 @@
         <div class="container mt-4 d-print-none">
             <nav aria-label="breadcrumb ">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/acsi_emfs">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">New movement form</li>
                 </ol>
             </nav>
@@ -25,7 +25,7 @@
             <div class="row d-none d-print-flex">
                 <div class="col-4">
                     <div class="card mt-4 h-100 border-0">
-                        <img class="card-img" src="/acsi_emfs/public/images/tsi_acsi_logo.jpg" alt="">
+                        <img class="card-img" src="/public/images/tsi_acsi_logo.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-4">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-4">
                     <div class="card mt-4 h-100 border-0">
-                        <img class="card-img" src="/acsi_emfs/public/images/tsi_acsi_logo.jpg" alt="">
+                        <img class="card-img" src="/public/images/tsi_acsi_logo.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-12">
@@ -474,7 +474,7 @@
                     <h5>HR Form 011: Employee Movement Formv2</h5>
                 </div>
                 <div class="fixed-bottom d-flex justify-content-center">
-                    <a href="/acsi_emfs" class="btn btn-danger mb-3" >BACK <i class="fa-solid fa-circle-arrow-left"></i></a>
+                    <a href="/" class="btn btn-danger mb-3" >BACK <i class="fa-solid fa-circle-arrow-left"></i></a>
                 </div>
             </div>
         </div>
@@ -589,7 +589,7 @@ export default {
     },
     methods:{
         getUsers(){
-            axios.post('/acsi_emfs/api/employees').then(response => {
+            axios.post('/api/employees').then(response => {
                 // console.log(response.data)
                 this.employees = response.data
             }).catch(error => console.log(error.response.data))
@@ -602,7 +602,7 @@ export default {
         },
         getUser(emp_no){
             this.clearField()
-            axios.post('/acsi_emfs/api/employees/'+emp_no).then(response => {
+            axios.post('/api/employees/'+emp_no).then(response => {
                 // console.log(response.data)
                 this.selected_employee = response.data
                 this.supervisor_toggler = true
@@ -614,29 +614,29 @@ export default {
             }).catch(error => console.log(error.response.data))
         },
         getPositions(){
-            axios.post('/acsi_emfs/api/positions').then(response => this.positions = response.data)
+            axios.post('/api/positions').then(response => this.positions = response.data)
         },
         getDepartments(){
-            axios.post('/acsi_emfs/api/departments').then(response => {
+            axios.post('/api/departments').then(response => {
                 this.departments = response.data
             })
         },
         getCostCenter(){
-            axios.post('/acsi_emfs/api/cost-center').then(response => this.cost_centers = response.data)
+            axios.post('/api/cost-center').then(response => this.cost_centers = response.data)
         },
         getSupervisor(){
-            axios.post('/acsi_emfs/api/supervisor').then(response => {
+            axios.post('/api/supervisor').then(response => {
                 // console.log(response.data)
                 this.supervisors = response.data
             }).catch(error => console.log(error.response.data))
         },
         getManager(){
-            axios.post('/acsi_emfs/api/manager').then(response => {
+            axios.post('/api/manager').then(response => {
                 this.managers = response.data
             } ).catch(error => console.log(error.response.data))
         },
         supervisorUpdate(e){
-            axios.post('/acsi_emfs/api/supervisor/'+e).then(response => {
+            axios.post('/api/supervisor/'+e).then(response => {
                 // console.log(response.data)
                 this.selected_supervisor = response.data
                 this.selected_manager = response.data.info1.esup
@@ -673,7 +673,7 @@ export default {
             if(AppStorage.getToken()){
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
             }
-            axios.post('/acsi_emfs/api/get-current-user').then(response => {
+            axios.post('/api/get-current-user').then(response => {
                 console.log(response.data)
                 this.current_user = response.data
             })
@@ -724,7 +724,7 @@ export default {
             fd.append('to_others',this.to_others == null ? '' : this.to_others)
             fd.append('reason_for_movement',this.reason)
             fd.append('effectivity_date',this.effectivity_date)
-            axios.post('/acsi_emfs/api/employee-movement-form',fd).then(response => {
+            axios.post('/api/employee-movement-form',fd).then(response => {
                 console.log(response.data)
                 this.isLoading = false
                 this.errors = []

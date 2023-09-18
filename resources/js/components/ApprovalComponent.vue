@@ -7,7 +7,7 @@
         <div class="container mt-4 d-print-none">
             <nav aria-label="breadcrumb ">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/acsi_emfs">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Approval form</li>
                 </ol>
             </nav>
@@ -16,7 +16,7 @@
             <div class="row d-none d-print-flex">
                 <div class="col-4">
                     <div class="card mt-4 h-100 border-0">
-                        <img class="card-img" src="/acsi_emfs/public/images/tsi_acsi_logo.jpg" alt="">
+                        <img class="card-img" src="/public/images/tsi_acsi_logo.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-4">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-4">
                     <div class="card mt-4 h-100 border-0">
-                        <img class="card-img" src="/acsi_emfs/public/images/tsi_acsi_logo.jpg" alt="">
+                        <img class="card-img" src="/public/images/tsi_acsi_logo.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-12">
@@ -334,8 +334,8 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.superior_accept_date != null"><br>
-                                        <img src="/acsi_emfs/public/images/canceled.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.date_canceled != null && form.records[1].status_id == 1"><br>
+                                        <img src="/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.superior_accept_date != null"><br>
+                                        <img src="/public/images/canceled.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.date_canceled != null && form.records[1].status_id == 1"><br>
                                         <small  v-if="form.superior_accept_date != null" class="align-middle">Date approved: {{form.superior_accept_date}}</small>
                                         <small v-if="form.date_canceled != null && form.records[1].status_id == 1" class="align-middle">Date cancelled: {{form.date_canceled}}</small>
                                         <div v-if="form.records[0].status_id == 1 && current_user.empno == form.current_superior.empno" class="row">
@@ -355,8 +355,8 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.manager_accept_date != null"><br>
-                                        <img src="/acsi_emfs/public/images/canceled.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.date_canceled != null && form.records[1].status_id == 2"><br>
+                                        <img src="/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.manager_accept_date != null"><br>
+                                        <img src="/public/images/canceled.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.date_canceled != null && form.records[1].status_id == 2"><br>
                                         <small  v-if="form.manager_accept_date != null" class="align-middle">Date approved: {{form.manager_accept_date}}</small>
                                         <small v-if="form.date_canceled != null && form.records[1].status_id == 2" class="align-middle">Date cancelled: {{form.date_canceled}}</small>
                                         <div v-if="form.records[0].status_id == 2 && current_user.empno == form.current_manager.empno" class="row">
@@ -377,8 +377,8 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5" v-if="form.from_manager != form.to_manager && form.to_manager != 'ACSI-200634'">
-                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.new_manager_accept_date != null"><br>
-                                        <img src="/acsi_emfs/public/images/canceled.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.date_canceled != null && form.records[1].status_id == 4"><br>
+                                        <img src="/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.new_manager_accept_date != null"><br>
+                                        <img src="/public/images/canceled.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.date_canceled != null && form.records[1].status_id == 4"><br>
                                         <small  v-if="form.new_manager_accept_date != null" class="align-middle">Date approved: {{form.new_manager_accept_date}}</small>
                                         <small v-if="form.date_canceled != null && form.records[1].status_id == 4" class="align-middle">Date cancelled: {{form.date_canceled}}</small>
                                         <div v-if="form.records[0].status_id == 4 && current_user.empno == form.new_manager.empno" class="row">
@@ -397,8 +397,8 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <img src="/acsi_emfs/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.cable_head_accept_date != null"><br>
-                                        <img src="/acsi_emfs/public/images/canceled.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.date_canceled != null && form.records[1].status_id == 5"><br>
+                                        <img src="/public/images/approved.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.cable_head_accept_date != null"><br>
+                                        <img src="/public/images/canceled.png"  height="50" class="d-inline-block align-top" alt="approve image" loading="lazy" v-if="form.date_canceled != null && form.records[1].status_id == 5"><br>
                                         <small v-if="form.cable_head_accept_date != null" class="align-middle">Date approved: {{form.cable_head_accept_date}}</small>
                                         <small v-if="form.date_canceled != null && form.records[1].status_id == 5" class="align-middle">Date cancelled: {{form.date_canceled}}</small>
                                         <div v-if="form.records[0].status_id == 5 && current_user.empno == 'ACSI-200634'" class="row">
@@ -429,7 +429,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <img src="/acsi_emfs/public/images/acknowledge.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.hr_accept_date != null"><br>
+                                        <img src="/public/images/acknowledge.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.hr_accept_date != null"><br>
                                         <small v-if="form.hr_accept_date != null" class="align-middle">Date acknowledge: {{form.hr_accept_date}}</small>
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 6 && current_user.empno == form.hr_account_officer">Acknowledge</button>
                                         <h6 class="align-middle font-weight-bold">{{ form.account_officer.firstname}} {{ form.account_officer.lastname}}</h6>
@@ -441,7 +441,7 @@
                                     <br>
                                     <br>
                                     <div class="text-center mt-5">
-                                        <img src="/acsi_emfs/public/images/acknowledge.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.employee_accept_date != null"><br>
+                                        <img src="/public/images/acknowledge.png"  height="50" class="d-inline-block align-top" alt="" loading="lazy" v-if="form.employee_accept_date != null"><br>
                                         <small v-if="form.employee_accept_date != null" class="align-middle">Date acknowledge: {{form.employee_accept_date}}</small>
                                         <button @click="approved()" class="btn btn-success w-75" v-if="form.records[0].status_id == 7 && current_user.empno == form.emp_no">Acknowledge</button>
                                         <h6 class="align-middle font-weight-bold">{{form.employee.firstname}}  {{form.employee.lastname}}</h6>
@@ -460,7 +460,7 @@
                     <h5>HR Form 011: Employee Movement Formv2</h5>
                 </div>
                 <div class="fixed-bottom d-flex justify-content-center d-print-none">
-                    <a href="/acsi_emfs" class="btn btn-danger mb-3" >BACK <i class="fa-solid fa-circle-arrow-left"></i></a>
+                    <a href="/" class="btn btn-danger mb-3" >BACK <i class="fa-solid fa-circle-arrow-left"></i></a>
                 </div>
             </div>
         </div>
@@ -591,14 +591,14 @@ export default {
     },
     methods:{
         getForm(){
-            axios.get('/acsi_emfs/api/employee-movement-form/'+this.$route.params.request_no).then(response => {
+            axios.get('/api/employee-movement-form/'+this.$route.params.request_no).then(response => {
                 console.log(response.data)
                 this.form = response.data
                 this.getUser(response.data.emp_no)
             })
         },
         getUser(emp_no){
-            axios.post('/acsi_emfs/api/employees/'+emp_no).then(response => {
+            axios.post('/api/employees/'+emp_no).then(response => {
                 // console.log(response.data)
                 this.selected_employee = response.data
             }).catch(error => console.log(error.response.data))
@@ -606,7 +606,7 @@ export default {
         },
         getCurrentUser(){
             
-            axios.post('/acsi_emfs/api/get-current-user').then(response => {
+            axios.post('/api/get-current-user').then(response => {
                 // console.log(response.data)
                 this.current_user = response.data
             })
@@ -616,7 +616,7 @@ export default {
             const fd = new FormData()
             fd.append('request_no',this.$route.params.request_no)
             fd.append('current_status',this.form.records[0].status_id)
-            axios.post('/acsi_emfs/api/movement-record',fd).then(response => {
+            axios.post('/api/movement-record',fd).then(response => {
                 console.log(response.data)
                 if(response.data == 'success'){
                     this.isLoading = false;
@@ -635,7 +635,7 @@ export default {
             const fd = new FormData()
             fd.append('request_no',this.$route.params.request_no)
             fd.append('remarks',this.remarks)
-            axios.post('/acsi_emfs/api/return-emf',fd).then(response => {
+            axios.post('/api/return-emf',fd).then(response => {
                 console.log(response.data)
                 if(response.data == 'success'){
                     this.isLoading = false;
@@ -649,7 +649,7 @@ export default {
             const fd = new FormData()
             fd.append('request_no',this.$route.params.request_no)
             fd.append('remarks',this.remarks)
-            axios.post('/acsi_emfs/api/cancel-emf',fd).then(response => {
+            axios.post('/api/cancel-emf',fd).then(response => {
                 console.log(response.data)
                 if(response.data == 'success'){
                     this.isLoading = false;

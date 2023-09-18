@@ -4,7 +4,7 @@
         <div class="container mt-4">
             <nav aria-label="breadcrumb ">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/acsi_emfs">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">New employee</li>
                 </ol>
             </nav>
@@ -94,7 +94,7 @@ export default {
             fd.append('access_level',this.form.access_level)
             fd.append('position',this.form.position)
             
-            axios.post('/acsi_emfs/api/register',fd).then(response => {
+            axios.post('/api/register',fd).then(response => {
                 if(response.data.errors){
                     for(let error in response.data.errors){
                         this.alerts.push({message: response.data.errors[error][0],type: 'danger' })
@@ -108,10 +108,10 @@ export default {
             if(AppStorage.getToken()){
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
             }
-            axios.post('/acsi_emfs/api/get-current-user').then(response => {this.current_user = response.data})
+            axios.post('/api/get-current-user').then(response => {this.current_user = response.data})
         },
         generate(){
-            axios.post('/acsi_emfs/api/generate-user').then(response => console.log(response.data)).catch(error => console.log(error.response))
+            axios.post('/api/generate-user').then(response => console.log(response.data)).catch(error => console.log(error.response))
         }
     }
     
