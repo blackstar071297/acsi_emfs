@@ -42,6 +42,7 @@ class EmployeeMovementFormController extends Controller
                 ->orWhereHas('new_manager',function($query){
                     $query->where('empno',Auth::guard('employee')->user()->empno);
                 })
+                ->orWhere('emp_no',Auth::guard('employee')->user()->empno)
             ->latest()->get();
         }
     }
@@ -208,25 +209,7 @@ class EmployeeMovementFormController extends Controller
         
     }
     private function search_account_officer($form){
-        if(($form->to_cost_center == 'Area 3' && $form->move_cost_center == 'true') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170010' && $form->move_cost_center == 'true')){
-            return 'ACSI-200722';
-        }elseif(($form->to_cost_center == 'Area 4' && $form->move_cost_center == 'true') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170006' && $form->move_cost_center == 'true')){
-            return 'ACSI-200761';
-        }elseif(($form->to_cost_center == 'Area 6' && $form->move_cost_center == 'true') || ($form->to_cost_center == 'Tier 2' && $form->to_immediate_superior == 'ACSI-170208' && $form->move_cost_center == 'true')){
-            return 'ACSI-190545';
-        }elseif($form->from_position != 'Field Service Technician'){
-            return 'ACSI-200639';
-        }
-
-        if(($form->from_cost_center == 'Area 3' && !isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170010')){
-            return 'ACSI-200722';
-        }elseif(($form->from_cost_center == 'Area 4' && !isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170006')){
-            return 'ACSI-200761';
-        }elseif(($form->from_cost_center == 'Area 6' && !isset($form->move_cost_center)) || ($form->from_cost_center == 'Tier 2' && $form->from_immediate_superior == 'ACSI-170208')){
-            return 'ACSI-190545';
-        }elseif($form->from_position != 'Field Service Technician'){
-            return 'ACSI-200639';
-        }
+        return 'ACSI-230911';
         
     }
 
@@ -243,7 +226,7 @@ class EmployeeMovementFormController extends Controller
                 $mail->Host = 'tsi-acsi.com.ph';             //  smtp host
                 $mail->SMTPAuth = true;
                 $mail->Username = 'mailer@tsi-acsi.com.ph';   //  sender username
-                $mail->Password = 'Mailertsi2008';       // sender password
+                $mail->Password = 'txpertz4ever';       // sender password
                 $mail->SMTPSecure = 'tls';                  // encryption - ssl/tls
                 $mail->Port = 587;                          // port - 587/465
                 $mail->SMTPOptions = array(

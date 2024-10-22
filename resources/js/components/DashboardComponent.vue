@@ -140,31 +140,48 @@ export default {
             current_user:[],
             completed: [],
             pending:[],
-            cancelled:[]
+            cancelled:[],
+            sortedForms:[]
         }
     },
     methods:{
         getForms(){
             axios.get('/api/employee-movement-form').then(response => {
-                console.log(response.data)
+                let prioritizedPending = []; // Temporary array for matched pending forms
+                let otherPending = []; // Other pending forms
                 this.forms = response.data
                 this.forms.forEach((form) =>{
-                    if(form.records[0].status_id == 10){
+                    const statusId = form.records[0].status_id; // Optional chaining for safety
+                    const empno = this.current_user.empno;
+                    console.log(statusId)
+                    const matchesCondition =
+                        (statusId === 1 && form.from_immediate_superior === empno) ||
+                        (statusId === 2 && form.from_manager === empno) ||
+                        (statusId === 3 && form.to_immediate_superior === empno) ||
+                        (statusId === 4 && form.to_manager === empno) ||
+                        (statusId === 5 && empno === 'ACSI-200634') ||
+                        (statusId === 6 && form.hr_account_officer === empno);
+                    if (matchesCondition) {
+                        this.sortedForms.push(form); // Track matching forms
+                        prioritizedPending.push(form); // Add to prioritized pending
+                        console.log('Prio Forms:', this.prioritizedPending);
+                    }
+                    else if(form.records[0].status_id == 10){
                         this.cancelled.push(form)
                     }else if(form.records[0].status_id == 9 && form.is_closed == 1){
                         this.completed.push(form)
                     }else{
-                        this.pending.push(form)
+                        otherPending.push(form);
                     }
                 })
+                this.pending = prioritizedPending.concat(otherPending);
+
+                
             }).catch(error => console.log(error.response.data))
         },
         getCurrentUser(){
             axios.post('/api/get-current-user').then(response => {
                 this.current_user = response.data
-                if(response.data.position == 'fst'){
-                    this.$router.push({path:'/fst/'})
-                }
             })
         },
         checkUser(form){
@@ -194,8 +211,9 @@ export default {
         if(AppStorage.getToken()){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + AppStorage.getToken()
         }
-        this.getForms()
         this.getCurrentUser()
+        this.getForms()
+        
     }
 }
 </script>

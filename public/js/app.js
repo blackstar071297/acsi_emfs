@@ -6251,7 +6251,8 @@ __webpack_require__.r(__webpack_exports__);
       current_user: [],
       completed: [],
       pending: [],
-      cancelled: []
+      cancelled: [],
+      sortedForms: []
     };
   },
   methods: {
@@ -6259,18 +6260,36 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/api/employee-movement-form').then(function (response) {
-        console.log(response.data);
+        var prioritizedPending = []; // Temporary array for matched pending forms
+
+        var otherPending = []; // Other pending forms
+
         _this.forms = response.data;
 
         _this.forms.forEach(function (form) {
-          if (form.records[0].status_id == 10) {
+          var statusId = form.records[0].status_id; // Optional chaining for safety
+
+          var empno = _this.current_user.empno;
+          console.log(statusId);
+          var matchesCondition = statusId === 1 && form.from_immediate_superior === empno || statusId === 2 && form.from_manager === empno || statusId === 3 && form.to_immediate_superior === empno || statusId === 4 && form.to_manager === empno || statusId === 5 && empno === 'ACSI-200634' || statusId === 6 && form.hr_account_officer === empno;
+
+          if (matchesCondition) {
+            _this.sortedForms.push(form); // Track matching forms
+
+
+            prioritizedPending.push(form); // Add to prioritized pending
+
+            console.log('Prio Forms:', _this.prioritizedPending);
+          } else if (form.records[0].status_id == 10) {
             _this.cancelled.push(form);
           } else if (form.records[0].status_id == 9 && form.is_closed == 1) {
             _this.completed.push(form);
           } else {
-            _this.pending.push(form);
+            otherPending.push(form);
           }
         });
+
+        _this.pending = prioritizedPending.concat(otherPending);
       })["catch"](function (error) {
         return console.log(error.response.data);
       });
@@ -6280,12 +6299,6 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('/api/get-current-user').then(function (response) {
         _this2.current_user = response.data;
-
-        if (response.data.position == 'fst') {
-          _this2.$router.push({
-            path: '/fst/'
-          });
-        }
       });
     },
     checkUser: function checkUser(form) {
@@ -6318,8 +6331,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken();
     }
 
-    this.getForms();
     this.getCurrentUser();
+    this.getForms();
   }
 });
 
