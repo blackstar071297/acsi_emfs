@@ -7,7 +7,7 @@
                     <li class="breadcrumb-item active" aria-current="page">Home</li>
                 </ol>
             </nav>
-            <a href="/new-movement-form" class="btn btn-success mb-2">New movement form <i class="fa-solid fa-plus"></i></a>
+            <a href="/new-movement-form" class="btn btn-success mb-2" v-if="current_user.position != 'fst'">New movement form <i class="fa-solid fa-plus"></i></a>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="pills-pending-tab" data-toggle="pill" href="#pills-pending" role="tab" aria-controls="pills-home" aria-selected="true">Pending</a>
@@ -153,7 +153,7 @@ export default {
                 this.forms.forEach((form) =>{
                     const statusId = form.records[0].status_id; // Optional chaining for safety
                     const empno = this.current_user.empno;
-                    console.log(statusId)
+                    
                     const matchesCondition =
                         (statusId === 1 && form.from_immediate_superior === empno) ||
                         (statusId === 2 && form.from_manager === empno) ||
@@ -164,7 +164,6 @@ export default {
                     if (matchesCondition) {
                         this.sortedForms.push(form); // Track matching forms
                         prioritizedPending.push(form); // Add to prioritized pending
-                        console.log('Prio Forms:', this.prioritizedPending);
                     }
                     else if(form.records[0].status_id == 10){
                         this.cancelled.push(form)
@@ -182,6 +181,7 @@ export default {
         getCurrentUser(){
             axios.post('/api/get-current-user').then(response => {
                 this.current_user = response.data
+                console.log(this.current_user)
             })
         },
         checkUser(form){

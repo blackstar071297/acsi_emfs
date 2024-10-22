@@ -65,16 +65,11 @@ export default {
                             this.alerts.push({message: response.data.errors[error][0],type: 'danger' })
                         } 
                     }else{
-                        console.log(response)
                         let token = response.data.token
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                         AppStorage.storeToken(token)
                         axios.post('/api/get-current-user').then(response =>{
-                            if(response.data.position == 'fst'){
-                                this.$router.push({path:'/fst/'})
-                            }else{
-                                this.$router.push({path:'/'})
-                            }
+                            this.$router.push({path:'/'})
                         })
                     }
                 }).catch(error => console.log(error.response.data))
@@ -87,14 +82,11 @@ export default {
             return match ? match[1] : null;
         },
         checkUser(){
-            console.log(document.sessionStorage["empno"])
-            console.log(1)
             if(document.sessionStorage["empno"] != null){
                 let username = document.sessionStorage["empno"]
                 let fd = new FormData()
                 fd.append('emp_no',username)
                 axios.post('/api/check-user',fd).then(response => {
-                    console.log(response.data)
                     if(Object.keys(response.data).length > 0){
                         this.form.username = document.sessionStorage["empno"]
                         this.form.password = 'password'

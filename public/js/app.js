@@ -6270,7 +6270,6 @@ __webpack_require__.r(__webpack_exports__);
           var statusId = form.records[0].status_id; // Optional chaining for safety
 
           var empno = _this.current_user.empno;
-          console.log(statusId);
           var matchesCondition = statusId === 1 && form.from_immediate_superior === empno || statusId === 2 && form.from_manager === empno || statusId === 3 && form.to_immediate_superior === empno || statusId === 4 && form.to_manager === empno || statusId === 5 && empno === 'ACSI-200634' || statusId === 6 && form.hr_account_officer === empno;
 
           if (matchesCondition) {
@@ -6278,8 +6277,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
             prioritizedPending.push(form); // Add to prioritized pending
-
-            console.log('Prio Forms:', _this.prioritizedPending);
           } else if (form.records[0].status_id == 10) {
             _this.cancelled.push(form);
           } else if (form.records[0].status_id == 9 && form.is_closed == 1) {
@@ -6299,6 +6296,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('/api/get-current-user').then(function (response) {
         _this2.current_user = response.data;
+        console.log(_this2.current_user);
       });
     },
     checkUser: function checkUser(form) {
@@ -6690,20 +6688,13 @@ __webpack_require__.r(__webpack_exports__);
               });
             }
           } else {
-            console.log(response);
             var token = response.data.token;
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             _components_Helpers_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].storeToken(token);
             axios.post('/api/get-current-user').then(function (response) {
-              if (response.data.position == 'fst') {
-                _this.$router.push({
-                  path: '/fst/'
-                });
-              } else {
-                _this.$router.push({
-                  path: '/'
-                });
-              }
+              _this.$router.push({
+                path: '/'
+              });
             });
           }
         })["catch"](function (error) {
@@ -6722,16 +6713,11 @@ __webpack_require__.r(__webpack_exports__);
     checkUser: function checkUser() {
       var _this2 = this;
 
-      console.log(document.sessionStorage["empno"]);
-      console.log(1);
-
       if (document.sessionStorage["empno"] != null) {
         var username = document.sessionStorage["empno"];
         var fd = new FormData();
         fd.append('emp_no', username);
         axios.post('/api/check-user', fd).then(function (response) {
-          console.log(response.data);
-
           if (Object.keys(response.data).length > 0) {
             _this2.form.username = document.sessionStorage["empno"];
             _this2.form.password = 'password';
@@ -34532,9 +34518,21 @@ var render = function () {
       _c("div", { staticClass: "container-fluid mt-4" }, [
         _vm._m(0),
         _vm._v(" "),
-        _vm._m(1),
+        _vm.current_user.position != "fst"
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-success mb-2",
+                attrs: { href: "/new-movement-form" },
+              },
+              [
+                _vm._v("New movement form "),
+                _c("i", { staticClass: "fa-solid fa-plus" }),
+              ]
+            )
+          : _vm._e(),
         _vm._v(" "),
-        _vm._m(2),
+        _vm._m(1),
         _vm._v(" "),
         _c(
           "div",
@@ -34559,7 +34557,7 @@ var render = function () {
                           "table table-bordered table-striped table-sm",
                       },
                       [
-                        _vm._m(3),
+                        _vm._m(2),
                         _vm._v(" "),
                         _c(
                           "tbody",
@@ -34675,7 +34673,7 @@ var render = function () {
                           "table table-bordered table-striped table-sm",
                       },
                       [
-                        _vm._m(4),
+                        _vm._m(3),
                         _vm._v(" "),
                         _c(
                           "tbody",
@@ -34791,7 +34789,7 @@ var render = function () {
                           "table table-bordered table-striped table-sm",
                       },
                       [
-                        _vm._m(5),
+                        _vm._m(4),
                         _vm._v(" "),
                         _c(
                           "tbody",
@@ -34911,22 +34909,6 @@ var staticRenderFns = [
         ),
       ]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "btn btn-success mb-2",
-        attrs: { href: "/new-movement-form" },
-      },
-      [
-        _vm._v("New movement form "),
-        _c("i", { staticClass: "fa-solid fa-plus" }),
-      ]
-    )
   },
   function () {
     var _vm = this
